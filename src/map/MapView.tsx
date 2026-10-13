@@ -99,8 +99,8 @@ function build(map: maplibregl.Map) {
   add({ id: 'graticule', type: 'line', source: 'graticule', paint: { 'line-color': C.graticule, 'line-width': ['case', ['get', 'major'], 1, 0.5], 'line-opacity': ['interpolate', ['linear'], ['zoom'], 5, 0.9, 9, 0.5, 11, 0] } })
   add({ id: 'land-other', type: 'fill', source: 'land', filter: ['==', ['get', 'pr'], 0], paint: { 'fill-color': C.land } })
   // Puerto Rico's watch/warning as a band just off its own coast (the land fill above hides the inner half)
-  add({ id: 'pr-warning', type: 'line', source: 'land', minzoom: 7.4, filter: ['==', ['get', 'pr'], 2], layout: { 'line-join': 'round', visibility: 'none' },
-    paint: { 'line-color': C.HWR, 'line-width': ['interpolate', ['linear'], ['zoom'], 7.4, 7, 10, 12], 'line-opacity': ['interpolate', ['linear'], ['zoom'], 7.4, 0, 7.8, 1] } })
+  add({ id: 'pr-warning', type: 'line', source: 'land', filter: ['==', ['get', 'pr'], 2], layout: { 'line-join': 'round', visibility: 'none' },
+    paint: { 'line-color': C.HWR, 'line-width': ['interpolate', ['linear'], ['zoom'], 5, 5, 7.5, 7, 10, 12] } })
   add({ id: 'land-pr', type: 'fill', source: 'land', filter: ['==', ['get', 'pr'], 1], paint: { 'fill-color': C.landPR } })
   if (data.hillshade.value) add({ id: 'hillshade', type: 'raster', source: 'hillshade', paint: { 'raster-opacity': ['interpolate', ['linear'], ['zoom'], 6, 0.35, 8.5, 0.85, 12, 0.6], 'raster-fade-duration': 0, 'raster-resampling': 'linear' } })
 
@@ -155,8 +155,8 @@ function build(map: maplibregl.Map) {
   add({ id: 'cone-line', type: 'line', source: 'cone', paint: { 'line-color': C.ink, 'line-width': 1.4, 'line-opacity': 0.85 } })
   add({ id: 'radii-fill', type: 'fill', source: 'radii', layout: { visibility: 'none' }, paint: { 'fill-color': ['match', ['get', 'kt'], 64, '#C8102E', 50, '#E86A1F', '#F2B705'], 'fill-opacity': 0.18 } })
   add({ id: 'radii-line', type: 'line', source: 'radii', layout: { visibility: 'none' }, paint: { 'line-color': ['match', ['get', 'kt'], 64, '#C8102E', 50, '#E86A1F', '#C99700'], 'line-width': 1.4 } })
-  add({ id: 'warnings-case', type: 'line', source: 'warnings', maxzoom: 7.6, layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': '#FFFFFF', 'line-width': ['interpolate', ['linear'], ['zoom'], 5, 5, 7.5, 7] } })
-  add({ id: 'warnings', type: 'line', source: 'warnings', maxzoom: 7.6, layout: { 'line-cap': 'round', 'line-join': 'round' },
+  add({ id: 'warnings-case', type: 'line', source: 'warnings', layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': '#FFFFFF', 'line-width': ['interpolate', ['linear'], ['zoom'], 5, 5, 7.5, 7] } })
+  add({ id: 'warnings', type: 'line', source: 'warnings', layout: { 'line-cap': 'round', 'line-join': 'round' },
     paint: { 'line-color': ['match', ['get', 'code'], 'HWR', C.HWR, 'HWA', C.HWA, 'TWR', C.TWR, C.TWA], 'line-width': ['interpolate', ['linear'], ['zoom'], 5, 3.4, 7.5, 5] } })
   add({ id: 'fcst-tracks', type: 'line', source: 'fcst-tracks', paint: { 'line-color': ['get', 'color'], 'line-width': 1.6, 'line-opacity': 0.75, 'line-dasharray': [2, 1.5] } })
   add({ id: 'track', type: 'line', source: 'track', paint: { 'line-color': C.track, 'line-width': 2, 'line-dasharray': [1, 0] } })
@@ -234,7 +234,8 @@ function bind(map: maplibregl.Map, tipEl: HTMLDivElement) {
     src('prob').setData({ type: 'FeatureCollection', features: L.wind === 'off' || isReveal.value ? [] : [...g.prob[L.wind]].sort((a, b) => (a.properties as any).lo - (b.properties as any).lo) })
     src('cone').setData({ type: 'FeatureCollection', features: L.cone ? g.cone : [] })
     src('track').setData({ type: 'FeatureCollection', features: g.track })
-    src('warnings').setData(g.warnings)
+    // Puerto Rico's own status is drawn along its real coast (pr-warning); NHC's breakpoint lines for the others
+    src('warnings').setData({ type: 'FeatureCollection', features: g.warnings.features.filter(f => !insidePR(f.geometry)) })
     src('radii').setData(F.radiiNow(g))
     src('center').setData(F.centerFC(S, n))
     const lg = lang.value
@@ -417,6 +418,13 @@ function bind(map: maplibregl.Map, tipEl: HTMLDivElement) {
   })
   map.on('mouseout', () => { tipEl.hidden = true })
   return out
+}
+
+function insidePR(g: GeoJSON.Geometry) {
+  let inside = true
+  const walk = (x: any) => { if (typeof x[0] === 'number') { if (!(x[0] > -67.5 && x[0] < -65.15 && x[1] > 17.8 && x[1] < 18.6)) inside = false } else x.forEach(walk) }
+  walk((g as any).coordinates)
+  return inside
 }
 
 function prStatusCode(w: string[]) { const R: Record<string, number> = { HWR: 4, HWA: 3, TWR: 2, TWA: 1 }; return [...w].sort((a, b) => R[b] - R[a])[0] ?? null }

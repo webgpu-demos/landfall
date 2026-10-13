@@ -6,6 +6,21 @@ import { prStatus } from '../lib/conditions'
 import { StatusChip } from './common'
 import { useRef } from 'preact/hooks'
 
+const GUIDE_EN: [string, string][] = [
+  ['Before', 'Open this page on the laptop that drives the projector, set the tables and rounds, and wait for "Saved for offline use". Seat each agency at a table; one facilitator enters everything.'],
+  ['Each round, about 10 minutes', 'Read the headline and "For the tables" aloud (2 min). Tables decide where to act first and why; click the place on the map and add it for that table, with a reason (5 min). Each table reports one decision and its trigger to revisit (3 min).'],
+  ['Between rounds', 'Press Next advisory (or N). Earlier decisions ask to be kept, changed or dropped; the arrows show what moved for each one. Ask the tables what changed their minds, and what did not.'],
+  ['The reveal, about 10 minutes', 'After the last round, show what happened: the storm\'s name, its actual track, the flood warnings, the rain, and where each table acted. Judge the reasoning, not the luck.'],
+  ['Debrief, about 10 minutes', 'Walk the session\'s action list and the five questions; print it or save it as a CSV for the room.'],
+]
+const GUIDE_ES: [string, string][] = [
+  ['Antes', 'Abran esta página en la computadora del proyector, preparen mesas y rondas, y esperen a "Guardado para usar sin conexión". Sienten a cada agencia en una mesa; una persona facilitadora registra todo.'],
+  ['Cada ronda, unos 10 minutos', 'Lean en voz alta el titular y "Para las mesas" (2 min). Las mesas deciden dónde actuar primero y por qué; hagan clic en el lugar en el mapa y añádanlo para esa mesa, con una razón (5 min). Cada mesa reporta una decisión y su detonante para revisarla (3 min).'],
+  ['Entre rondas', 'Opriman Próxima advertencia (o N). Las decisiones anteriores piden mantener, cambiar o descartar; las flechas muestran qué cambió en cada una. Pregunten qué les hizo cambiar de opinión y qué no.'],
+  ['La revelación, unos 10 minutos', 'Después de la última ronda, muestren lo que pasó: el nombre de la tormenta, su trayectoria real, los avisos de inundaciones, la lluvia y dónde actuó cada mesa. Juzguen el razonamiento, no la suerte.'],
+  ['Repaso, unos 10 minutos', 'Recorran la lista de acciones de la sesión y las cinco preguntas; imprímanla o guárdenla como CSV.'],
+]
+
 export function Setup() {
   const s = session.value
   const S = data.scenario.value!
@@ -84,6 +99,13 @@ export function Setup() {
             </ul>
           </section>
         </div>
+
+        <section class="guide">
+          <h2>{lang.value === 'es' ? 'Cómo correr la sesión' : 'How to run the session'}</h2>
+          <ol class="guide-steps">
+            {(lang.value === 'es' ? GUIDE_ES : GUIDE_EN).map(([h, p]) => <li><h3>{h}</h3><p>{p}</p></li>)}
+          </ol>
+        </section>
 
         <footer class="setup-foot">
           <button class="primary big" onClick={start}>{s.started && s.round > 0 ? t('resume', { n: Math.min(s.round + 1, s.rounds.length) }) : t('start')}</button>

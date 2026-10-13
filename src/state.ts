@@ -23,7 +23,7 @@ export function newSession(lang: 'en' | 'es'): Session {
     v: 1, title: lang === 'es' ? '72 horas antes de tocar tierra' : '72 Hours Before Landfall',
     codename: 'X', showName: false,
     tables: defaultTables(lang), rounds: [...DEFAULT_ROUNDS], round: 0, decisions: [], messages: {},
-    timerMin: 8, timerEnd: null, timerLeft: null, created: Date.now(), started: false,
+    timerMin: 10, timerEnd: null, timerLeft: null, created: Date.now(), started: false,
   }
 }
 

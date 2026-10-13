@@ -211,11 +211,34 @@ def wsp_bands(zpath, kt):
             out.append({'lo': lo, 'hi': hi, 'geom': g})
     return out
 
-def smooth(g, r=0.06):
-    """For drawing only: NHC's 5-km contours step along grid cells; a morphological close-then-open (r ~ 6 km, about
-    one grid cell) rounds the steps without moving a boundary by more than a cell. Places are sampled on the raw shapes."""
-    g2 = g.buffer(r, quad_segs=4).buffer(-2 * r, quad_segs=4).buffer(r, quad_segs=4)
-    return (g2 if not g2.is_empty else g).simplify(0.006, preserve_topology=True)
+def chaikin_ring(coords, n=3):
+    pts = list(coords)[:-1]
+    for _ in range(n):
+        out = []
+        for i in range(len(pts)):
+            p, q = pts[i], pts[(i + 1) % len(pts)]
+            out.append((0.75 * p[0] + 0.25 * q[0], 0.75 * p[1] + 0.25 * q[1]))
+            out.append((0.25 * p[0] + 0.75 * q[0], 0.25 * p[1] + 0.75 * q[1]))
+        pts = out
+    return pts + [pts[0]]
+
+def smooth(g, tol=0.05):
+    """For drawing only: NHC's 5-km contours step along grid cells. Douglas-Peucker at under one cell turns the steps
+    into straight runs, then Chaikin corner cutting rounds them; a boundary moves by well under a cell. Places are
+    sampled on the raw shapes."""
+    from shapely.geometry import Polygon, MultiPolygon
+    def one(p):
+        p = p.simplify(tol, preserve_topology=True)
+        if p.is_empty or p.area < 1e-4: return None
+        ext = chaikin_ring(p.exterior.coords)
+        holes = [chaikin_ring(h.coords) for h in p.interiors if Polygon(h).area > 1e-4]
+        q = Polygon(ext, holes).buffer(0)
+        return q if not q.is_empty else None
+    parts = [one(p) for p in (g.geoms if hasattr(g, 'geoms') else [g])]
+    parts = [p for p in parts if p is not None]
+    if not parts: return g
+    out = unary_union(parts)
+    return out.simplify(0.003, preserve_topology=True)
 
 def main():
     ap = argparse.ArgumentParser()

@@ -243,7 +243,7 @@ const S = {
   tablesNote: ['One per agency or group around the room.', 'Una por agencia o grupo en la sala.'],
   addTable: ['Add a table', 'Añadir mesa'],
   rounds: ['Rounds', 'Rondas'],
-  roundsNote: ['Each round is one NHC advisory. Five fit in about an hour.', 'Cada ronda es una advertencia del NHC. Cinco caben en una hora.'],
+  roundsNote: ['Each round is one NHC advisory, about 10 minutes. Five rounds, the reveal and the debrief take about 75 minutes.', 'Cada ronda es una advertencia del NHC, unos 10 minutos. Cinco rondas, la revelación y el repaso toman unos 75 minutos.'],
   minutes: ['Minutes per round', 'Minutos por ronda'],
   codename: ['Call the storm', 'Llamar a la tormenta'],
   codenameNote: ['Replaces the name in NHC text until the reveal.', 'Sustituye el nombre en los textos del NHC hasta el final.'],

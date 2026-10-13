@@ -122,7 +122,7 @@ button[aria-pressed='true'] { background: var(--ink); color: #fff; border-color:
 .brief section, .reveal section { padding: 16px 0; border-top: 1px solid var(--rule-2); }
 .brief h2, .reveal h2, .ask h2 { font-size: var(--fs-1); font-weight: 700; color: var(--ink-2); margin-bottom: 8px; }
 .issued { font-size: var(--fs-1); color: var(--muted); }
-.headline { font-size: var(--fs-5); line-height: 1.12; margin: 6px 0 16px; letter-spacing: -0.02em; font-weight: 800; }
+.headline { font-size: clamp(22px, 0.9vw + 11px, var(--fs-5)); line-height: 1.12; margin: 6px 0 16px; letter-spacing: -0.02em; font-weight: 800; }
 .headline span { display: block; }
 .headline span + span { font-size: 0.7em; font-weight: 700; margin-top: 8px; color: var(--ink-2); line-height: 1.2; }
 .peek-note { background: #FFF6D6; border: 1px solid #EAD27A; padding: 8px 10px; border-radius: 6px; font-size: var(--fs-1); margin-bottom: 10px; }
@@ -505,3 +505,11 @@ ol.frame p { font-size: var(--fs-1); color: var(--ink-2); margin-top: 4px; }
 .about-body { padding: 8px 24px 24px; overflow-y: auto; }
 .about-body h3 { font-size: var(--fs-2); margin: 18px 0 6px; }
 .about-body ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: var(--fs-1); }
+
+.guide { margin-top: 26px; background: #fff; border-radius: 12px; padding: 22px 24px; box-shadow: 0 1px 3px rgba(10,20,40,0.08); }
+.guide h2 { font-size: var(--fs-4); margin-bottom: 12px; }
+ol.guide-steps { list-style: none; counter-reset: g; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 18px; }
+ol.guide-steps li { counter-increment: g; border-top: 3px solid var(--ink); padding-top: 10px; }
+ol.guide-steps li::before { content: counter(g); font-weight: 800; font-size: var(--fs-1); color: var(--muted); }
+ol.guide-steps h3 { font-size: var(--fs-2); margin: 2px 0 6px; }
+ol.guide-steps p { font-size: var(--fs-1); color: var(--ink-2); }
