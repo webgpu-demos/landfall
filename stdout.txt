@@ -1,0 +1,38 @@
+total 788
+drwxr-xr-x 2 runner runner  4096 Oct 13 14:45 .
+drwxr-xr-x 5 runner runner  4096 Oct 13 14:45 ..
+-rw-r--r-- 1 runner runner 37114 Oct 13 14:45 al072022_5day_001.zip
+-rw-r--r-- 1 runner runner 35938 Oct 13 14:45 al072022_5day_002.zip
+20
+98
+22
+atcf:
+total 4024
+drwxr-xr-x 2 runner runner    4096 Oct 13 14:46 .
+drwxr-xr-x 6 runner runner    4096 Oct 13 14:45 ..
+-rw-r--r-- 1 runner runner 4104742 Oct 13 14:46 aal072022.dat.gz
+-rw-r--r-- 1 runner runner    2149 Oct 13 14:46 bal072022.dat.gz
+
+iem:
+total 3052
+drwxr-xr-x 2 runner runner    4096 Oct 13 14:46 .
+drwxr-xr-x 6 runner runner    4096 Oct 13 14:45 ..
+-rw-r--r-- 1 runner runner  282005 Oct 13 14:46 HLSSJU.txt
+-rw-r--r-- 1 runner runner 2826187 Oct 13 14:46 TCVSJU.txt
+-rw-r--r-- 1 runner runner    1688 Oct 13 14:46 sju_warnings_all.zip
+-rw-r--r-- 1 runner runner    1688 Oct 13 14:46 sju_warnings_sbw.zip
+
+usgs:
+total 12364
+drwxr-xr-x 2 runner runner    4096 Oct 13 14:46 .
+drwxr-xr-x 6 runner runner    4096 Oct 13 14:45 ..
+-rw-r--r-- 1 runner runner 6849969 Oct 13 14:46 iv_00045.json
+-rw-r--r-- 1 runner runner 5797416 Oct 13 14:46 iv_00065.json
+7.0M	nhc/wsp
+total 708
+drwxr-xr-x 2 runner runner   4096 Oct 13 14:46 .
+drwxr-xr-x 6 runner runner   4096 Oct 13 14:45 ..
+-rw-r--r-- 1 runner runner 330289 Oct 13 14:46 iv_00045.json.gz
+-rw-r--r-- 1 runner runner 382246 Oct 13 14:46 iv_00065.json.gz
+exit code 0
+19M	out
