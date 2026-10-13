@@ -5,6 +5,10 @@ on:
     branches: [main]
     paths-ignore: ['README.md', 'docs/**', 'tests/check_data.py']
   workflow_dispatch:
+  # the data workflow commits with GITHUB_TOKEN, which does not trigger push events; follow it explicitly
+  workflow_run:
+    workflows: [data]
+    types: [completed]
 permissions:
   contents: write
 concurrency:
@@ -18,6 +22,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        with: { ref: main }
       - uses: actions/setup-node@v4
         with: { node-version: 22, cache: npm }
       - run: npm ci
