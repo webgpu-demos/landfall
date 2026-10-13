@@ -1,0 +1,121 @@
+total 16
+drwxr-xr-x 2 runner runner 4096 Oct 13 14:49 .
+drwxr-xr-x 6 runner runner 4096 Oct 13 14:49 ..
+-rw-r--r-- 1 runner runner   45 Oct 13 14:49 sbw_interval.geojson
+-rw-r--r-- 1 runner runner 1688 Oct 13 14:49 ww_sbw_legacy.zip
+{"type": "FeatureCollection", "features": []}
+layers [(1, 'Electricity Dependent DME – ALL – ZipLevel'), (2, 'Electricity Dependent DME – ALL – CountyLevel'), (3, 'Electricity Dependent DME – ALL – StateLevel'), (5, 'Facility ESRD Dialysis Any DME - ZipLevel'), (6, 'Facility ESRD Dialysis Any DME - CountyLevel'), (7, 'Facility ESRD Dialysis Any DME - StateLevel'), (9, 'O2 Services Any DME - ZipLevel'), (10, 'O2 Services Any DME - CountyLevel'), (11, 'O2 Services Any DME - StateLevel'), (13, 'Home Health Services Any DME - ZipLevel'), (14, 'Home Health Services Any DME - CountyLevel'), (15, 'Home Health Services Any DME - StateLevel'), (17, 'At-Home Hospice Any DME - ZipLevel'), (18, 'At-Home Hospice Any DME - CountyLevel'), (19, 'At-Home Hospice Any DME - StateLevel'), (21, 'Any Healthcare Service Any DME - ZipLevel'), (22, 'Any Healthcare Service Any DME - CountyLevel'), (23, 'Any Healthcare Service Any DME - StateLevel')]
+1 Electricity Dependent DME – ALL – ZipLevel ['OBJECTID', 'STATE', 'AREA', 'PA_NAME', 'COUNTY', 'Zip_Code_Recode', 'County_FIPS_Code', 'State_FIPS_Code', 'FIPS_Code', 'Zip_Code', 'Medicare_Benes', 'Power_Dependent_Devices_DME', 'Facility_ESRD_Dialysis_Any_DME', 'O2_Services_Any_DME', 'Home_Health_Services_Any_DME', 'AtHome_Hospice_Any_DME', 'Any_Healthcare_Srvc_Any_DME', 'Shape__Area', 'Shape__Length']
+  where STATE='Puerto Rico' OR STATE='PR' -> 123 None
+2 Electricity Dependent DME – ALL – CountyLevel ['OBJECTID', 'NAME', 'NAMELSAD', 'FIPS_Code_recode', 'State', 'FIPS_Code', 'County_FIPS_Code', 'County', 'State_FIPS_Code', 'Medicare_Benes', 'Power_Dependent_Devices_DME', 'Facility_ESRD_Dialysis_Any_DME', 'O2_Services_Any_DME', 'Home_Health_Services_Any_DME', 'AtHome_Hospice_Any_DME', 'Any_Healthcare_Srvc_Any_DME', 'Shape__Area', 'Shape__Length']
+  where State='Puerto Rico' OR State='PR' -> 78 None
+3 Electricity Dependent DME – ALL – StateLevel ['OBJECTID', 'REGION', 'NAME', 'State_FIPS_recode', 'State_FIPS_Code', 'State', 'Power_Dependent_Devices_DME', 'Medicare_Benes', 'Facility_ESRD_Dialysis_Any_DME', 'O2_Services_Any_DME', 'Home_Health_Services_Any_DME', 'AtHome_Hospice_Any_DME', 'Any_Healthcare_Srvc_Any_DME', 'Shape__Area', 'Shape__Length']
+  where State='Puerto Rico' OR State='PR' -> 1 None
+5 Facility ESRD Dialysis Any DME - ZipLevel ['OBJECTID', 'STATE', 'PA_NAME', 'COUNTY', 'Zip_Code_Recode', 'County_FIPS_Code', 'State_FIPS_Code', 'FIPS_Code', 'Zip_Code', 'Medicare_Benes', 'Power_Dependent_Devices_DME', 'Facility_ESRD_Dialysis_Any_DME', 'O2_Services_Any_DME', 'Home_Health_Services_Any_DME', 'AtHome_Hospice_Any_DME', 'Any_Healthcare_Srvc_Any_DME', 'Shape__Area', 'Shape__Length']
+  where STATE='Puerto Rico' OR STATE='PR' -> 123 None
+6 Facility ESRD Dialysis Any DME - CountyLevel ['OBJECTID', 'NAME', 'NAMELSAD', 'FIPS_Code_recode', 'State', 'FIPS_Code', 'County_FIPS_Code', 'County', 'State_FIPS_Code', 'Medicare_Benes', 'Power_Dependent_Devices_DME', 'Facility_ESRD_Dialysis_Any_DME', 'O2_Services_Any_DME', 'Home_Health_Services_Any_DME', 'AtHome_Hospice_Any_DME', 'Any_Healthcare_Srvc_Any_DME', 'Shape__Area', 'Shape__Length']
+  where State='Puerto Rico' OR State='PR' -> 78 None
+7 Facility ESRD Dialysis Any DME - StateLevel ['OBJECTID', 'REGION', 'NAME', 'State_FIPS_recode', 'State_FIPS_Code', 'State', 'Medicare_Benes', 'Power_Dependent_Devices_DME', 'Facility_ESRD_Dialysis_Any_DME', 'O2_Services_Any_DME', 'Home_Health_Services_Any_DME', 'AtHome_Hospice_Any_DME', 'Any_Healthcare_Srvc_Any_DME', 'Shape__Area', 'Shape__Length']
+  where State='Puerto Rico' OR State='PR' -> 1 None
+9 O2 Services Any DME - ZipLevel ['OBJECTID', 'STATE', 'PA_NAME', 'COUNTY', 'Zip_Code_Recode', 'County_FIPS_Code', 'State_FIPS_Code', 'FIPS_Code', 'Zip_Code', 'Medicare_Benes', 'Power_Dependent_Devices_DME', 'Facility_ESRD_Dialysis_Any_DME', 'O2_Services_Any_DME', 'Home_Health_Services_Any_DME', 'AtHome_Hospice_Any_DME', 'Any_Healthcare_Srvc_Any_DME', 'Shape__Area', 'Shape__Length']
+  where STATE='Puerto Rico' OR STATE='PR' -> 123 None
+10 O2 Services Any DME - CountyLevel ['OBJECTID', 'NAME', 'NAMELSAD', 'FIPS_Code_recode', 'State', 'FIPS_Code', 'County_FIPS_Code', 'County', 'State_FIPS_Code', 'Medicare_Benes', 'Power_Dependent_Devices_DME', 'Facility_ESRD_Dialysis_Any_DME', 'O2_Services_Any_DME', 'Home_Health_Services_Any_DME', 'AtHome_Hospice_Any_DME', 'Any_Healthcare_Srvc_Any_DME', 'Shape__Area', 'Shape__Length']
+  where State='Puerto Rico' OR State='PR' -> 78 None
+11 O2 Services Any DME - StateLevel ['OBJECTID', 'REGION', 'NAME', 'State_FIPS_recode', 'State_FIPS_Code', 'State', 'Medicare_Benes', 'Power_Dependent_Devices_DME', 'Facility_ESRD_Dialysis_Any_DME', 'O2_Services_Any_DME', 'Home_Health_Services_Any_DME', 'AtHome_Hospice_Any_DME', 'Any_Healthcare_Srvc_Any_DME', 'Shape__Area', 'Shape__Length']
+  where State='Puerto Rico' OR State='PR' -> 1 None
+13 Home Health Services Any DME - ZipLevel ['OBJECTID', 'STATE', 'AREA', 'PA_NAME', 'COUNTY', 'Zip_Code_Recode', 'County_FIPS_Code', 'State_FIPS_Code', 'FIPS_Code', 'Zip_Code', 'Medicare_Benes', 'Power_Dependent_Devices_DME', 'Facility_ESRD_Dialysis_Any_DME', 'O2_Services_Any_DME', 'Home_Health_Services_Any_DME', 'AtHome_Hospice_Any_DME', 'Any_Healthcare_Srvc_Any_DME', 'Shape__Area', 'Shape__Length']
+  where STATE='Puerto Rico' OR STATE='PR' -> 123 None
+14 Home Health Services Any DME - CountyLevel ['OBJECTID', 'NAME', 'NAMELSAD', 'FIPS_Code_recode', 'State', 'FIPS_Code', 'County_FIPS_Code', 'County', 'State_FIPS_Code', 'Medicare_Benes', 'Power_Dependent_Devices_DME', 'Facility_ESRD_Dialysis_Any_DME', 'O2_Services_Any_DME', 'Home_Health_Services_Any_DME', 'AtHome_Hospice_Any_DME', 'Any_Healthcare_Srvc_Any_DME', 'Shape__Area', 'Shape__Length']
+  where State='Puerto Rico' OR State='PR' -> 78 None
+15 Home Health Services Any DME - StateLevel ['OBJECTID', 'REGION', 'NAME', 'State_FIPS_recode', 'State_FIPS_Code', 'State', 'Medicare_Benes', 'Power_Dependent_Devices_DME', 'Facility_ESRD_Dialysis_Any_DME', 'O2_Services_Any_DME', 'Home_Health_Services_Any_DME', 'AtHome_Hospice_Any_DME', 'Any_Healthcare_Srvc_Any_DME', 'Shape__Area', 'Shape__Length']
+  where State='Puerto Rico' OR State='PR' -> 1 None
+17 At-Home Hospice Any DME - ZipLevel ['OBJECTID', 'STATE', 'PA_NAME', 'COUNTY', 'Zip_Code_Recode', 'County_FIPS_Code', 'State_FIPS_Code', 'FIPS_Code', 'Zip_Code', 'Medicare_Benes', 'Power_Dependent_Devices_DME', 'Facility_ESRD_Dialysis_Any_DME', 'O2_Services_Any_DME', 'Home_Health_Services_Any_DME', 'AtHome_Hospice_Any_DME', 'Any_Healthcare_Srvc_Any_DME', 'Shape__Area', 'Shape__Length']
+  where STATE='Puerto Rico' OR STATE='PR' -> 123 None
+18 At-Home Hospice Any DME - CountyLevel ['OBJECTID', 'NAME', 'NAMELSAD', 'FIPS_Code_recode', 'State', 'FIPS_Code', 'County_FIPS_Code', 'County', 'State_FIPS_Code', 'Medicare_Benes', 'Power_Dependent_Devices_DME', 'Facility_ESRD_Dialysis_Any_DME', 'O2_Services_Any_DME', 'Home_Health_Services_Any_DME', 'AtHome_Hospice_Any_DME', 'Any_Healthcare_Srvc_Any_DME', 'Shape__Area', 'Shape__Length']
+  where State='Puerto Rico' OR State='PR' -> 78 None
+19 At-Home Hospice Any DME - StateLevel ['OBJECTID', 'REGION', 'NAME', 'State_FIPS_recode', 'State_FIPS_Code', 'State', 'Medicare_Benes', 'Power_Dependent_Devices_DME', 'Facility_ESRD_Dialysis_Any_DME', 'O2_Services_Any_DME', 'Home_Health_Services_Any_DME', 'AtHome_Hospice_Any_DME', 'Any_Healthcare_Srvc_Any_DME', 'Shape__Area', 'Shape__Length']
+  where State='Puerto Rico' OR State='PR' -> 1 None
+21 Any Healthcare Service Any DME - ZipLevel ['OBJECTID', 'STATE', 'PA_NAME', 'COUNTY', 'Zip_Code_Recode', 'County_FIPS_Code', 'State_FIPS_Code', 'FIPS_Code', 'Zip_Code', 'Medicare_Benes', 'Power_Dependent_Devices_DME', 'Facility_ESRD_Dialysis_Any_DME', 'O2_Services_Any_DME', 'Home_Health_Services_Any_DME', 'AtHome_Hospice_Any_DME', 'Any_Healthcare_Srvc_Any_DME', 'Shape__Area', 'Shape__Length']
+  where STATE='Puerto Rico' OR STATE='PR' -> 123 None
+22 Any Healthcare Service Any DME - CountyLevel ['OBJECTID', 'NAME', 'NAMELSAD', 'FIPS_Code_recode', 'State', 'FIPS_Code', 'County_FIPS_Code', 'County', 'State_FIPS_Code', 'Medicare_Benes', 'Power_Dependent_Devices_DME', 'Facility_ESRD_Dialysis_Any_DME', 'O2_Services_Any_DME', 'Home_Health_Services_Any_DME', 'AtHome_Hospice_Any_DME', 'Any_Healthcare_Srvc_Any_DME', 'Shape__Area', 'Shape__Length']
+  where State='Puerto Rico' OR State='PR' -> 78 None
+23 Any Healthcare Service Any DME - StateLevel ['OBJECTID', 'REGION', 'NAME', 'State_FIPS_recode', 'State_FIPS_Code', 'State', 'Medicare_Benes', 'Power_Dependent_Devices_DME', 'Facility_ESRD_Dialysis_Any_DME', 'O2_Services_Any_DME', 'Home_Health_Services_Any_DME', 'AtHome_Hospice_Any_DME', 'Any_Healthcare_Srvc_Any_DME', 'Shape__Area', 'Shape__Length']
+  where State='Puerto Rico' OR State='PR' -> 1 None
+hurdat hurdat2-1851-2025-092326.txt
+osmium version 1.16.0
+total 8
+drwxr-xr-x 2 runner runner 4096 Oct 13 14:49 .
+drwxr-xr-x 6 runner runner 4096 Oct 13 14:49 ..
+Error while reading config file '/dev/null':
+JSON error at offset 0: The document is empty.
+empower:
+total 1040
+drwxr-xr-x 2 runner runner  4096 Oct 13 14:50 .
+drwxr-xr-x 6 runner runner  4096 Oct 13 14:49 ..
+-rw-r--r-- 1 runner runner 18080 Oct 13 14:50 layer10_meta.json
+-rw-r--r-- 1 runner runner 44381 Oct 13 14:50 layer10_pr.json
+-rw-r--r-- 1 runner runner 16064 Oct 13 14:50 layer11_meta.json
+-rw-r--r-- 1 runner runner  3237 Oct 13 14:50 layer11_pr.json
+-rw-r--r-- 1 runner runner 16601 Oct 13 14:50 layer13_meta.json
+-rw-r--r-- 1 runner runner 68874 Oct 13 14:50 layer13_pr.json
+-rw-r--r-- 1 runner runner 18087 Oct 13 14:50 layer14_meta.json
+-rw-r--r-- 1 runner runner 44381 Oct 13 14:50 layer14_pr.json
+-rw-r--r-- 1 runner runner 16056 Oct 13 14:50 layer15_meta.json
+-rw-r--r-- 1 runner runner  3237 Oct 13 14:50 layer15_pr.json
+-rw-r--r-- 1 runner runner 16347 Oct 13 14:50 layer17_meta.json
+-rw-r--r-- 1 runner runner 66631 Oct 13 14:50 layer17_pr.json
+-rw-r--r-- 1 runner runner 18061 Oct 13 14:50 layer18_meta.json
+-rw-r--r-- 1 runner runner 44381 Oct 13 14:50 layer18_pr.json
+-rw-r--r-- 1 runner runner 16027 Oct 13 14:50 layer19_meta.json
+-rw-r--r-- 1 runner runner  3237 Oct 13 14:50 layer19_pr.json
+-rw-r--r-- 1 runner runner 14391 Oct 13 14:50 layer1_meta.json
+-rw-r--r-- 1 runner runner 68874 Oct 13 14:50 layer1_pr.json
+-rw-r--r-- 1 runner runner 16772 Oct 13 14:50 layer21_meta.json
+-rw-r--r-- 1 runner runner 66631 Oct 13 14:50 layer21_pr.json
+-rw-r--r-- 1 runner runner 18485 Oct 13 14:50 layer22_meta.json
+-rw-r--r-- 1 runner runner 44381 Oct 13 14:50 layer22_pr.json
+-rw-r--r-- 1 runner runner 16468 Oct 13 14:50 layer23_meta.json
+-rw-r--r-- 1 runner runner  3237 Oct 13 14:50 layer23_pr.json
+-rw-r--r-- 1 runner runner 15508 Oct 13 14:50 layer2_meta.json
+-rw-r--r-- 1 runner runner 44381 Oct 13 14:50 layer2_pr.json
+-rw-r--r-- 1 runner runner 12846 Oct 13 14:50 layer3_meta.json
+-rw-r--r-- 1 runner runner  3237 Oct 13 14:50 layer3_pr.json
+-rw-r--r-- 1 runner runner 16373 Oct 13 14:50 layer5_meta.json
+-rw-r--r-- 1 runner runner 66631 Oct 13 14:50 layer5_pr.json
+-rw-r--r-- 1 runner runner 18085 Oct 13 14:50 layer6_meta.json
+-rw-r--r-- 1 runner runner 44381 Oct 13 14:50 layer6_pr.json
+-rw-r--r-- 1 runner runner 16057 Oct 13 14:50 layer7_meta.json
+-rw-r--r-- 1 runner runner  3237 Oct 13 14:50 layer7_pr.json
+-rw-r--r-- 1 runner runner 16359 Oct 13 14:50 layer9_meta.json
+-rw-r--r-- 1 runner runner 66631 Oct 13 14:50 layer9_pr.json
+-rw-r--r-- 1 runner runner 12438 Oct 13 14:50 service.json
+
+nhc/fcst:
+total 952
+drwxr-xr-x 2 runner runner  4096 Oct 13 14:49 .
+drwxr-xr-x 4 runner runner  4096 Oct 13 14:49 ..
+-rw-r--r-- 1 runner runner 47306 Oct 13 14:49 al072022_fcst_004.zip
+-rw-r--r-- 1 runner runner 48778 Oct 13 14:49 al072022_fcst_005.zip
+-rw-r--r-- 1 runner runner 54628 Oct 13 14:49 al072022_fcst_006.zip
+-rw-r--r-- 1 runner runner 54503 Oct 13 14:49 al072022_fcst_007.zip
+-rw-r--r-- 1 runner runner 52812 Oct 13 14:49 al072022_fcst_008.zip
+-rw-r--r-- 1 runner runner 52430 Oct 13 14:49 al072022_fcst_009.zip
+-rw-r--r-- 1 runner runner 53162 Oct 13 14:49 al072022_fcst_010.zip
+-rw-r--r-- 1 runner runner 56533 Oct 13 14:49 al072022_fcst_011.zip
+-rw-r--r-- 1 runner runner 62330 Oct 13 14:49 al072022_fcst_012.zip
+-rw-r--r-- 1 runner runner 71121 Oct 13 14:49 al072022_fcst_013.zip
+-rw-r--r-- 1 runner runner 73597 Oct 13 14:49 al072022_fcst_014.zip
+-rw-r--r-- 1 runner runner 74295 Oct 13 14:49 al072022_fcst_015.zip
+-rw-r--r-- 1 runner runner 76253 Oct 13 14:49 al072022_fcst_016.zip
+-rw-r--r-- 1 runner runner 80903 Oct 13 14:49 al072022_fcst_017.zip
+-rw-r--r-- 1 runner runner 85566 Oct 13 14:49 al072022_fcst_018.zip
+
+osm:
+total 16
+drwxr-xr-x 2 runner runner 4096 Oct 13 14:50 .
+drwxr-xr-x 6 runner runner 4096 Oct 13 14:49 ..
+-rw-r--r-- 1 runner runner   77 Oct 13 14:50 bridges.geojson.gz
+-rw-r--r-- 1 runner runner    0 Oct 13 14:50 fileinfo.txt
+-rw-r--r-- 1 runner runner   75 Oct 13 14:50 roads.geojson.gz
+exit code 0
+2.1M	out

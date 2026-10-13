@@ -1,0 +1,15 @@
+curl: (22) The requested URL returned error: 404
+curl: (22) The requested URL returned error: 404
+curl: (22) The requested URL returned error: 404
+curl: (22) The requested URL returned error: 404
+FAIL https://mesonet.agron.iastate.edu/api/1/vtec/events.json?wfo=SJU&year=2022
+curl: (22) The requested URL returned error: 404
+curl: (22) The requested URL returned error: 404
+curl: (22) The requested URL returned error: 404
+curl: (22) The requested URL returned error: 404
+FAIL https://download.geofabrik.de/central-america/puerto-rico-latest.osm.pbf
+Open failed for 'osm/pr.osm.pbf': No such file or directory
+Open failed for 'osm/roads.osm.pbf': No such file or directory
+Could not get file size of file 'osm/pr.osm.pbf': No such file or directory
+Open failed for 'osm/pr.osm.pbf': No such file or directory
+Open failed for 'osm/bridges.osm.pbf': No such file or directory
