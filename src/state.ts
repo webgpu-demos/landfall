@@ -69,6 +69,8 @@ export const pinMode = signal(false)
 export const bigText = signal(false)
 export const textDrawer = signal<null | 'public' | 'discussion' | 'probabilities' | 'hls'>(null)
 export const focusMap = signal(false)
+export const offline = signal<'unknown' | 'saving' | 'ready' | 'unavailable'>('unknown')
+export const about = signal(false)
 
 export interface Layers {
   wind: 'off' | '34' | '50' | '64'

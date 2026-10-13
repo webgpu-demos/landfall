@@ -1,5 +1,6 @@
 # Rebuild the scenario data from its public sources and commit it to main (public/data, public/tiles).
-# Run by hand from the Actions tab. Everything is fetched and compiled here, on the runner.
+# Run by hand from the Actions tab. Everything is fetched and compiled here, on the runner; the build log is
+# published to the data-log branch (the sandbox cannot read Actions logs).
 name: data
 on:
   workflow_dispatch:
@@ -18,24 +19,34 @@ jobs:
       - name: Python packages
         run: pip install pyshp shapely numpy pillow
       - name: Fetch sources
-        run: bash pipeline/fetch.sh raw
+        run: bash pipeline/fetch.sh raw 2>&1 | tee -a build-log.txt
       - name: Garita's baked data (shelters, facilities, SVI, exposure, hazard tiles)
         run: |
           git clone -q --depth 1 --filter=blob:none --sparse -b gh-pages https://github.com/webgpu-demos/garita garita
           git -C garita sparse-checkout set tiles/surge tiles/slide data/island data/geo data/seed data/hazards
+          cat garita/data/manifest.json | tee -a build-log.txt
       - name: Compile
         run: |
-          python pipeline/build_scenario.py raw out
-          python pipeline/build_places.py garita raw out
-          python pipeline/build_observed.py garita raw out
-          python pipeline/build_basemap.py garita out
-          bash pipeline/stage.sh out garita
+          set -o pipefail
+          { python pipeline/build_scenario.py raw out && python pipeline/build_places.py garita raw out \
+            && python pipeline/build_observed.py garita raw out && python pipeline/build_basemap.py garita out \
+            && bash pipeline/stage.sh out garita; } 2>&1 | grep -v 'Possible issue' | tee -a build-log.txt
           cp raw/nhc/hurdat/version.txt public/data/hurdat-version.txt || true
           cp raw/osm/timestamp.txt public/data/osm-timestamp.txt || true
+      - name: Check against the sources
+        run: python tests/check_data.py public/data 2>&1 | tee -a build-log.txt
       - name: Commit
         run: |
           git config user.name "landfall-pipeline"; git config user.email "actions@users.noreply.github.com"
           git add public/data public/tiles
-          if git diff --cached --quiet; then echo "no change"; exit 0; fi
+          if git diff --cached --quiet; then echo "no change" | tee -a build-log.txt; exit 0; fi
           git commit -q -m "data: rebuild from sources $(date -u +%FT%TZ)"
-          git push -q
+          for i in 1 2 3; do git pull -q --rebase origin main && git push -q && break; sleep 5; done
+          git log --oneline -1 | tee -a build-log.txt
+      - name: Publish the log
+        if: always()
+        run: |
+          mkdir -p log && cp build-log.txt log/ && cd log && git init -q -b data-log
+          git -c user.name=landfall-pipeline -c user.email=actions@users.noreply.github.com add -A
+          git -c user.name=landfall-pipeline -c user.email=actions@users.noreply.github.com commit -q -m "data build log $(date -u +%FT%TZ)"
+          git push -q -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" HEAD:data-log

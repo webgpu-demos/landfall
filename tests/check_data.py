@@ -37,7 +37,7 @@ ST = {'San Juan': (18.43, -66.0), 'Ponce': (18.01, -66.56), 'Aguadilla': (18.49,
 NEXT = {0: 5, 5: 10, 10: 20, 20: 30, 30: 40, 40: 50, 50: 60, 60: 70, 70: 80, 80: 90, 90: 100}
 worst = 0; n = 0
 for num, a in A.items():
-    rawp = os.path.join(os.path.dirname(OUT.rstrip('/')), 'out', '_work', f'prob_{num:03d}.json')
+    rawp = next((q for q in (os.path.join(OUT, '_work', f'prob_{num:03d}.json'), os.path.join(os.path.dirname(OUT.rstrip('/')), 'out', '_work', f'prob_{num:03d}.json'), os.path.join('out', '_work', f'prob_{num:03d}.json')) if os.path.exists(q)), '')
     src = json.load(open(rawp)) if os.path.exists(rawp) else json.load(open(os.path.join(OUT, f'geo/adv_{num:03d}.json')))['prob']
     for name, (lat, lon) in ST.items():
         row = a['pws']['rows'].get(name, {}).get('34')

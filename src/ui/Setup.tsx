@@ -1,4 +1,4 @@
-import { session, update, view, lang, TABLE_COLORS, DEFAULT_ROUNDS, resetSession, importSession, activeTable } from '../state'
+import { session, update, view, lang, TABLE_COLORS, DEFAULT_ROUNDS, resetSession, importSession, activeTable, offline, about } from '../state'
 import { data } from '../data'
 import { t } from '../i18n'
 import { when } from '../lib/format'
@@ -89,6 +89,8 @@ export function Setup() {
           <button class="primary big" onClick={start}>{s.started && s.round > 0 ? t('resume', { n: Math.min(s.round + 1, s.rounds.length) }) : t('start')}</button>
           <button class="link" onClick={() => file.current?.click()}>{t('importFile')}</button>
           {s.started && <button class="link" onClick={() => { if (confirm(t('confirmNew'))) resetSession() }}>{t('newSessionBtn')}</button>}
+          <button class="link" onClick={() => (about.value = true)}>{t('about')}</button>
+          {offline.value !== 'unknown' && <span class={'offline ' + offline.value}>{offline.value === 'ready' ? t('offReady') : offline.value === 'saving' ? t('offSaving') : t('offNo')}</span>}
           <input ref={file} type="file" accept=".json,application/json" hidden onChange={async (e) => {
             const f = (e.target as HTMLInputElement).files?.[0]
             if (f) { try { await importSession(f) } catch (err) { alert(String(err)) } }

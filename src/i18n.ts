@@ -36,6 +36,7 @@ const S = {
   closest: ['Closest to Puerto Rico in the official forecast', 'Más cerca de Puerto Rico en el pronóstico oficial'],
   closestVal: ['{t}, center about {km} km from the island\'s middle, {mph} mph', '{t}, el centro a unos {km} km del centro de la isla, {mph} mph'],
   derivedNote: ['Computed here from NHC\'s forecast points', 'Calculado aquí con los puntos de pronóstico del NHC'],
+  forDiscussion: ['For the tables', 'Para las mesas'],
   changed: ['What changed since {t}', 'Qué cambió desde {t}'],
   noChange: ['Little changed for Puerto Rico since the last round.', 'Poco cambió para Puerto Rico desde la ronda anterior.'],
   firstRound: ['First look. Nothing to compare yet.', 'Primera mirada. Todavía no hay con qué comparar.'],
@@ -251,6 +252,10 @@ const S = {
   // misc
   loading: ['Loading the scenario', 'Cargando el escenario'],
   loadError: ['The scenario data did not load: {e}. Reload the page; if it persists the site is missing its data files.', 'Los datos del escenario no cargaron: {e}. Recarga la página; si sigue, al sitio le faltan los archivos de datos.'],
+  offReady: ['Saved for offline use: this browser can run the whole exercise without a connection.', 'Guardado para usar sin conexión: este navegador puede correr todo el ejercicio sin internet.'],
+  offSaving: ['Saving for offline use. Keep this page open a minute before the session.', 'Guardando para usar sin conexión. Deja esta página abierta un minuto antes de la sesión.'],
+  offNo: ['Offline use is not available in this browser; keep a connection during the session.', 'Este navegador no permite el uso sin conexión; mantén la conexión durante la sesión.'],
+  slHigh: ['High', 'Alta'], slVery: ['Very high', 'Muy alta'], slExt: ['Extremely high', 'Extremadamente alta'],
   bigText: ['Large text', 'Texto grande'],
   menu: ['Session', 'Sesión'],
   setup: ['Set up', 'Preparar'],

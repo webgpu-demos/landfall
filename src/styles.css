@@ -492,3 +492,16 @@ ol.frame p { font-size: var(--fs-1); color: var(--ink-2); margin-top: 4px; }
 
 .clockchip { display: inline-flex; align-items: center; gap: 3px; font-size: 11px; font-weight: 700; color: var(--ink-2); background: var(--panel); border-radius: 4px; padding: 1px 6px; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .clockchip.late { background: #FDECEC; color: var(--worse); }
+
+.brief section.prompts { border-top: 0; padding: 12px 14px; margin: 0 0 14px; background: #EEF2F7; border-radius: 8px; }
+.prompts h2 { color: var(--ink); }
+.prompts ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: var(--fs-2); line-height: 1.35; }
+
+.offline { font-size: var(--fs-1); color: var(--muted); display: inline-flex; align-items: center; gap: 6px; }
+.offline::before { content: ''; width: 9px; height: 9px; border-radius: 50%; background: #9AA5B1; }
+.offline.ready { color: var(--better); } .offline.ready::before { background: var(--better); }
+.offline.saving::before { background: var(--hl); }
+.about { max-width: 760px; }
+.about-body { padding: 8px 24px 24px; overflow-y: auto; }
+.about-body h3 { font-size: var(--fs-2); margin: 18px 0 6px; }
+.about-body ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: var(--fs-1); }

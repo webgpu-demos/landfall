@@ -10,7 +10,7 @@ export default defineConfig({
     preact(),
     VitePWA({
       registerType: 'autoUpdate',
-      injectRegister: 'auto',
+      injectRegister: false,
       manifest: false,
       workbox: {
         globPatterns: ['**/*.{js,css,html,woff2,json,png,pbf,svg}'],

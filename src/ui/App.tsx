@@ -15,6 +15,7 @@ import { TextDrawer } from './TextDrawer'
 import { Setup } from './Setup'
 import { RevealPanel, Outcomes } from './Reveal'
 import { Debrief } from './Debrief'
+import { About } from './About'
 import { requestAdvance } from './TopBar'
 
 export function App() {
@@ -42,8 +43,8 @@ export function App() {
   ;(globalThis as any).__landfall.ready = true
 
   const v = view.value
-  if (v === 'setup') return <Setup />
-  if (v === 'debrief') return <Debrief />
+  if (v === 'setup') return <><Setup /><About /></>
+  if (v === 'debrief') return <><Debrief /><About /></>
   const reveal = isReveal.value
   return (
     <div class={'shell' + (focusMap.value ? ' focus' : '')}>
@@ -68,6 +69,7 @@ export function App() {
       <aside class="right">{reveal ? <Outcomes /> : <Decisions />}</aside>
       <Timeline />
       <TextDrawer />
+      <About />
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import { session, advisory, peek, textDrawer, lang } from '../state'
 import { whereLine } from '../lib/where'
+import { prompts } from '../lib/prompts'
 import { data } from '../data'
 import { t } from '../i18n'
 import { when, mph, kmh, dayTime } from '../lib/format'
@@ -28,6 +29,13 @@ export function Brief() {
       {peek.value != null && <div class="peek-note">{t('peeking', { n: a.num })} <button class="link" onClick={() => (peek.value = null)}>{t('backToNow')}</button></div>}
       <p class="issued">{t('advisory', { n: a.num })}, {t('issued', { t: when(a.issued) })}</p>
       <h1 class="headline">{a.headline.map(h => <span>{R(sentence(h))}</span>)}</h1>
+
+      {(() => { const ps = prompts(a, prev, shownRound === s.rounds.length - 1); return ps.length > 0 && (
+        <section class="prompts" aria-label={t('forDiscussion')}>
+          <h2>{t('forDiscussion')}</h2>
+          <ul>{ps.map(p => <li>{p}</li>)}</ul>
+        </section>
+      ) })()}
 
       <section class="changed">
         <h2>{prev ? t('changed', { t: dayTime(prev.issued) }) : t('firstRound')}</h2>

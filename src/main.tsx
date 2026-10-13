@@ -13,4 +13,12 @@ import * as state from './state'
 // test hook: screenshots and checks drive the app through this (no effect on normal use)
 ;(globalThis as any).__landfall = { ready: false, state, data }
 loadAll()
+
+// offline: the service worker precaches the app, data, tiles and fonts; the setup page says when that is done
+import('virtual:pwa-register').then(({ registerSW }) => registerSW({
+  immediate: true,
+  onOfflineReady() { state.offline.value = 'ready' },
+  onRegisteredSW(_url, r) { state.offline.value = r?.active && navigator.serviceWorker.controller ? 'ready' : 'saving' },
+  onRegisterError() { state.offline.value = 'unavailable' },
+})).catch(() => { state.offline.value = 'unavailable' })
 render(<App />, document.getElementById('app')!)

@@ -67,7 +67,7 @@ export function LayerPanel() {
             </div>
             {L.surge !== 'off' && <div class="keyrow"><i style={{ background: '#005ce6' }} />&lt;3 ft <i style={{ background: '#ffff00' }} />3+ <i style={{ background: '#ffaa00' }} />6+ <i style={{ background: '#ff0000' }} />9+ ft</div>}
             <Check on={L.slide} set={v => setLayer('slide', v)} label={t('lSlide')} />
-            {L.slide && <div class="keyrow"><i style={{ background: '#ffd580' }} />{t('lOff') && 'High'} <i style={{ background: '#f3807f' }} />Very high <i style={{ background: '#85a4d6' }} />Extreme</div>}
+            {L.slide && <div class="keyrow"><i style={{ background: '#ffd580' }} />{t('slHigh')} <i style={{ background: '#f3807f' }} />{t('slVery')} <i style={{ background: '#85a4d6' }} />{t('slExt')}</div>}
             <Check on={L.roads} set={v => setLayer('roads', v)} label={t('lRoads')} />
           </fieldset>
           <fieldset>

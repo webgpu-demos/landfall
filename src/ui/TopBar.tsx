@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'preact/hooks'
 import { signal } from '@preact/signals'
-import { session, advisory, isReveal, advance, startTimer, pauseTimer, resetTimer, lang, bigText, view, exportSession, importSession, resetSession, focusMap, peek, pendingReview } from '../state'
+import { session, advisory, isReveal, advance, startTimer, pauseTimer, resetTimer, lang, bigText, view, exportSession, importSession, resetSession, focusMap, peek, pendingReview, about } from '../state'
 import { data } from '../data'
 import { t } from '../i18n'
 import { when } from '../lib/format'
@@ -88,6 +88,7 @@ export function TopBar() {
               <button onClick={() => download(exportSession(), `landfall-session-${new Date().toISOString().slice(0, 16).replace(':', '')}.json`)}>{t('exportFile')}</button>
               <button onClick={() => file.current?.click()}>{t('importFile')}</button>
               <button onClick={() => { if (confirm(t('confirmNew'))) { setMenu(false); resetSession() } }}>{t('newSessionBtn')}</button>
+              <button onClick={() => { setMenu(false); about.value = true }}>{t('about')}</button>
               <hr />
               <p class="menu-note">{t('shortcuts')}</p>
               <p class="menu-note">{data.scenario.value && `NHC ${data.scenario.value.storm.id}`}{data.garita.value && `; Garita ${data.garita.value.seedVersion}`}</p>
