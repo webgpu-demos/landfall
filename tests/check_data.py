@@ -65,9 +65,8 @@ check(mono, 'chance of 39+ >= 58+ >= 74+ mph everywhere')
 ff = [f for f in O['warnings']['features'] if f['properties']['kind'] == 'FF.W']
 check(len(ff) >= 20, f"NWS San Juan flash flood warnings in the record ({len(ff)}; the TCR counts about 50 for 18-20 Sep including reissues and county-based ones)")
 top = O['rain']['gauges'][0]
-check(top['in'] > 30, f"heaviest USGS gauge total over 30 in ({top['in']} in at {top['name']}; TCR: 32.40 in at Rio Cerrillos near Ponce)")
-cer = [g for g in O['rain']['gauges'] if 'Cerrillos' in g['name']]
-check(bool(cer) and abs(cer[0]['in'] - 32.4) < 2.5, f"Rio Cerrillos gauge near the TCR's 32.40 in ({cer[0]['in'] if cer else None})")
+check(top['in'] == 32.4 and 'Cerrillos' in top['name'], f"heaviest storm total is the TCR's 32.40 in at Rio Cerrillos near Ponce ({top['in']} in at {top['name']})")
+check(len(O['rain']['gauges']) >= 50, f"rain stations read from TCR Table 3 ({len(O['rain']['gauges'])})")
 check(sum(1 for g in O['rivers']['gauges'] if g['level'] == 'major') >= 12, 'over a dozen gauges above major flood stage (TCR)')
 
 print(f"\n{len(bad)} failed" if bad else '\nall checks passed')

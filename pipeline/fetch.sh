@@ -20,6 +20,10 @@ done
 for d in 15 16 17 18 19; do for h in 00 06 12 18; do t=202209$d$h
   get https://www.nhc.noaa.gov/gis/forecast/archive/${t}_wsp_120hr5km.zip nhc/wsp/${t}_wsp_120hr5km.zip &
 done; done; wait
+# the Tropical Cyclone Report: its Table 3 is the quality-controlled storm-total rainfall
+get https://www.nhc.noaa.gov/data/tcr/AL072022_Fiona.pdf nhc/tcr.pdf && {
+  command -v pdftotext >/dev/null || { sudo apt-get -qq update >/dev/null 2>&1; sudo apt-get -qq install -y poppler-utils >/dev/null 2>&1; }
+  pdftotext -layout nhc/tcr.pdf nhc/tcr.txt; }
 # best track: latest HURDAT2, Fiona's block only
 get https://www.nhc.noaa.gov/data/hurdat/ nhc/hurdat/index.html
 H=$(grep -o 'hurdat2-1851-[0-9]*-[0-9]*\.txt' nhc/hurdat/index.html | sort | tail -1)

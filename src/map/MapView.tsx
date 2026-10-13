@@ -200,7 +200,7 @@ function build(map: maplibregl.Map) {
     paint: { 'text-color': '#fff' } })
 
   add({ id: 'ffw-emergency', type: 'symbol', source: 'ffw', filter: ['==', ['get', 'emergency'], true],
-    layout: { 'text-field': lang.value === 'es' ? 'Emergencia por inundación repentina' : 'Flash flood emergency', 'text-font': ['Open Sans Bold'], 'text-size': 12, 'text-max-width': 9, 'text-anchor': 'top', 'text-offset': [0, 1.4] },
+    layout: { 'text-field': lang.value === 'es' ? 'Emergencia por inundaciones repentinas' : 'Flash flood emergency', 'text-font': ['Open Sans Bold'], 'text-size': 12, 'text-max-width': 9, 'text-anchor': 'top', 'text-offset': [0, 1.4] },
     paint: { 'text-color': '#8B0000', 'text-halo-color': '#fff', 'text-halo-width': 1.8 } })
 
   // decisions as marks

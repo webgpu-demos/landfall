@@ -100,7 +100,7 @@ export function Brief() {
 }
 
 function hazardName(k: string) {
-  const m: Record<string, [string, string]> = { WIND: ['Wind', 'Viento'], 'FLOODING RAIN': ['Flooding rain', 'Lluvia e inundación'], SURGE: ['Surge', 'Marejada'], TORNADOES: ['Tornadoes', 'Tornados'] }
+  const m: Record<string, [string, string]> = { WIND: ['Wind', 'Viento'], 'FLOODING RAIN': ['Flooding rain', 'Lluvia e inundación'], SURGE: ['Surge', 'Marejada ciclónica'], TORNADOES: ['Tornadoes', 'Tornados'] }
   return (m[k] ?? [k, k])[document.documentElement.lang === 'es' ? 1 : 0]
 }
 

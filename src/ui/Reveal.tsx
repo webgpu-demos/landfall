@@ -48,11 +48,11 @@ export function RevealPanel() {
               <span class="wtrack"><span class="wdot" style={{ left: `${(mph(a.nearPR.wind_kt) / 120) * 100}%` }} /><span class="wval" style={{ left: `${(mph(a.nearPR.wind_kt) / 120) * 100}%` }}>{mph(a.nearPR.wind_kt)}</span></span>
               <StatusChip code={prStatus(a)} size="sm" /></div>
           ))}
-          <div class="wrow obs"><span class="rlabel">{t('observedMax')}</span>
+          <div class="wrow obs"><span class="rlabel">{t('bestTrackLbl')}</span>
             <span class="wtrack"><span class="wdot obs" style={{ left: `${(mph(lf.wind_kt) / 120) * 100}%` }} /><span class="wval" style={{ left: `${(mph(lf.wind_kt) / 120) * 100}%` }}>{mph(lf.wind_kt)}</span></span><span /></div>
           <div class="raxis"><span>0</span><span>40</span><span>80</span><span>120 mph</span></div>
         </div>
-        <p class="note">{es ? 'Pronóstico: viento máximo en la hora más cercana a Puerto Rico (interpolado aquí). Real: al tocar tierra (HURDAT2).' : 'Forecast: maximum wind at the forecast hour closest to Puerto Rico (interpolated here). Actual: at landfall (HURDAT2).'}</p>
+        <p class="note">{es ? 'Pronóstico: viento máximo en la hora más cercana a Puerto Rico (interpolado aquí). Mejor trayectoria: el estimado del NHC al tocar tierra (HURDAT2); el viento sostenido más fuerte medido en la isla fue 68 nudos, en un sitio elevado en Yabucoa.' : 'Forecast: maximum wind at the forecast hour closest to Puerto Rico (interpolated here). Best track: NHC\'s estimate at landfall (HURDAT2); the strongest sustained wind measured on the island was 68 kt, at an elevated site in Yabucoa.'}</p>
       </section>
 
       <section class="record">
@@ -75,7 +75,7 @@ export function RevealPanel() {
 
 function RainVs({ advs, ob }: { advs: any[]; ob: Observed | null }) {
   const max = 40
-  const g = ob?.rain.gauges.filter(r => r.complete >= 0.9) ?? []
+  const g = ob?.rain.gauges ?? []
   const sorted = [...g].map(r => r.in).sort((a, b) => a - b)
   const q = (p: number) => sorted.length ? sorted[Math.min(sorted.length - 1, Math.floor(p * sorted.length))] : 0
   const top = ob?.rain.gauges[0]
@@ -93,8 +93,8 @@ function RainVs({ advs, ob }: { advs: any[]; ob: Observed | null }) {
       )}
       <div class="raxis"><span>0</span><span>10</span><span>20</span><span>30</span><span>40 in</span></div>
       {top && <p class="note">{lang.value === 'es'
-        ? `Barra medida: la mitad central de ${sorted.length} pluviómetros completos del USGS (${num(q(0.25), 1)}–${num(q(0.75), 1)} pulg); marca: el máximo, ${num(top.in, 1)} pulg en ${top.name}. Pronóstico: rango y máximo local del NHC para Puerto Rico.`
-        : `Measured bar: the middle half of ${sorted.length} complete USGS gauges (${num(q(0.25), 1)}–${num(q(0.75), 1)} in); tick: the highest, ${num(top.in, 1)} in at ${top.name}. Forecast: NHC's range and local maximum for Puerto Rico.`}</p>}
+        ? `Barra medida: la mitad central de ${sorted.length} estaciones de la Tabla 3 del informe del NHC (${num(q(0.25), 1)}–${num(q(0.75), 1)} pulg); marca: el máximo, ${num(top.in, 2)} pulg en ${top.name}. Pronóstico: rango y máximo local del NHC para Puerto Rico.`
+        : `Measured bar: the middle half of ${sorted.length} stations in Table 3 of the NHC report (${num(q(0.25), 1)}–${num(q(0.75), 1)} in); tick: the highest, ${num(top.in, 2)} in at ${top.name}. Forecast: NHC's range and local maximum for Puerto Rico.`}</p>}
     </div>
   )
 }
@@ -130,11 +130,11 @@ function outcomeFor(d: Decision, ob: Observed | null, ffw: Map<string, number>, 
     const r = ranks.get(m.id)
     if (r) out.push(es ? `${m.name}: $${num(r.rate)} de ayuda de vivienda de FEMA por hogar (${r.rank}.º de 78)` : `${m.name}: $${num(r.rate)} FEMA housing aid per household (${r.rank} of 78)`)
     const n = ffw.get(fold(m.name)) ?? 0
-    out.push(es ? `${n} avisos de inundación repentina` : `${n} flash flood warning${n === 1 ? '' : 's'}`)
+    out.push(es ? `${n} avisos de inundaciones repentinas` : `${n} flash flood warning${n === 1 ? '' : 's'}`)
   }
   if (tg.type === 'point' || tg.type === 'pin') {
     const inside = (ob?.warnings.features ?? []).filter(f => (f.properties as any).kind === 'FF.W' && inGeometry(tg.lon, tg.lat, f.geometry)).length
-    if (inside) out.push(es ? `dentro de ${inside} polígono(s) de aviso de inundación repentina` : `inside ${inside} flash flood warning polygon${inside === 1 ? '' : 's'}`)
+    if (inside) out.push(es ? `dentro de ${inside} polígono(s) de aviso de inundaciones repentinas` : `inside ${inside} flash flood warning polygon${inside === 1 ? '' : 's'}`)
   }
   if (ob) {
     let best: { in: number; d: number; name: string } | null = null
@@ -142,7 +142,7 @@ function outcomeFor(d: Decision, ob: Observed | null, ffw: Map<string, number>, 
       const dk = km(tg.lat, tg.lon, g.lat, g.lon)
       if (!best || dk < best.d) best = { in: g.in, d: dk, name: g.name }
     }
-    if (best && best.d < 25) out.push(t('nearRain', { in: num(best.in, 1), km: num(best.d, 0) }))
+    if (best && best.d < 20) out.push(t('nearRain', { in: num(best.in, 1), km: num(best.d, 0) }))
   }
   return out
 }
@@ -189,7 +189,7 @@ export function Outcomes() {
             {missed.map(([id, r]) => {
               const m = muni(id)!
               return <li><button onClick={() => { const tg = { type: 'municipio' as const, id, name: m.name, lon: m.lon, lat: m.lat, muni: id }; selected.value = tg; flyTo(tg) }}>
-                <span class="rname">{m.name}</span><span class="rval">${num(r.rate)}</span><span class="rdet">{es ? `${num(m.ia!.reg)} registros, ${usd(m.ia!.approved)} aprobados; ${ffw.get(fold(m.name)) ?? 0} avisos de inundación repentina` : `${num(m.ia!.reg)} registrations, ${usd(m.ia!.approved)} approved; ${ffw.get(fold(m.name)) ?? 0} flash flood warnings`}</span></button></li>
+                <span class="rname">{m.name}</span><span class="rval">${num(r.rate)}</span><span class="rdet">{es ? `${num(m.ia!.reg)} registros, ${usd(m.ia!.approved)} aprobados; ${ffw.get(fold(m.name)) ?? 0} avisos de inundaciones repentinas` : `${num(m.ia!.reg)} registrations, ${usd(m.ia!.approved)} approved; ${ffw.get(fold(m.name)) ?? 0} flash flood warnings`}</span></button></li>
             })}
           </ol>
           <p class="note">{es ? 'OpenFEMA, Asistencia de Vivienda (dueños e inquilinos), DR-4671-PR: ayuda aprobada por hogar (hogares: ACS). Refleja el daño y también el acceso a la ayuda.' : 'OpenFEMA Housing Assistance (owners and renters), DR-4671-PR: aid approved per household (households: ACS). It reflects damage and also access to aid.'}</p>

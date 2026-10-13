@@ -30,6 +30,6 @@ export function prompts(a: Advisory, prev: Advisory | null, isLast: boolean): st
   }
   if (h != null && h > 0 && h <= 24) out.push(es ? `Los vientos de tormenta tropical podrían empezar en unas ${h} horas. ¿Qué tiene que terminar antes: entregas, apertura de refugios, alcance a pie?` : `Tropical-storm winds could start in about ${h} hours. What has to finish before then: deliveries, shelter openings, outreach on foot?`)
   if (h === 0) out.push(es ? 'Los vientos ya llegan a partes de la isla. ¿Qué se puede hacer todavía sin poner a nadie en riesgo?' : 'Winds are already reaching parts of the island. What can still be done without putting anyone at risk?')
-  if (isLast) out.push(es ? 'Último aviso antes de revelar. Escriban el mensaje al público que darían ahora.' : 'Last advisory before the reveal. Write the public message you would give now.')
+  if (isLast) out.push(es ? 'Última advertencia antes de revelar. Escriban el mensaje al público que darían ahora.' : 'Last advisory before the reveal. Write the public message you would give now.')
   return out.slice(0, 3)
 }

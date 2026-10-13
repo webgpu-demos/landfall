@@ -39,7 +39,7 @@ const HIGH = (s: string | null | undefined) => !!s && /high|alta/i.test(s) && !/
 export const LENSES: Lens[] = [
   {
     id: 'wind', q: 1,
-    title: L('Where are damaging winds most likely?', '¿Dónde son más probables los vientos dañinos?'),
+    title: L('Where are 58+ mph winds most likely?', '¿Dónde son más probables los vientos de 58+ mph?'),
     method: L('Municipios by NHC\'s chance of 58+ mph winds (then 74+, then 39+), the highest band touching the municipio. Population shown for scale.',
       'Municipios según la probabilidad del NHC de vientos de 58+ mph (luego 74+, luego 39+), la banda más alta que toca el municipio. Población como referencia.'),
     run(n) {
@@ -134,7 +134,7 @@ export const LENSES: Lens[] = [
     id: 'shelters', q: 4,
     title: L('Which shelters need a second look?', '¿Qué refugios hay que revisar?'),
     method: L('Listed 2026 shelters with at least one flag: in a FEMA 1 % flood zone, inside a mapped surge area (Category 1 to 3), High or greater landslide susceptibility within 25 m, or ground at 3 m or lower. More flags first, then the chance of 58+ mph winds.',
-      'Refugios de la lista 2026 con al menos una señal: en zona inundable 1 % de FEMA, dentro del área de marejada (Categoría 1 a 3), susceptibilidad Alta o mayor a 25 m, o terreno a 3 m o menos. Primero los de más señales, luego la probabilidad de vientos de 58+ mph.'),
+      'Refugios de la lista 2026 con al menos una señal: en zona inundable 1 % de FEMA, dentro del área de marejada ciclónica (Categoría 1 a 3), susceptibilidad Alta o mayor a 25 m, o terreno a 3 m o menos. Primero los de más señales, luego la probabilidad de vientos de 58+ mph.'),
     run(n) {
       const i = idx(n)
       const rows = data.places.value!.points.filter(p => p.kind === 'shelter').map(p => ({ p, f: flags(p) }))
@@ -149,7 +149,7 @@ export const LENSES: Lens[] = [
     id: 'facilities', q: 4,
     title: L('Which critical facilities sit in harm\'s way?', '¿Qué instalaciones críticas están en peligro?'),
     method: L('Hospitals, water and power plants, airports and seaports with a flood, surge, landslide or low-ground flag (as for shelters), by number of flags.',
-      'Hospitales, plantas de agua y energía, aeropuertos y puertos con señal de inundación, marejada, deslizamiento o terreno bajo (como en los refugios), por número de señales.'),
+      'Hospitales, plantas de agua y energía, aeropuertos y puertos con señal de inundación, marejada ciclónica, deslizamiento o terreno bajo (como en los refugios), por número de señales.'),
     run(n) {
       const i = idx(n)
       const K: PointKind[] = ['hospital', 'water', 'power', 'airport', 'seaport']
@@ -184,7 +184,7 @@ export function flags(p: Pt): string[] {
   const es = lang.value === 'es'
   const f: string[] = []
   if (SFHA(p.flood)) f.push(es ? `zona ${p.flood}` : `flood zone ${p.flood}`)
-  if (p.surge && p.surge <= 3) f.push(es ? `marejada Cat ${p.surge}` : `surge Cat ${p.surge}`)
+  if (p.surge && p.surge <= 3) f.push(es ? `marejada ciclónica Cat ${p.surge}` : `surge Cat ${p.surge}`)
   if (HIGH(p.slide25 ?? p.slide)) f.push(es ? 'deslizamiento' : 'landslide')
   if (p.elev != null && p.elev <= 3) f.push(es ? `${num(p.elev, 1)} m` : `${num(p.elev, 1)} m ground`)
   return f

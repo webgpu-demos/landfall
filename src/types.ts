@@ -79,7 +79,7 @@ export interface AdvGeo {
 
 export interface Observed {
   warnings: GeoJSON.FeatureCollection & { source: string; note: string }
-  rain: { gauges: { site: string; name: string; lon: number; lat: number; in: number; complete: number; lastReport: number }[]; window: [number, number]; source: string; note: string }
+  rain: { gauges: { name: string; id: string | null; network: string; lon: number; lat: number; in: number }[]; source: string; note: string }
   rivers: { gauges: { site: string; name: string; lid: string; lon: number; lat: number; peak_ft: number; peak_t: number; level: string | null; stages_ft: Record<string, number> }[]; source: string; note: string }
   facts: { k: string; en: string; es: string; src: string }[]
 }

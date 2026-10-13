@@ -14,7 +14,7 @@ export function Legend() {
       <div class="legend">
         <div class="lg-row"><svg width="26" height="10"><line x1="1" y1="5" x2="25" y2="5" stroke="#C8102E" stroke-width="3.4" stroke-linecap="round" /></svg>{es ? 'Trayectoria real (HURDAT2)' : 'Actual track (HURDAT2)'}</div>
         {rl.tracks && <div class="lg-row"><svg width="26" height="10"><line x1="1" y1="5" x2="25" y2="5" stroke="#4C6790" stroke-width="1.6" stroke-dasharray="4 3" /></svg>{es ? 'Pronósticos oficiales, ronda a ronda' : 'Official forecasts, round by round'}</div>}
-        {rl.ffw && <div class="lg-row"><i class="sw" style={{ background: 'rgba(139,0,0,0.14)', borderColor: '#8B0000' }} />{es ? 'Aviso de inundación repentina' : 'Flash flood warning'} <i class="sw" style={{ background: 'rgba(30,138,58,0.14)', borderColor: '#1E8A3A' }} />{es ? 'Aviso de inundación' : 'Flood warning'}</div>}
+        {rl.ffw && <div class="lg-row"><i class="sw" style={{ background: 'rgba(139,0,0,0.14)', borderColor: '#8B0000' }} />{es ? 'Aviso de inundaciones repentinas' : 'Flash flood warning'} <i class="sw" style={{ background: 'rgba(30,138,58,0.14)', borderColor: '#1E8A3A' }} />{es ? 'Aviso de inundaciones' : 'Flood warning'}</div>}
         {rl.rain && <div class="lg-row lg-ramp"><span>{es ? 'Lluvia medida' : 'Rain measured'}</span>{RAIN.map(([v, c]) => <i style={{ background: c }} title={v + ' in'} />)}<span>28+ in</span></div>}
         {rl.rivers && <div class="lg-row">{Object.entries(FLOOD_LEVEL).map(([k, c]) => <><i class="dot" style={{ background: c }} />{k} </>)}</div>}
       </div>

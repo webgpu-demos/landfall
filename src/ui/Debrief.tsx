@@ -52,7 +52,7 @@ export function Debrief() {
       <header class="db-head">
         <div>
           <h1>{s.title}</h1>
-          <p class="lede">{t('debrief')}. {S.storm.name} {S.storm.year}, {es ? 'avisos' : 'advisories'} {s.rounds.join(', ')}.</p>
+          <p class="lede">{t('debrief')}. {S.storm.name} {S.storm.year}, {es ? 'advertencias' : 'advisories'} {s.rounds.join(', ')}.</p>
         </div>
         <div class="btnrow noprint">
           <button onClick={() => (view.value = session.value.round >= session.value.rounds.length ? 'reveal' : 'exercise')}>{t('backToExercise')}</button>
