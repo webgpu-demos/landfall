@@ -1,0 +1,41 @@
+# Rebuild the scenario data from its public sources and commit it to main (public/data, public/tiles).
+# Run by hand from the Actions tab. Everything is fetched and compiled here, on the runner.
+name: data
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    # Free on a public repository; private repositories are billed by the minute. Never run there.
+    if: github.event.repository.private == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - name: Python packages
+        run: pip install pyshp shapely numpy pillow
+      - name: Fetch sources
+        run: bash pipeline/fetch.sh raw
+      - name: Garita's baked data (shelters, facilities, SVI, exposure, hazard tiles)
+        run: |
+          git clone -q --depth 1 --filter=blob:none --sparse -b gh-pages https://github.com/webgpu-demos/garita garita
+          git -C garita sparse-checkout set tiles/surge tiles/slide data/island data/geo data/seed data/hazards
+      - name: Compile
+        run: |
+          python pipeline/build_scenario.py raw out
+          python pipeline/build_places.py garita raw out
+          python pipeline/build_observed.py garita raw out
+          python pipeline/build_basemap.py garita out
+          bash pipeline/stage.sh out garita
+          cp raw/nhc/hurdat/version.txt public/data/hurdat-version.txt || true
+          cp raw/osm/timestamp.txt public/data/osm-timestamp.txt || true
+      - name: Commit
+        run: |
+          git config user.name "landfall-pipeline"; git config user.email "actions@users.noreply.github.com"
+          git add public/data public/tiles
+          if git diff --cached --quiet; then echo "no change"; exit 0; fi
+          git commit -q -m "data: rebuild from sources $(date -u +%FT%TZ)"
+          git push -q
