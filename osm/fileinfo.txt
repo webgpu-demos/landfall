@@ -1,0 +1,44 @@
+File:
+  Name: osm/pr.osm.pbf
+  Format: PBF
+  Compression: none
+  Size: 74029176
+Header:
+  Bounding boxes:
+    (-68.310244,17.515728,-65.092622,18.81272)
+  With history: no
+  Options:
+    generator=osmium/1.16.0
+    osmosis_replication_base_url=https://download.geofabrik.de/north-america/us/puerto-rico-updates
+    osmosis_replication_sequence_number=3276
+    osmosis_replication_timestamp=2026-10-12T20:21:35Z
+    pbf_dense_nodes=true
+    pbf_optional_feature_0=Sort.Type_then_ID
+    sorting=Type_then_ID
+    timestamp=2026-10-12T20:21:35Z
+Data:
+  Bounding box: (-69.8904208,15.0619557,-63.0562985,20.1063872)
+  Timestamps:
+    First: 2007-11-15T03:01:53Z
+    Last: 2026-10-12T18:30:03Z
+  Objects ordered (by type and id): yes
+  Multiple versions of same object: no
+  CRC32: not calculated (use --crc/-c to enable)
+  Number of changesets: 0
+  Number of nodes: 11109659
+  Number of ways: 1768302
+  Number of relations: 3288
+  Smallest changeset ID: 0
+  Smallest node ID: 53200527
+  Smallest way ID: 12558468
+  Smallest relation ID: 148838
+  Largest changeset ID: 0
+  Largest node ID: 14277776133
+  Largest way ID: 1567686428
+  Largest relation ID: 21604064
+  Number of buffers: 15875 (avg 811 objects per buffer)
+  Sum of buffer sizes: 1013418864 (0.966 GB)
+  Sum of buffer capacities: 1041170432 (0.992 GB, 97% full)
+Metadata:
+  All objects have following metadata attributes: version+timestamp
+  Some objects have following metadata attributes: version+timestamp

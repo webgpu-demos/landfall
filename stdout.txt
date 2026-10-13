@@ -1,0 +1,36 @@
+total 248
+drwxr-xr-x 2 runner runner   4096 Oct 13 14:51 .
+drwxr-xr-x 4 runner runner   4096 Oct 13 14:51 ..
+-rw-r--r-- 1 runner runner  37502 Oct 13 14:51 sbw_interval.geojson
+-rw-r--r-- 1 runner runner 198494 Oct 13 14:51 ww_all.zip
+-rw-r--r-- 1 runner runner   1688 Oct 13 14:51 ww_sbw.zip
+43
+Counter({('FF', 'W'): 26, ('FA', 'W'): 14, ('FA', 'Y'): 2, ('MA', 'W'): 1})
+osmium version 1.16.0
+total 72304
+drwxr-xr-x 2 runner runner     4096 Oct 13 14:51 .
+drwxr-xr-x 4 runner runner     4096 Oct 13 14:51 ..
+-rw-r--r-- 1 runner runner 74029176 Oct 13 14:51 pr.osm.pbf
+    osmosis_replication_base_url=https://download.geofabrik.de/north-america/us/puerto-rico-updates
+    osmosis_replication_sequence_number=3276
+    osmosis_replication_timestamp=2026-10-12T20:21:35Z
+    timestamp=2026-10-12T20:21:35Z
+  Timestamps:
+  All objects have following metadata attributes: version+timestamp
+  Some objects have following metadata attributes: version+timestamp
+osm/bridges.geojson 3205
+osm/fuel.geojson 996
+osm/roads.geojson 17010
+osm/supply.geojson 904
+osm/venues.geojson 883
+total 2952
+drwxr-xr-x 2 runner runner    4096 Oct 13 14:51 .
+drwxr-xr-x 4 runner runner    4096 Oct 13 14:51 ..
+-rw-r--r-- 1 runner runner  155081 Oct 13 14:51 bridges.geojson.gz
+-rw-r--r-- 1 runner runner    1465 Oct 13 14:51 fileinfo.txt
+-rw-r--r-- 1 runner runner   43075 Oct 13 14:51 fuel.geojson.gz
+-rw-r--r-- 1 runner runner 2584657 Oct 13 14:51 roads.geojson.gz
+-rw-r--r-- 1 runner runner   78666 Oct 13 14:51 supply.geojson.gz
+-rw-r--r-- 1 runner runner  137860 Oct 13 14:51 venues.geojson.gz
+exit code 0
+3.2M	out
