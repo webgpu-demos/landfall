@@ -28,7 +28,8 @@ export function Brief() {
     <div class="brief scroll">
       {peek.value != null && <div class="peek-note">{t('peeking', { n: a.num })} <button class="link" onClick={() => (peek.value = null)}>{t('backToNow')}</button></div>}
       <p class="issued">{t('advisory', { n: a.num })}, {t('issued', { t: when(a.issued) })}</p>
-      <h1 class="headline">{a.headline.map(h => <span>{R(sentence(h))}</span>)}</h1>
+      <h1 class="headline" lang="en">{a.headline.map(h => <span>{R(sentence(h))}</span>)}</h1>
+      {lang.value === 'es' && <p class="note asis">Titular del NHC tal como se emitió, en inglés.</p>}
 
       {(() => { const ps = prompts(a, prev, shownRound === s.rounds.length - 1); return ps.length > 0 && (
         <section class="prompts" aria-label={t('forDiscussion')}>

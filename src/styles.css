@@ -513,3 +513,5 @@ ol.guide-steps li { counter-increment: g; border-top: 3px solid var(--ink); padd
 ol.guide-steps li::before { content: counter(g); font-weight: 800; font-size: var(--fs-1); color: var(--muted); }
 ol.guide-steps h3 { font-size: var(--fs-2); margin: 2px 0 6px; }
 ol.guide-steps p { font-size: var(--fs-1); color: var(--ink-2); }
+
+.note.asis { margin: -8px 0 14px; }
