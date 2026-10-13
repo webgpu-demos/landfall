@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'preact/hooks'
-import { signal } from '@preact/signals'
+import { signal, effect } from '@preact/signals'
+import { play, muted } from '../fx/sound'
 import { session, advisory, isReveal, advance, startTimer, pauseTimer, resetTimer, lang, bigText, view, exportSession, importSession, resetSession, focusMap, peek, pendingReview, about, armed, flash } from '../state'
 import { data } from '../data'
 import { t } from '../i18n'
@@ -8,7 +9,19 @@ import { prStatus } from '../lib/conditions'
 import { StatusChip, download } from './common'
 
 const now = signal(Date.now())
-setInterval(() => (now.value = Date.now()), 500)
+setInterval(() => (now.value = Date.now()), 250)
+
+// the last ten seconds of a running timer count down out loud, and time's up buzzes once
+let lastSec = -1
+effect(() => {
+  const s = session.value
+  if (!s.timerEnd) { lastSec = -1; return }
+  const left = Math.ceil((s.timerEnd - now.value) / 1000)
+  if (left === lastSec) return
+  lastSec = left
+  if (left > 0 && left <= 10) play('countdown')
+  if (left === 0) play('timeup')
+})
 
 let armTimer: ReturnType<typeof setTimeout> | undefined
 /** Two taps release the next advisory: the first arms the button for four seconds, the second releases. */
@@ -61,7 +74,7 @@ export function TopBar() {
       {!reveal && a && <div class="pr-status"><StatusChip code={prStatus(a)} size="lg" /><span class="for-pr">{t('forPR')}</span></div>}
       <div class="controls">
         {!reveal && (
-          <div class={'timer' + (up ? ' up' : '') + (running ? ' running' : '')}>
+          <div class={'timer' + (up ? ' up' : '') + (running ? ' running' : '') + (running && left > 0 && left <= 10000 ? ' last' : '')}>
             <span class="timer-val" aria-live="off">{up ? t('timeUp') : `${mm}:${String(ss).padStart(2, '0')}`}</span>
             <button class="ghost" onClick={() => running ? pauseTimer() : startTimer()} aria-label={running ? t('timerPause') : t('timerStart')}>
               {running ? <svg viewBox="0 0 16 16" width="14" height="14"><rect x="3" y="2" width="3.5" height="12" fill="currentColor" /><rect x="9.5" y="2" width="3.5" height="12" fill="currentColor" /></svg>
@@ -79,6 +92,10 @@ export function TopBar() {
           </button>
         )}
         {reveal && <button class="primary" onClick={() => (view.value = 'debrief')}>{t('toDebrief')}</button>}
+        <button class="ghost sound" aria-pressed={!muted.value} title={muted.value ? t('soundOff') : t('soundOn')} aria-label={muted.value ? t('soundOff') : t('soundOn')} onClick={() => { muted.value = !muted.value; if (!muted.value) play('coin') }}>
+          <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M3 7.5h3.2L10.5 4v12L6.2 12.5H3z" fill="currentColor" />
+            {muted.value ? <path d="M13 7.5l5 5M18 7.5l-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /> : <><path d="M13 7a4 4 0 0 1 0 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /><path d="M15.5 4.8a7 7 0 0 1 0 10.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></>}</svg>
+        </button>
         <div class="menu">
           <button class="ghost menu-btn" aria-expanded={menu} onClick={(e) => { e.stopPropagation(); setMenu(!menu) }}>{t('menu')}</button>
           {menu && (

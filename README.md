@@ -32,22 +32,26 @@ the hazard and its likelihood; when it arrives and what can't wait; who will fin
 could fail or cut people off; what changed and what would change our minds. Each table also drafts the two-sentence
 public message it would give, checked for hazard, where, when, how sure and what to do.
 
-**A light game layer.** Each table has a limited set of teams (3 outreach teams, 2 supply caches, 2 inspection
-crews; dropping a decision frees its team), so tables must choose where to act first. Each round every table makes a
-one-tap *threat call*: the biggest threat to people in Puerto Rico, wind, rain and landslides, or storm surge. A
-full-screen card announces each new advisory (hours elapsed, the watch or warning, wind, rain and the countdown to
-tropical-storm winds), and the release takes two taps. At the reveal, a points board scores each table against what
-happened:
+**Game feel.** Each table has a limited set of teams (3 outreach teams, 2 supply caches, 2 inspection crews;
+dropping a decision frees its team), so tables must choose where to act first. Each round every table makes a
+one-tap *threat call*: the biggest threat to people in Puerto Rico, wind, rain and landslides, or storm surge. Every
+action pays at once: points pop off the table's chip with a coin sound that climbs in pitch for quick combos, a ring
+spreads on the map where a team deploys, and a ring of four round goals (threat call, a team deployed, every decision
+reviewed, a public message) ticks off and bursts into confetti when complete, with a flame for streaks. A full-screen
+card announces each new advisory (hours elapsed, the watch or warning, wind, rain and the countdown to tropical-storm
+winds), and points for decisions held through it arrive table by table. At the reveal every standing decision flips,
+one by one, to a hit or a miss against what happened, the board re-sorts, and the leader takes the crown. Sounds are
+synthesised (Web Audio, no files) and can be muted; motion follows the system's reduced-motion setting.
 
 | Points | Rule |
 |---|---|
-| On target, +3 | the place was hit hard: 15+ in of storm-total rain nearby (inverse-distance mean of the NHC report's stations within 25 km) or a municipio in the top third for FEMA housing aid per household. Supplies: the site stayed usable (no flood zone, surge area, landslide or low-ground flag; a pin, outside the heaviest rain) and lies near people hit hard |
-| Early, +1 per round | each round the decision stood before the last (up to +4) |
-| Reasoned, +1 | a reason and a "revisit if" trigger |
-| Threat call, +2 per round | rain and landslides (the NHC report: flooding rain did the serious damage; surge 1–3 ft; strongest measured wind 68 kt) |
+| During play | +1 per team deployed, +1 for a reason, +1 for a "revisit if" trigger, +1 per advisory a decision is held through, +1 per review (keep, change or drop), +1 per threat call, +3 when all four round goals are met. All knowable at the time |
+| On target, +3 at the reveal | per standing decision where the place was hit hard: 15+ in of storm-total rain nearby (inverse-distance mean of the NHC report's stations within 25 km) or a municipio in the top third for FEMA housing aid per household. Supplies: the site stayed usable (no flood zone, surge area, landslide or low-ground flag; a pin, outside the heaviest rain) and lies near people hit hard |
+| Right call, +2 at the reveal | per round the table named rain and landslides (the NHC report: flooding rain did the serious damage; surge 1–3 ft; strongest measured wind 68 kt) |
 
-Badges mark early rain calls, first movers, reasoning shown, usable supplies, changing course with the forecast, and
-every team on target. The board says what it is: game points against what happened, where outcomes carry luck.
+Badges mark early rain calls, first movers, reasoning shown, usable supplies, changing course with the forecast, every
+team on target and a three-round streak. The board says what it is: game points against what happened, where
+outcomes carry luck.
 
 Keys: `1`–`6` choose the table, `N` release the next advisory (press twice), `T` timer, `P` drop a pin, `M` map only, `Esc` close.
 English and Spanish (Puerto Rico; advisory = *advertencia*, warning = *aviso*, watch = *vigilancia*). The session lives

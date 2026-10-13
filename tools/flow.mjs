@@ -1,5 +1,5 @@
 // End-to-end walk through the facilitator flow with real clicks: start, pick a municipio on the map, add outreach with
-// a reason, drop a pin for staging, advance, review, reveal, debrief. Fails on any missing step.
+// a reason, drop a pin for staging, advance, review, reveal and its points, debrief. Fails on any missing step.
 //   node tools/flow.mjs <base-url> <out-dir>
 import fs from 'node:fs'
 const pw = await import(process.env.PW_CORE || '/opt/npm-tools/node_modules/playwright-core/index.mjs').catch(() => import('playwright'))
@@ -34,6 +34,7 @@ await step('click Utuado on the map', async () => {
   await page.locator('.inspector h2', { hasText: 'Utuado' }).waitFor({ timeout: 5000 })
 })
 await step('add outreach for table 1', async () => { await page.locator('.inspector .add-btn', { hasText: 'Outreach' }).click(); await page.locator('.drow', { hasText: 'Utuado' }).waitFor({ timeout: 3000 }) })
+await step('live points on the table chip', async () => { await page.waitForFunction(() => +document.querySelector('[data-xp="t1"]')?.textContent?.replace(/\D/g, '') > 0, null, { timeout: 3000 }) })
 await step('a team is spent', async () => { const n = await page.locator('.kind-outreach .pip.free').count(); if (n !== 2) throw new Error('free outreach teams: ' + n) })
 await step('give a reason in the inspector', async () => { await page.locator('.inspector .reasons button', { hasText: 'Landslides' }).click(); await page.locator('.drow .tag', { hasText: 'Landslides' }).waitFor({ timeout: 3000 }) })
 await step('switch to table 4 with the key', async () => { await page.keyboard.press('Escape'); await page.keyboard.press('4'); await page.locator('.tchip.active', { hasText: 'Power' }).waitFor({ timeout: 3000 }) })
@@ -61,7 +62,12 @@ await step('advance to the reveal', async () => {
   for (let i = 0; i < 4; i++) { await release(); await page.waitForTimeout(300) }
   await page.locator('.reveal h1', { hasText: 'Fiona' }).waitFor({ timeout: 5000 })
   await page.locator('.scoreboard .sb-row').first().waitFor({ timeout: 3000 })
-  await page.waitForTimeout(1500); await idle()
+})
+await step('points reveal runs, can be skipped, crowns a winner', async () => {
+  await page.locator('.scoreboard.jackpot .sb-head button', { hasText: 'Skip' }).click({ timeout: 8000 })
+  await page.locator('.scoreboard.jackpot.done .sb-row.winner .crown').waitFor({ timeout: 3000 })
+  if (await page.locator('.evchip:not(.hit):not(.miss)').count()) throw new Error('unrevealed outcomes after skip')
+  await page.waitForTimeout(1200); await idle()
 })
 await page.screenshot({ path: `${out}/flow-3.png` })
 await step('debrief lists the standing decisions', async () => { await page.getByRole('button', { name: 'Go to the debrief' }).click(); await page.locator('.db-cols li', { hasText: 'Utuado' }).waitFor({ timeout: 3000 }) })

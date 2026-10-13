@@ -18,6 +18,7 @@ import { Debrief } from './Debrief'
 import { About } from './About'
 import { requestAdvance } from './TopBar'
 import { RoundCard } from './Game'
+import { FxLayer } from '../fx/fx'
 
 export function App() {
   useEffect(() => {
@@ -45,8 +46,8 @@ export function App() {
   ;(globalThis as any).__landfall.ready = true
 
   const v = view.value
-  if (v === 'setup') return <><Setup /><About /></>
-  if (v === 'debrief') return <><Debrief /><About /></>
+  if (v === 'setup') return <><Setup /><About /><FxLayer /></>
+  if (v === 'debrief') return <><Debrief /><About /><FxLayer /></>
   const reveal = isReveal.value
   return (
     <div class={'shell' + (focusMap.value ? ' focus' : '')}>
@@ -73,6 +74,7 @@ export function App() {
       <TextDrawer />
       <About />
       <RoundCard />
+      <FxLayer />
     </div>
   )
 }

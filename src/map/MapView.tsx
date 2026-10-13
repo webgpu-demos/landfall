@@ -11,6 +11,7 @@ import { LENSES } from '../lib/lens'
 import { muniAt } from '../lib/geo'
 import { dayTime, when } from '../lib/format'
 import { t } from '../i18n'
+import { mapPulses } from '../fx/fx'
 import type { Target } from '../types'
 
 export const mapRef = signal<maplibregl.Map | null>(null)
@@ -88,6 +89,7 @@ function build(map: maplibregl.Map) {
   map.addSource('tracts', { type: 'geojson', data: tracts, promoteId: 'id' })
   map.addSource('muni-labels', { type: 'geojson', data: F.muniLabels(P) })
   map.addSource('places', { type: 'geojson', data: F.placesFC(P), promoteId: 'id' })
+  map.addSource('pulse', { type: 'geojson', data: empty })
   for (const k of ['prob', 'cone', 'track', 'fpoints', 'warnings', 'radii', 'center', 'ghost-cones', 'ghost-tracks', 'dec', 'dec-areas', 'roads', 'bridges', 'best', 'landfall', 'ffw', 'rain', 'rivers', 'fcst-tracks'])
     map.addSource(k, { type: 'geojson', data: empty })
   if (data.hillshade.value) map.addSource('hillshade', { type: 'image', url: BASE + 'data/geo/hillshade.png', coordinates: data.hillshade.value.coordinates as any })
@@ -204,6 +206,9 @@ function build(map: maplibregl.Map) {
     paint: { 'text-color': '#8B0000', 'text-halo-color': '#fff', 'text-halo-width': 1.8 } })
 
   // decisions as marks
+  // a ring that spreads where a team was just deployed
+  add({ id: 'pulse', type: 'circle', source: 'pulse', paint: { 'circle-radius': ['get', 'r'], 'circle-color': ['get', 'c'], 'circle-opacity': ['*', 0.18, ['get', 'o']],
+    'circle-stroke-color': ['get', 'c'], 'circle-stroke-width': 3, 'circle-stroke-opacity': ['get', 'o'], 'circle-pitch-alignment': 'map' } })
   // several tables on one target fan out: one layer per slot, each with its own offset
   DEC_SLOTS.forEach((off, i) => add({ id: 'dec-' + i, type: 'symbol', source: 'dec', filter: ['==', ['get', 'slot'], i],
     layout: { 'icon-image': ['get', 'icon'], 'icon-allow-overlap': true, 'icon-ignore-placement': true, 'icon-offset': off, 'icon-size': ['interpolate', ['linear'], ['zoom'], 7, 0.8, 10, 1] } }))
@@ -368,6 +373,24 @@ function bind(map: maplibregl.Map, tipEl: HTMLDivElement) {
     if (d > 2) map.fitBounds([[-68.4, Math.min(15.2, a.center.lat - 2)], [Math.min(-52.5, a.center.lon + 3), Math.max(21, a.center.lat + 3)]], { padding: pad, duration: r === 0 ? 0 : 900 })
     else map.fitBounds([[Math.min(PR_BOUNDS[0], a.center.lon - 0.6), Math.min(PR_BOUNDS[1], a.center.lat - 0.6)], [Math.max(PR_BOUNDS[2], a.center.lon + 0.6), Math.max(PR_BOUNDS[3], a.center.lat + 0.3)]], { padding: pad, duration: 900 })
   }))
+
+  // deployment pulses: two rings per deployment, 1.4 s
+  let praf = 0
+  const pulseFrame = () => {
+    const now = performance.now()
+    const live = mapPulses.value.filter(p => now - p.t0 < 1500)
+    if (live.length !== mapPulses.value.length) mapPulses.value = live
+    const feats: GeoJSON.Feature[] = []
+    for (const p of live) for (const lag of [0, 260]) {
+      const k = (now - p.t0 - lag) / 1150
+      if (k < 0 || k > 1) continue
+      const e = 1 - Math.pow(1 - k, 3)
+      feats.push({ type: 'Feature', properties: { r: 6 + e * 46, o: 1 - k, c: p.color }, geometry: { type: 'Point', coordinates: [p.lon, p.lat] } })
+    }
+    src('pulse').setData({ type: 'FeatureCollection', features: feats })
+    praf = live.length ? requestAnimationFrame(pulseFrame) : 0
+  }
+  out.push(effect(() => { if (mapPulses.value.length && !praf) praf = requestAnimationFrame(pulseFrame) }))
 
   // clicks
   const clickLayers = [...DEC_SLOTS.map((_, i) => 'dec-' + i), 'places-icons', 'places-dots', 'tract-fill', 'muni-fill']

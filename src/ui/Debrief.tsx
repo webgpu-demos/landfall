@@ -5,8 +5,8 @@ import { dayTime } from '../lib/format'
 import { QUESTIONS, lensText } from '../lib/lens'
 import { TableDot, download } from './common'
 import { KindGlyph } from './Decisions'
-import { Scoreboard } from './Game'
-import { scoreDecision } from '../lib/score'
+import { FinalBoard } from './Game'
+import { targetBonus } from '../lib/score'
 import type { Decision, DecisionKind } from '../types'
 
 const FRAME: { q: number; en: string[]; es: string[] }[] = [
@@ -33,10 +33,10 @@ const SAY: [string, string][] = [
 function csv(ds: Decision[]) {
   const s = session.value
   const tb = tableById.value
-  const rows = [['table', 'kind', 'target_type', 'target_id', 'target_name', 'municipio', 'lon', 'lat', 'reasons', 'note', 'revisit_if', 'added_round', 'history', 'standing', 'points']]
+  const rows = [['table', 'kind', 'target_type', 'target_id', 'target_name', 'municipio', 'lon', 'lat', 'reasons', 'note', 'revisit_if', 'added_round', 'history', 'standing', 'outcome_bonus']]
   for (const d of ds) {
     rows.push([tb[d.table]?.name ?? d.table, d.kind, d.target.type, d.target.id, d.target.name, muni(d.target.muni)?.name ?? '', String(d.target.lon), String(d.target.lat),
-      d.reasons.join(' '), d.note, d.trigger, String(d.history[0].round + 1), d.history.map(h => `${h.round + 1}:${h.action}`).join(' '), String(stateAt(d, s.rounds.length - 1).active), String(scoreDecision(d, s)?.total ?? 0)])
+      d.reasons.join(' '), d.note, d.trigger, String(d.history[0].round + 1), d.history.map(h => `${h.round + 1}:${h.action}`).join(' '), String(stateAt(d, s.rounds.length - 1).active), String(stateAt(d, s.rounds.length - 1).active ? targetBonus(d).pts : 0)])
   }
   return new Blob([rows.map(r => r.map(c => /[",\n]/.test(c) ? `"${c.replace(/"/g, '""')}"` : c).join(',')).join('\n')], { type: 'text/csv' })
 }
@@ -64,7 +64,7 @@ export function Debrief() {
         </div>
       </header>
 
-      <section class="db-score"><Scoreboard /></section>
+      <section class="db-score"><FinalBoard /></section>
 
       <section class="db-plan">
         <h2>{t('plan')}</h2>

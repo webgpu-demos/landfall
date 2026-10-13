@@ -6,7 +6,7 @@ import { band, dayTime } from '../lib/format'
 import { deltas, windAt } from '../lib/conditions'
 import { kindName, tractName } from '../lib/lens'
 import { flyTo } from '../map/MapView'
-import { ThreatCall, CallMark, TeamPips } from './Game'
+import { ThreatCall, CallMark, TeamPips, RoundGoals, XpBadge } from './Game'
 import { TableDot } from './common'
 import type { Decision, DecisionKind } from '../types'
 
@@ -16,7 +16,6 @@ const KINDS: DecisionKind[] = ['outreach', 'staging', 'closer']
 export function Decisions() {
   const s = session.value
   const [filter, setFilter] = useState<string | null>(null)
-  const counts = Object.fromEntries(s.tables.map(tb => [tb.id, s.decisions.filter(d => d.table === tb.id && stateAt(d, s.round).active && d.history[0].round <= s.round).length]))
   const pend = pendingReview.value
   const shown = s.decisions.filter(d => d.history[0].round <= s.round && (!filter || d.table === filter))
     .filter(d => { const st = stateAt(d, s.round); return st.active || st.lastRound === s.round })
@@ -30,10 +29,11 @@ export function Decisions() {
             <button class={'tchip' + (activeTable.value === tb.id ? ' active' : '')} style={{ '--tc': tb.color } as any}
               onClick={() => { activeTable.value = tb.id; setFilter(filter && filter !== tb.id ? tb.id : filter) }}
               onDblClick={() => setFilter(filter === tb.id ? null : tb.id)} title={tb.name}>
-              <span class="tnum">{i + 1}</span><span class="tname">{tb.name}</span><CallMark table={tb.id} /><span class="tcount">{counts[tb.id]}</span>
+              <span class="tnum">{i + 1}</span><span class="tname">{tb.name}</span><CallMark table={tb.id} /><XpBadge table={tb.id} />
             </button>
           ))}
         </div>
+        <RoundGoals />
         <ThreatCall />
         <div class="filter-row">
           <button class="link" aria-pressed={!filter} onClick={() => setFilter(null)}>{t('allTables')}</button>

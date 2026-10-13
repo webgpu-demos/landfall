@@ -1,13 +1,11 @@
-import { session, stateAt, selected, lang, flash } from '../state'
-import { data, muni, point } from '../data'
+import { session, stateAt, selected, lang } from '../state'
+import { data, muni } from '../data'
 import { t } from '../i18n'
 import { when, mph, num, dayTime, usd } from '../lib/format'
 import { prStatus } from '../lib/conditions'
 import { flyTo } from '../map/MapView'
-import { Src, TableDot, StatusChip } from './common'
-import { KindGlyph } from './Decisions'
-import { Scoreboard } from './Game'
-import { scoreDecision, hit } from '../lib/score'
+import { Src, StatusChip } from './common'
+import { Jackpot } from './Game'
 import type { Observed } from '../types'
 
 const fold = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim()
@@ -136,37 +134,7 @@ export function Outcomes() {
     <div class="decisions outcomes">
       <div class="dhead"><h2>{t('outcomes')}</h2></div>
       <div class="scroll dlist">
-        {flash.value !== 'reveal' && <Scoreboard />}
-        {s.tables.map(table => {
-          const mine = ds.filter(d => d.table === table.id)
-          if (!mine.length) return null
-          return (
-            <section class="kind">
-              <h3><TableDot color={table.color} /> {table.name}</h3>
-              <ul>
-                {mine.map(d => {
-                  const sc = scoreDecision(d, s)
-                  const h = hit(d.target)
-                  const r = ranks.get(d.target.type === 'municipio' ? d.target.id : d.target.muni ?? '')
-                  const line = [h.rain != null ? (es ? `${num(h.rain, 0)} pulg de lluvia cerca` : `${num(h.rain, 0)} in of rain nearby`) : null,
-                    r ? (es ? `ayuda FEMA ${r.rank}.º de 78` : `FEMA aid ${r.rank} of 78`) : null].filter(Boolean).join('; ')
-                  return (
-                    <li class="drow" style={{ '--tc': table.color } as any}>
-                      <div class="dmain">
-                        <span class="kgw" title={t(('kind_' + d.kind) as any)}><KindGlyph kind={d.kind} /></span>
-                        <button class="dname" onClick={() => { selected.value = d.target; flyTo(d.target) }}><span>{d.target.type === 'point' ? point(d.target.id)?.name ?? d.target.name : d.target.name}</span>
-                          <small>{line}</small></button>
-                        {sc && <span class="ptgroup" title={`${t('pt_target')} +${sc.target}, ${t('pt_early')} +${sc.early}, ${t('pt_reason')} +${sc.reasoned}`}>
-                          <i class={sc.target ? 'on' : ''}>◎</i><i class={sc.early ? 'on' : ''}>⏱{sc.early > 1 ? sc.early : ''}</i><i class={sc.reasoned ? 'on' : ''}>✎</i>
-                          <b>+{sc.total}</b></span>}
-                      </div>
-                    </li>
-                  )
-                })}
-              </ul>
-            </section>
-          )
-        })}
+        <Jackpot />
         <section class="kind missed">
           <h3>{t('nobodyChose')}</h3>
           <p class="kq">{t('iaRate')}</p>
