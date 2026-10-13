@@ -2,12 +2,15 @@
 //   node tools/shot.mjs <base-url> <plan.json> <out-dir>
 // plan: [{ id, w?, h?, dpr?, query?, before?: "js run before the app loads (e.g. localStorage)", eval?: "js after ready", wait? }]
 // Uses the pre-installed Chromium with software GL (SwiftShader).
-import { chromium } from '/opt/npm-tools/node_modules/playwright-core/index.mjs'
 import fs from 'node:fs'
+// the sandbox has playwright-core and a Chromium preinstalled; a runner installs playwright (see tools/cloudshot.sh)
+const pw = await import(process.env.PW_CORE || '/opt/npm-tools/node_modules/playwright-core/index.mjs').catch(() => import('playwright'))
+const { chromium } = pw
 const [base, planPath, out] = process.argv.slice(2)
 const plan = JSON.parse(fs.readFileSync(planPath, 'utf8'))
 fs.mkdirSync(out, { recursive: true })
-const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome',
+const exe = process.env.CHROME ?? (fs.existsSync('/opt/pw-browsers/chromium-1194/chrome-linux/chrome') ? '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' : undefined)
+const browser = await chromium.launch({ executablePath: exe,
   args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--no-sandbox', '--disable-background-networking', '--disable-component-update', '--disable-sync', '--no-first-run'] })
 const results = []
 for (const s of plan) {

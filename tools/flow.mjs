@@ -5,7 +5,8 @@ import fs from 'node:fs'
 const pw = await import(process.env.PW_CORE || '/opt/npm-tools/node_modules/playwright-core/index.mjs').catch(() => import('playwright'))
 const [base, out] = process.argv.slice(2)
 fs.mkdirSync(out, { recursive: true })
-const browser = await pw.chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome',
+const exe = process.env.CHROME ?? (fs.existsSync('/opt/pw-browsers/chromium-1194/chrome-linux/chrome') ? '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' : undefined)
+const browser = await pw.chromium.launch({ executablePath: exe,
   args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--no-sandbox', '--disable-background-networking', '--disable-component-update'] })
 const page = await browser.newPage({ viewport: { width: 1600, height: 960 } })
 const errors = []
