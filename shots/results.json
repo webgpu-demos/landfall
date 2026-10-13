@@ -1,0 +1,30 @@
+[
+ {
+  "id": "c1-setup",
+  "ms": 2277,
+  "logs": [
+   "[warning] Service Worker registration blocked by Playwright"
+  ]
+ },
+ {
+  "id": "c2-round1",
+  "ms": 8801,
+  "logs": [
+   "[warning] Service Worker registration blocked by Playwright"
+  ]
+ },
+ {
+  "id": "c3-round4-es",
+  "ms": 8776,
+  "logs": [
+   "[warning] Service Worker registration blocked by Playwright"
+  ]
+ },
+ {
+  "id": "c4-reveal",
+  "ms": 9958,
+  "logs": [
+   "[warning] Service Worker registration blocked by Playwright"
+  ]
+ }
+]

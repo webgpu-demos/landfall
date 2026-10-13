@@ -1,0 +1,4 @@
+c1-setup 2277 ms ["[warning] Service Worker registration blocked by Playwright"]
+c2-round1 8801 ms ["[warning] Service Worker registration blocked by Playwright"]
+c3-round4-es 8776 ms ["[warning] Service Worker registration blocked by Playwright"]
+c4-reveal 9958 ms ["[warning] Service Worker registration blocked by Playwright"]
