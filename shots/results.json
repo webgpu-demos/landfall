@@ -1,0 +1,8 @@
+[
+ {
+  "ms": 2565,
+  "logs": [
+   "[warning] Service Worker registration blocked by Playwright"
+  ]
+ }
+]
