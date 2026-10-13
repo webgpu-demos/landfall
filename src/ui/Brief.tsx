@@ -6,6 +6,7 @@ import { t } from '../i18n'
 import { when, mph, kmh, dayTime } from '../lib/format'
 import { advDeltas, earliestArrival } from '../lib/conditions'
 import { StatusChip, useRedact, sentence, Src } from './common'
+import { StormCard } from './Game'
 import type { Advisory, Kt } from '../types'
 
 const STATIONS = ['Vieques', 'San Juan', 'Ponce', 'Aguadilla']
@@ -31,6 +32,12 @@ export function Brief() {
       <h1 class="headline" lang="en">{a.headline.map(h => <span>{R(sentence(h))}</span>)}</h1>
       {lang.value === 'es' && <p class="note asis">Titular del NHC tal como se emitió, en inglés.</p>}
 
+      <StormCard a={a} prev={prev} />
+      {prev && dl.some(d => d.kind === 'warning') && (() => { const w = dl.find(d => d.kind === 'warning')!; return (
+        <p class="status-change"><StatusChip code={w.from as string | null} size="sm" /> → <StatusChip code={w.to as string | null} size="sm" /></p>
+      ) })()}
+      <p class="closest">{t('closestPass', { t: dayTime(a.nearPR.t), km: a.nearPR.km })}<span class="derived" title={a.nearPR.derived}>{t('derived')}</span></p>
+
       {(() => { const ps = prompts(a, prev, shownRound === s.rounds.length - 1); return ps.length > 0 && (
         <section class="prompts" aria-label={t('forDiscussion')}>
           <h2>{t('forDiscussion')}</h2>
@@ -38,32 +45,15 @@ export function Brief() {
         </section>
       ) })()}
 
-      <section class="changed">
-        <h2>{prev ? t('changed', { t: dayTime(prev.issued) }) : t('firstRound')}</h2>
-        {prev && (dl.length ? (
-          <ul class="deltas">
-            {dl.map(d => (
-              <li class={d.worse ? 'worse' : 'better'}>
-                <span class="arrow" aria-hidden="true">{d.worse ? '▲' : '▼'}</span>
-                {d.kind === 'warning' && <span><StatusChip code={d.from as string | null} size="sm" /> → <StatusChip code={d.to as string | null} size="sm" /></span>}
-                {d.kind === 'rain' && <span>{t('dRain', { from: d.from!, to: d.to! })}</span>}
-                {d.kind === 'intensity' && <span>{t('dIntensity', { from: mph(d.from as number), to: mph(d.to as number) })}</span>}
-                {d.kind === 'track' && <span>{t('dTrack', { from: d.from!, to: d.to! })}</span>}
-              </li>
-            ))}
-          </ul>
-        ) : <p class="quiet">{t('noChange')}</p>)}
-      </section>
-
+      <details class="more">
+      <summary>{t('moreAdvisory')}</summary>
       <section class="facts">
         <dl>
           <div><dt>{t('maxWind')}</dt><dd><strong>{mph(a.wind_kt)} mph</strong> <span class="quiet">{kmh(a.wind_kt)} km/h, {a.wind_kt} kt</span></dd></div>
           <div><dt>{t('where')}</dt><dd>{loc.map(l => <span class="loc">{l}</span>)}</dd></div>
           {arr && <div><dt>{t('arrival')}</dt><dd>{arr - a.issued < 3600e3 ? t('arrivalNow') : t('arrivalVal', { t: when(arr) + ' AST', h: Math.round((arr - a.issued) / 3600e3) })}<span class="derived" title={t('arrivalNote')}>{t('derived')}</span></dd></div>}
-          <div><dt>{t('closest')}</dt><dd>{t('closestVal', { t: dayTime(a.nearPR.t) + ' AST', km: a.nearPR.km, mph: mph(a.nearPR.wind_kt) })}<span class="derived" title={a.nearPR.derived}>{t('derived')}</span></dd></div>
         </dl>
       </section>
-
       <WindTable a={a} history={history} />
       <Rain a={a} history={history} />
 
@@ -96,6 +86,7 @@ export function Brief() {
         </div>
         <p class="cite">NOAA National Hurricane Center, {a.label}. <Src href={a.source.public} /></p>
       </section>
+      </details>
     </div>
   )
 }

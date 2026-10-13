@@ -1,5 +1,5 @@
 import { signal, computed, effect } from '@preact/signals'
-import type { Session, Decision, DecisionKind, Target, Action, Table } from './types'
+import type { Session, Decision, DecisionKind, Target, Action, Table, Threat, Budget } from './types'
 import { data } from './data'
 
 // --------------------------------------------------------------------------------------------- session
@@ -10,6 +10,7 @@ const KEY = 'landfall.session.v1'
 export const TABLE_COLORS = ['#0E7C86', '#D9730D', '#6B4FBB', '#4E8A1E', '#2F5DA8', '#C2417A']
 
 export const DEFAULT_ROUNDS = [6, 9, 12, 13, 16]
+export const DEFAULT_BUDGET: Budget = { outreach: 3, staging: 2, closer: 2 }
 
 export function defaultTables(lang: 'en' | 'es'): Table[] {
   const names = lang === 'es'
@@ -24,7 +25,15 @@ export function newSession(lang: 'en' | 'es'): Session {
     codename: 'X', showName: false,
     tables: defaultTables(lang), rounds: [...DEFAULT_ROUNDS], round: 0, decisions: [], messages: {},
     timerMin: 10, timerEnd: null, timerLeft: null, created: Date.now(), started: false,
+    budget: { ...DEFAULT_BUDGET }, calls: {},
   }
+}
+
+/** Sessions saved before the game layer have no budget or calls. */
+function upgrade(v: Session): Session {
+  if (!('budget' in v)) (v as Session).budget = { ...DEFAULT_BUDGET }
+  if (!v.calls) v.calls = {}
+  return v
 }
 
 function load(): Session | null {
@@ -32,7 +41,7 @@ function load(): Session | null {
     const s = localStorage.getItem(KEY)
     if (!s) return null
     const v = JSON.parse(s) as Session
-    return v && v.v === 1 ? v : null
+    return v && v.v === 1 ? upgrade(v) : null
   } catch { return null }
 }
 
@@ -69,6 +78,9 @@ export const pinMode = signal(false)
 export const bigText = signal(false)
 export const textDrawer = signal<null | 'public' | 'discussion' | 'probabilities' | 'hls'>(null)
 export const focusMap = signal(false)
+/** The full-screen card shown when a new advisory is released (round index) or at the reveal ('reveal'). */
+export const flash = signal<number | 'reveal' | null>(null)
+export const armed = signal(false)
 export const offline = signal<'unknown' | 'saving' | 'ready' | 'unavailable'>('unknown')
 export const about = signal(false)
 
@@ -154,17 +166,37 @@ export function stateAt(d: Decision, round: number): { active: boolean; last: Ac
 }
 
 export const activeDecisions = computed(() => session.value.decisions.filter(d => d.history[0].round <= session.value.round && stateAt(d, session.value.round).active))
+/** Teams still free for a table: standing decisions use one each; dropping returns it. */
+export function teamsLeft(table: string, kind: DecisionKind): number {
+  const b = session.value.budget
+  if (!b) return Infinity
+  const used = session.value.decisions.filter(d => d.table === table && d.kind === kind && d.history[0].round <= session.value.round && stateAt(d, session.value.round).active).length
+  return Math.max(0, b[kind] - used)
+}
+
+export function setCall(table: string, threat: Threat) {
+  update(s => {
+    const r = s.round
+    const cur = s.calls[table]?.[r]
+    s.calls[table] = { ...(s.calls[table] ?? {}) }
+    if (cur === threat) delete s.calls[table][r]
+    else s.calls[table][r] = threat
+  })
+}
+
 export const pendingReview = computed(() => session.value.decisions.filter(d => stateAt(d, session.value.round).needsReview))
 
 // ------------------------------------------------------------------------------------------ rounds
 
 export function advance() {
   peek.value = null
+  armed.value = false
   update(s => {
     s.round = Math.min(s.rounds.length, s.round + 1)
     s.timerEnd = null; s.timerLeft = null
   })
-  if (session.value.round >= session.value.rounds.length) view.value = 'reveal'
+  if (session.value.round >= session.value.rounds.length) { view.value = 'reveal'; flash.value = 'reveal' }
+  else flash.value = session.value.round
 }
 
 export function goBack() {
@@ -194,7 +226,7 @@ export async function importSession(file: File) {
   const j = JSON.parse(await file.text())
   const s = (j.session ?? j) as Session
   if (!s || s.v !== 1 || !Array.isArray(s.decisions)) throw new Error('not a Landfall session file')
-  session.value = s
+  session.value = upgrade(s)
   activeTable.value = s.tables[0]?.id ?? 't1'
   view.value = s.started ? (s.round >= s.rounds.length ? 'reveal' : 'exercise') : 'setup'
 }

@@ -1,4 +1,4 @@
-import { session, update, view, lang, TABLE_COLORS, DEFAULT_ROUNDS, resetSession, importSession, activeTable, offline, about } from '../state'
+import { session, update, view, lang, TABLE_COLORS, DEFAULT_ROUNDS, DEFAULT_BUDGET, resetSession, importSession, activeTable, offline, about, flash } from '../state'
 import { data } from '../data'
 import { t } from '../i18n'
 import { when } from '../lib/format'
@@ -30,6 +30,7 @@ export function Setup() {
     update(x => { x.started = true; if (!inProgress) { x.round = 0 } })
     activeTable.value = session.value.tables[0]?.id ?? 't1'
     view.value = session.value.round >= session.value.rounds.length ? 'reveal' : 'exercise'
+    if (view.value === 'exercise') flash.value = session.value.round
   }
   return (
     <div class="setup">
@@ -52,6 +53,8 @@ export function Setup() {
             <label class="field"><span>{t('codename')}</span>
               <input value={s.codename} maxLength={24} onInput={(e) => update(x => { x.codename = (e.target as HTMLInputElement).value })} />
               <small>{t('codenameNote')}</small></label>
+            <label class="check budget"><input type="checkbox" checked={!!s.budget} onChange={(e) => update(x => { x.budget = (e.target as HTMLInputElement).checked ? { ...DEFAULT_BUDGET } : null })} /> <b>{t('budget')}</b></label>
+            <p class="note budget-note">{t('budgetNote')}</p>
             <label class="field narrow"><span>{t('minutes')}</span>
               <input type="number" min={2} max={30} value={s.timerMin} onInput={(e) => update(x => { x.timerMin = Math.max(1, +(e.target as HTMLInputElement).value || 8) })} /></label>
 

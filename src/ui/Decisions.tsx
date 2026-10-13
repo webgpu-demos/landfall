@@ -6,6 +6,7 @@ import { band, dayTime } from '../lib/format'
 import { deltas, windAt } from '../lib/conditions'
 import { kindName, tractName } from '../lib/lens'
 import { flyTo } from '../map/MapView'
+import { ThreatCall, CallMark, TeamPips } from './Game'
 import { TableDot } from './common'
 import type { Decision, DecisionKind } from '../types'
 
@@ -29,10 +30,11 @@ export function Decisions() {
             <button class={'tchip' + (activeTable.value === tb.id ? ' active' : '')} style={{ '--tc': tb.color } as any}
               onClick={() => { activeTable.value = tb.id; setFilter(filter && filter !== tb.id ? tb.id : filter) }}
               onDblClick={() => setFilter(filter === tb.id ? null : tb.id)} title={tb.name}>
-              <span class="tnum">{i + 1}</span><span class="tname">{tb.name}</span><span class="tcount">{counts[tb.id]}</span>
+              <span class="tnum">{i + 1}</span><span class="tname">{tb.name}</span><CallMark table={tb.id} /><span class="tcount">{counts[tb.id]}</span>
             </button>
           ))}
         </div>
+        <ThreatCall />
         <div class="filter-row">
           <button class="link" aria-pressed={!filter} onClick={() => setFilter(null)}>{t('allTables')}</button>
           <button class="link" aria-pressed={filter === activeTable.value} onClick={() => setFilter(activeTable.value)}>{tableById.value[activeTable.value]?.name}</button>
@@ -50,8 +52,7 @@ export function Decisions() {
           const items = shown.filter(d => d.kind === k)
           return (
             <section class={'kind kind-' + k}>
-              <h3><KindGlyph kind={k} /> {t(('kind_' + k) as any)} <span class="count">{items.filter(d => stateAt(d, s.round).active).length}</span></h3>
-              <p class="kq">{t(('kindQ_' + k) as any)}</p>
+              <h3><KindGlyph kind={k} /> {t(('kind_' + k) as any)} {s.budget ? <TeamPips kind={k} table={activeTable.value} /> : <span class="count">{items.filter(d => stateAt(d, s.round).active).length}</span>}</h3>
               {items.length === 0 && (
                 <p class="empty">{t(('emptyKind_' + k) as any)} {k === 'staging' && <button class="link" onClick={() => (pinMode.value = true)}>{t('dropPin')}</button>}</p>
               )}

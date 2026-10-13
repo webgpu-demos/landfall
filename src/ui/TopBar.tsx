@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'preact/hooks'
 import { signal } from '@preact/signals'
-import { session, advisory, isReveal, advance, startTimer, pauseTimer, resetTimer, lang, bigText, view, exportSession, importSession, resetSession, focusMap, peek, pendingReview, about } from '../state'
+import { session, advisory, isReveal, advance, startTimer, pauseTimer, resetTimer, lang, bigText, view, exportSession, importSession, resetSession, focusMap, peek, pendingReview, about, armed, flash } from '../state'
 import { data } from '../data'
 import { t } from '../i18n'
 import { when } from '../lib/format'
@@ -10,12 +10,19 @@ import { StatusChip, download } from './common'
 const now = signal(Date.now())
 setInterval(() => (now.value = Date.now()), 500)
 
+let armTimer: ReturnType<typeof setTimeout> | undefined
+/** Two taps release the next advisory: the first arms the button for four seconds, the second releases. */
 export function requestAdvance() {
   const s = session.value
   if (s.round >= s.rounds.length) { view.value = 'debrief'; return }
-  const last = s.round === s.rounds.length - 1
-  const msg = last ? t('confirmReveal') : t('confirmNext', { n: s.rounds[s.round + 1] })
-  if (confirm(msg)) advance()
+  if (flash.value != null) return
+  if (!armed.value) {
+    armed.value = true
+    clearTimeout(armTimer); armTimer = setTimeout(() => (armed.value = false), 4000)
+    return
+  }
+  clearTimeout(armTimer)
+  advance()
 }
 
 export function TopBar() {
@@ -66,8 +73,8 @@ export function TopBar() {
           </div>
         )}
         {!reveal && (
-          <button class="primary next" onClick={requestAdvance} disabled={peek.value != null}>
-            {s.round === s.rounds.length - 1 ? t('toReveal') : t('next')}
+          <button class={'primary next' + (armed.value ? ' armed' : '')} onClick={requestAdvance} disabled={peek.value != null}>
+            {armed.value ? (s.round === s.rounds.length - 1 ? t('revealSure') : t('releaseSure')) : s.round === s.rounds.length - 1 ? t('toReveal') : t('release', { n: s.rounds[s.round + 1] })}
             {pendingReview.value.length > 0 && <span class="badge" title={t('review', { n: pendingReview.value.length })}>{pendingReview.value.length}</span>}
           </button>
         )}

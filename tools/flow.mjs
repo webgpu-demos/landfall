@@ -21,7 +21,11 @@ await page.goto(base, { waitUntil: 'domcontentloaded' })
 await page.evaluate(() => localStorage.clear())
 await page.reload({ waitUntil: 'domcontentloaded' })
 await step('setup shows', () => page.getByRole('button', { name: /Start round 1/ }).waitFor({ timeout: 30000 }))
+const dismiss = async () => { await page.locator('.roundcard .rc-go').click(); await page.locator('.roundcard').waitFor({ state: 'detached', timeout: 3000 }) }
+const release = async () => { await page.locator('.top .next').click(); await page.locator('.top .next.armed').waitFor({ timeout: 2000 }); await page.locator('.top .next').click(); await page.locator('.roundcard').waitFor({ timeout: 3000 }); await dismiss() }
 await step('start', async () => { await page.getByRole('button', { name: /Start round 1/ }).click(); await page.waitForFunction(() => globalThis.__landfall?.mapIdle, null, { timeout: 60000 }) })
+await step('advisory card shows and dismisses', dismiss)
+await step('threat call', async () => { await page.locator('.threat-opts button', { hasText: 'Rain' }).click(); await page.locator('.tchip.active .callmark:not(.none)').waitFor({ timeout: 2000 }) })
 await step('zoom to Puerto Rico', async () => { await page.getByRole('button', { name: 'Puerto Rico', exact: true }).click(); await page.waitForTimeout(900); await idle() })
 await step('click Utuado on the map', async () => {
   const m = await page.evaluate(() => __landfall.data.places.value.municipios.find(x => x.name === 'Utuado'))
@@ -30,6 +34,7 @@ await step('click Utuado on the map', async () => {
   await page.locator('.inspector h2', { hasText: 'Utuado' }).waitFor({ timeout: 5000 })
 })
 await step('add outreach for table 1', async () => { await page.locator('.inspector .add-btn', { hasText: 'Outreach' }).click(); await page.locator('.drow', { hasText: 'Utuado' }).waitFor({ timeout: 3000 }) })
+await step('a team is spent', async () => { const n = await page.locator('.kind-outreach .pip.free').count(); if (n !== 2) throw new Error('free outreach teams: ' + n) })
 await step('give a reason in the inspector', async () => { await page.locator('.inspector .reasons button', { hasText: 'Landslides' }).click(); await page.locator('.drow .tag', { hasText: 'Landslides' }).waitFor({ timeout: 3000 }) })
 await step('switch to table 4 with the key', async () => { await page.keyboard.press('Escape'); await page.keyboard.press('4'); await page.locator('.tchip.active', { hasText: 'Power' }).waitFor({ timeout: 3000 }) })
 await step('drop a pin for staging', async () => {
@@ -40,7 +45,7 @@ await step('drop a pin for staging', async () => {
   await page.locator('.kind-staging .drow').first().waitFor({ timeout: 3000 })
 })
 await page.screenshot({ path: `${out}/flow-1.png` })
-await step('next advisory', async () => { await page.getByRole('button', { name: /Next advisory/ }).click(); await page.locator('.round-label', { hasText: 'Round 2' }).waitFor({ timeout: 5000 }) })
+await step('release the next advisory (two taps)', async () => { await release(); await page.locator('.round-label', { hasText: 'Round 2' }).waitFor({ timeout: 5000 }) })
 await step('decisions ask for review', async () => { await page.locator('.review-banner', { hasText: '2 to review' }).waitFor({ timeout: 3000 }) })
 await step('keep Utuado, drop the pin', async () => {
   await page.locator('.drow', { hasText: 'Utuado' }).getByRole('button', { name: 'Keep' }).click()
@@ -53,8 +58,9 @@ await step('add closer look from the list', async () => { await page.locator('.i
 await step('write a public message', async () => { await page.locator('.message textarea').fill('Heavy rain could cause landslides in the central mountains from Saturday night. Charge phones and be ready to move if you live below a slope.'); await page.locator('.chk.ok').nth(3).waitFor({ timeout: 2000 }) })
 await page.screenshot({ path: `${out}/flow-2.png` })
 await step('advance to the reveal', async () => {
-  for (let i = 0; i < 4; i++) { await page.getByRole('button', { name: /Next advisory|Show what happened/ }).click(); await page.waitForTimeout(400) }
+  for (let i = 0; i < 4; i++) { await release(); await page.waitForTimeout(300) }
   await page.locator('.reveal h1', { hasText: 'Fiona' }).waitFor({ timeout: 5000 })
+  await page.locator('.scoreboard .sb-row').first().waitFor({ timeout: 3000 })
   await page.waitForTimeout(1500); await idle()
 })
 await page.screenshot({ path: `${out}/flow-3.png` })

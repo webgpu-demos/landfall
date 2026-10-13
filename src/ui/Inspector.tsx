@@ -1,4 +1,4 @@
-import { selected, activeTable, session, addDecision, activeDecisions, tableById, advNum, isReveal, editDecision, removeDecision } from '../state'
+import { selected, activeTable, session, addDecision, activeDecisions, tableById, advNum, isReveal, editDecision, removeDecision, teamsLeft } from '../state'
 import { REASONS } from './Decisions'
 import { muni, tract, point, data } from '../data'
 import { t } from '../i18n'
@@ -89,11 +89,16 @@ export function Inspector() {
         <div class="add">
           <p class="lbl"><TableDot color={act.color} /> {t('forTable', { t: act.name })}</p>
           <div class="btnrow">
-            {allowed(tg).map(k => (
-              <button class="add-btn" style={{ '--tc': act.color } as any} onClick={() => { addDecision(k, tg); }}>
-                + {t(('add_' + k) as any)}
-              </button>
-            ))}
+            {allowed(tg).map(k => {
+              const left = teamsLeft(act.id, k)
+              const what = t(('teams_' + k) as any)
+              return (
+                <button class="add-btn" style={{ '--tc': act.color } as any} disabled={left <= 0} title={left <= 0 ? t('noTeams', { what }) : undefined} onClick={() => { addDecision(k, tg); }}>
+                  + {t(('add_' + k) as any)}
+                  {Number.isFinite(left) && <small class="left">{left > 0 ? t('teamsLeft', { n: left, m: session.value.budget![k], what }) : t('noTeams', { what })}</small>}
+                </button>
+              )
+            })}
           </div>
           {session.value.tables.length > 1 && (
             <div class="table-pick" role="group" aria-label={t('table')}>

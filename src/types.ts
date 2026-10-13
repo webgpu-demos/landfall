@@ -110,6 +110,9 @@ export interface Decision {
 
 export interface Table { id: string; name: string; color: string }
 
+export type Threat = 'wind' | 'rain' | 'surge'
+export type Budget = Record<DecisionKind, number>
+
 export interface Session {
   v: 1
   title: string
@@ -125,4 +128,6 @@ export interface Session {
   timerLeft: number | null  // ms left when paused
   created: number
   started: boolean
+  budget: Budget | null                               // response teams per table; null = unlimited
+  calls: Record<string, Record<number, Threat>>       // table -> round -> biggest-threat call
 }

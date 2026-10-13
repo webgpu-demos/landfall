@@ -1,6 +1,6 @@
 import { useEffect } from 'preact/hooks'
 import { data } from '../data'
-import { view, session, activeTable, selected, lens, pinMode, focusMap, bigText, textDrawer, startTimer, pauseTimer, leftTab, isReveal } from '../state'
+import { view, session, activeTable, selected, lens, pinMode, focusMap, bigText, textDrawer, startTimer, pauseTimer, leftTab, isReveal, flash } from '../state'
 import { t } from '../i18n'
 import { TopBar } from './TopBar'
 import { MapView } from '../map/MapView'
@@ -17,6 +17,7 @@ import { RevealPanel, Outcomes } from './Reveal'
 import { Debrief } from './Debrief'
 import { About } from './About'
 import { requestAdvance } from './TopBar'
+import { RoundCard } from './Game'
 
 export function App() {
   useEffect(() => {
@@ -24,6 +25,7 @@ export function App() {
       const tag = (e.target as HTMLElement)?.tagName
       if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || e.metaKey || e.ctrlKey || e.altKey) return
       if (view.value !== 'exercise' && view.value !== 'reveal') return
+      if (flash.value != null) return
       const k = e.key
       if (/^[1-6]$/.test(k)) { const tb = session.value.tables[+k - 1]; if (tb) activeTable.value = tb.id }
       else if (k === 'n' || k === 'N') requestAdvance()
@@ -70,6 +72,7 @@ export function App() {
       <Timeline />
       <TextDrawer />
       <About />
+      <RoundCard />
     </div>
   )
 }

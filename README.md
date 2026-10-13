@@ -32,7 +32,24 @@ the hazard and its likelihood; when it arrives and what can't wait; who will fin
 could fail or cut people off; what changed and what would change our minds. Each table also drafts the two-sentence
 public message it would give, checked for hazard, where, when, how sure and what to do.
 
-Keys: `1`–`6` choose the table, `N` next advisory, `T` timer, `P` drop a pin, `M` map only, `Esc` close.
+**A light game layer.** Each table has a limited set of teams (3 outreach teams, 2 supply caches, 2 inspection
+crews; dropping a decision frees its team), so tables must choose where to act first. Each round every table makes a
+one-tap *threat call*: the biggest threat to people in Puerto Rico, wind, rain and landslides, or storm surge. A
+full-screen card announces each new advisory (hours elapsed, the watch or warning, wind, rain and the countdown to
+tropical-storm winds), and the release takes two taps. At the reveal, a points board scores each table against what
+happened:
+
+| Points | Rule |
+|---|---|
+| On target, +3 | the place was hit hard: 15+ in of storm-total rain nearby (inverse-distance mean of the NHC report's stations within 25 km) or a municipio in the top third for FEMA housing aid per household. Supplies: the site stayed usable (no flood zone, surge area, landslide or low-ground flag; a pin, outside the heaviest rain) and lies near people hit hard |
+| Early, +1 per round | each round the decision stood before the last (up to +4) |
+| Reasoned, +1 | a reason and a "revisit if" trigger |
+| Threat call, +2 per round | rain and landslides (the NHC report: flooding rain did the serious damage; surge 1–3 ft; strongest measured wind 68 kt) |
+
+Badges mark early rain calls, first movers, reasoning shown, usable supplies, changing course with the forecast, and
+every team on target. The board says what it is: game points against what happened, where outcomes carry luck.
+
+Keys: `1`–`6` choose the table, `N` release the next advisory (press twice), `T` timer, `P` drop a pin, `M` map only, `Esc` close.
 English and Spanish (Puerto Rico; advisory = *advertencia*, warning = *aviso*, watch = *vigilancia*). The session lives
 in the browser's storage; save it as a file from the Session menu.
 

@@ -36,6 +36,11 @@ export function About() {
             <li>{L('Closest approach: the official forecast points interpolated hourly.', 'Paso más cercano: los puntos del pronóstico oficial interpolados por hora.')}</li>
             <li>{L('Questions for the tables are generated from what changed between advisories; they are prompts, not forecasts.', 'Las preguntas para las mesas se generan a partir de lo que cambió entre advertencias; son guías, no pronósticos.')}</li>
           </ul>
+          <h3>{L('The game layer', 'La capa de juego')}</h3>
+          <ul>
+            <li>{L('Teams: each table has 3 outreach teams, 2 supply caches and 2 inspection crews (can be switched off in setup). Dropping a decision frees its team.', 'Equipos: cada mesa tiene 3 equipos de alcance, 2 depósitos de suministros y 2 brigadas de inspección (se puede apagar en la preparación). Descartar una decisión libera su equipo.')}</li>
+            <li>{L('Points at the reveal: on target +3 (15+ inches of rain nearby by the NHC report\'s stations, or a municipio in the top third for FEMA housing aid per household; supplies: a usable site near people hit hard), early +1 per round held, reasoned +1, and +2 per round a table called rain and landslides the biggest threat. Points are a game against what happened; outcomes carry luck.', 'Puntos en la revelación: en el blanco +3 (15+ pulgadas de lluvia cerca según las estaciones del informe del NHC, o un municipio en el tercio con más ayuda de vivienda de FEMA por hogar; suministros: un sitio utilizable cerca de gente muy afectada), a tiempo +1 por ronda mantenida, razonada +1, y +2 por cada ronda en que la mesa escogió lluvia y deslizamientos como mayor amenaza. Los puntos son un juego contra lo que pasó; los resultados tienen suerte.')}</li>
+          </ul>
           <h3>{L('Not here', 'Lo que no está')}</h3>
           <ul>
             <li>{L('No rainfall forecast map: NHC words the rain for the island as a whole. No shelter capacities, staffing or status. No live data: the exercise runs entirely from files and works offline.', 'No hay mapa de lluvia pronosticada: el NHC describe la lluvia para toda la isla. No hay capacidades, personal ni estado de refugios. No hay datos en vivo: el ejercicio corre desde archivos y funciona sin conexión.')}</li>

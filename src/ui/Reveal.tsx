@@ -1,13 +1,14 @@
-import { session, stateAt, selected, lang } from '../state'
+import { session, stateAt, selected, lang, flash } from '../state'
 import { data, muni, point } from '../data'
 import { t } from '../i18n'
 import { when, mph, num, dayTime, usd } from '../lib/format'
-import { inGeometry, km } from '../lib/geo'
 import { prStatus } from '../lib/conditions'
 import { flyTo } from '../map/MapView'
 import { Src, TableDot, StatusChip } from './common'
 import { KindGlyph } from './Decisions'
-import type { Decision, Observed } from '../types'
+import { Scoreboard } from './Game'
+import { scoreDecision, hit } from '../lib/score'
+import type { Observed } from '../types'
 
 const fold = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim()
 
@@ -120,64 +121,48 @@ function iaRank() {
   return new Map(ms.map((x, i) => [x.id, { rank: i + 1, rate: x.r }]))
 }
 
-function outcomeFor(d: Decision, ob: Observed | null, ffw: Map<string, number>, ranks: Map<string, { rank: number; rate: number }>) {
-  const es = lang.value === 'es'
-  const out: string[] = []
-  const tg = d.target
-  const mid = tg.type === 'municipio' ? tg.id : tg.muni
-  const m = muni(mid)
-  if (m) {
-    const r = ranks.get(m.id)
-    if (r) out.push(es ? `${m.name}: $${num(r.rate)} de ayuda de vivienda de FEMA por hogar (${r.rank}.º de 78)` : `${m.name}: $${num(r.rate)} FEMA housing aid per household (${r.rank} of 78)`)
-    const n = ffw.get(fold(m.name)) ?? 0
-    out.push(es ? `${n} avisos de inundaciones repentinas` : `${n} flash flood warning${n === 1 ? '' : 's'}`)
-  }
-  if (tg.type === 'point' || tg.type === 'pin') {
-    const inside = (ob?.warnings.features ?? []).filter(f => (f.properties as any).kind === 'FF.W' && inGeometry(tg.lon, tg.lat, f.geometry)).length
-    if (inside) out.push(es ? `dentro de ${inside} polígono(s) de aviso de inundaciones repentinas` : `inside ${inside} flash flood warning polygon${inside === 1 ? '' : 's'}`)
-  }
-  if (ob) {
-    let best: { in: number; d: number; name: string } | null = null
-    for (const g of ob.rain.gauges) {
-      const dk = km(tg.lat, tg.lon, g.lat, g.lon)
-      if (!best || dk < best.d) best = { in: g.in, d: dk, name: g.name }
-    }
-    if (best && best.d < 20) out.push(t('nearRain', { in: num(best.in, 1), km: num(best.d, 0) }))
-  }
-  return out
-}
 
 export function Outcomes() {
   const s = session.value
   const ob = data.observed.value
-  const ffw = ffwByMuni(ob)
   const ranks = iaRank()
   const last = s.rounds.length - 1
   const ds = s.decisions.filter(d => stateAt(d, last).active)
   const chosen = new Set(ds.filter(d => d.kind === 'outreach').map(d => d.target.type === 'municipio' ? d.target.id : d.target.muni))
-  const missed = [...ranks.entries()].filter(([id]) => !chosen.has(id)).sort((a, b) => a[1].rank - b[1].rank).slice(0, 8)
+  const missed = [...ranks.entries()].filter(([id]) => !chosen.has(id)).sort((a, b) => a[1].rank - b[1].rank).slice(0, 6)
   const es = lang.value === 'es'
+  const ffw = ffwByMuni(ob)
   return (
     <div class="decisions outcomes">
-      <div class="dhead"><h2>{t('outcomes')}</h2><p class="note">{t('outcomeNote')}</p></div>
+      <div class="dhead"><h2>{t('outcomes')}</h2></div>
       <div class="scroll dlist">
+        {flash.value !== 'reveal' && <Scoreboard />}
         {s.tables.map(table => {
           const mine = ds.filter(d => d.table === table.id)
+          if (!mine.length) return null
           return (
             <section class="kind">
-              <h3><TableDot color={table.color} /> {table.name} <span class="count">{mine.length}</span></h3>
-              {mine.length === 0 && <p class="empty">{es ? 'Sin decisiones vigentes.' : 'No standing decisions.'}</p>}
+              <h3><TableDot color={table.color} /> {table.name}</h3>
               <ul>
-                {mine.map(d => (
-                  <li class="drow" style={{ '--tc': table.color } as any}>
-                    <div class="dmain">
-                      <span class="kgw" title={t(('kind_' + d.kind) as any)}><KindGlyph kind={d.kind} /></span>
-                      <button class="dname" onClick={() => { selected.value = d.target; flyTo(d.target) }}><span>{d.target.type === 'point' ? point(d.target.id)?.name ?? d.target.name : d.target.name}</span>
-                        <small>{t(('kind_' + d.kind) as any)}{d.history.length > 1 ? `, ${es ? 'revisada' : 'revisited'} ${d.history.length - 1}×` : ''}</small></button>
-                    </div>
-                    <ul class="dd outcome">{outcomeFor(d, ob, ffw, ranks).map(x => <li>{x}</li>)}</ul>
-                  </li>
-                ))}
+                {mine.map(d => {
+                  const sc = scoreDecision(d, s)
+                  const h = hit(d.target)
+                  const r = ranks.get(d.target.type === 'municipio' ? d.target.id : d.target.muni ?? '')
+                  const line = [h.rain != null ? (es ? `${num(h.rain, 0)} pulg de lluvia cerca` : `${num(h.rain, 0)} in of rain nearby`) : null,
+                    r ? (es ? `ayuda FEMA ${r.rank}.º de 78` : `FEMA aid ${r.rank} of 78`) : null].filter(Boolean).join('; ')
+                  return (
+                    <li class="drow" style={{ '--tc': table.color } as any}>
+                      <div class="dmain">
+                        <span class="kgw" title={t(('kind_' + d.kind) as any)}><KindGlyph kind={d.kind} /></span>
+                        <button class="dname" onClick={() => { selected.value = d.target; flyTo(d.target) }}><span>{d.target.type === 'point' ? point(d.target.id)?.name ?? d.target.name : d.target.name}</span>
+                          <small>{line}</small></button>
+                        {sc && <span class="ptgroup" title={`${t('pt_target')} +${sc.target}, ${t('pt_early')} +${sc.early}, ${t('pt_reason')} +${sc.reasoned}`}>
+                          <i class={sc.target ? 'on' : ''}>◎</i><i class={sc.early ? 'on' : ''}>⏱{sc.early > 1 ? sc.early : ''}</i><i class={sc.reasoned ? 'on' : ''}>✎</i>
+                          <b>+{sc.total}</b></span>}
+                      </div>
+                    </li>
+                  )
+                })}
               </ul>
             </section>
           )
@@ -189,7 +174,7 @@ export function Outcomes() {
             {missed.map(([id, r]) => {
               const m = muni(id)!
               return <li><button onClick={() => { const tg = { type: 'municipio' as const, id, name: m.name, lon: m.lon, lat: m.lat, muni: id }; selected.value = tg; flyTo(tg) }}>
-                <span class="rname">{m.name}</span><span class="rval">${num(r.rate)}</span><span class="rdet">{es ? `${num(m.ia!.reg)} registros, ${usd(m.ia!.approved)} aprobados; ${ffw.get(fold(m.name)) ?? 0} avisos de inundaciones repentinas` : `${num(m.ia!.reg)} registrations, ${usd(m.ia!.approved)} approved; ${ffw.get(fold(m.name)) ?? 0} flash flood warnings`}</span></button></li>
+                <span class="rname">{m.name}</span><span class="rval">${num(r.rate)}</span><span class="rdet">{es ? `${usd(m.ia!.approved)} aprobados; ${ffw.get(fold(m.name)) ?? 0} avisos de inundaciones repentinas` : `${usd(m.ia!.approved)} approved; ${ffw.get(fold(m.name)) ?? 0} flash flood warnings`}</span></button></li>
             })}
           </ol>
           <p class="note">{es ? 'OpenFEMA, Asistencia de Vivienda (dueños e inquilinos), DR-4671-PR: ayuda aprobada por hogar (hogares: ACS). Refleja el daño y también el acceso a la ayuda.' : 'OpenFEMA Housing Assistance (owners and renters), DR-4671-PR: aid approved per household (households: ACS). It reflects damage and also access to aid.'}</p>
