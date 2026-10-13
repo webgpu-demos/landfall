@@ -1,0 +1,9 @@
+[
+ {
+  "id": "c-card",
+  "ms": 12122,
+  "logs": [
+   "[warning] Service Worker registration blocked by Playwright"
+  ]
+ }
+]
