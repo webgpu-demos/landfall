@@ -186,6 +186,7 @@ const S = {
   lPlaces: ['Places', 'Lugares'],
   lShelters: ['Shelters', 'Refugios'],
   lHealth: ['Hospitals', 'Hospitales'],
+  lClinics: ['Clinics', 'Clínicas'],
   lUtilities: ['Power and water', 'Energía y agua'],
   lTransport: ['Airports and seaports', 'Aeropuertos y puertos'],
   lHousing: ['Public and assisted housing', 'Vivienda pública y asistida'],

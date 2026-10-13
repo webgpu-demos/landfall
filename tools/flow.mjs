@@ -1,0 +1,65 @@
+// End-to-end walk through the facilitator flow with real clicks: start, pick a municipio on the map, add outreach with
+// a reason, drop a pin for staging, advance, review, reveal, debrief. Fails on any missing step.
+//   node tools/flow.mjs <base-url> <out-dir>
+import fs from 'node:fs'
+const pw = await import(process.env.PW_CORE || '/opt/npm-tools/node_modules/playwright-core/index.mjs').catch(() => import('playwright'))
+const [base, out] = process.argv.slice(2)
+fs.mkdirSync(out, { recursive: true })
+const browser = await pw.chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome',
+  args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--no-sandbox', '--disable-background-networking', '--disable-component-update'] })
+const page = await browser.newPage({ viewport: { width: 1600, height: 960 } })
+const errors = []
+page.on('pageerror', e => errors.push(String(e)))
+page.on('console', m => { if (m.type() === 'error') errors.push(m.text()) })
+page.on('dialog', d => d.accept())
+const step = async (name, fn) => { try { await fn(); console.log('ok  ', name) } catch (e) { console.log('FAIL', name, String(e).slice(0, 200)); errors.push(name); await page.screenshot({ path: `${out}/fail-${name.replace(/\W+/g, '-')}.png` }) } }
+const idle = () => page.evaluate(() => new Promise(r => { const m = window.__map; if (!m) return r(0); if (m.loaded() && !m.isMoving()) return setTimeout(r, 300); m.once('idle', () => r(1)); setTimeout(r, 20000) }))
+const at = (lon, lat) => page.evaluate(([lon, lat]) => { const p = window.__map.project([lon, lat]); const r = window.__map.getCanvas().getBoundingClientRect(); return { x: r.left + p.x, y: r.top + p.y } }, [lon, lat])
+
+await page.goto(base, { waitUntil: 'domcontentloaded' })
+await page.evaluate(() => localStorage.clear())
+await page.reload({ waitUntil: 'domcontentloaded' })
+await step('setup shows', () => page.getByRole('button', { name: /Start round 1/ }).waitFor({ timeout: 30000 }))
+await step('start', async () => { await page.getByRole('button', { name: /Start round 1/ }).click(); await page.waitForFunction(() => globalThis.__landfall?.mapIdle, null, { timeout: 60000 }) })
+await step('zoom to Puerto Rico', async () => { await page.getByRole('button', { name: 'Puerto Rico', exact: true }).click(); await page.waitForTimeout(900); await idle() })
+await step('click Utuado on the map', async () => {
+  const m = await page.evaluate(() => __landfall.data.places.value.municipios.find(x => x.name === 'Utuado'))
+  const p = await at(m.lon, m.lat + 0.03)
+  await page.mouse.click(p.x, p.y)
+  await page.locator('.inspector h2', { hasText: 'Utuado' }).waitFor({ timeout: 5000 })
+})
+await step('add outreach for table 1', async () => { await page.locator('.inspector .add-btn', { hasText: 'Outreach' }).click(); await page.locator('.drow', { hasText: 'Utuado' }).waitFor({ timeout: 3000 }) })
+await step('give a reason in the inspector', async () => { await page.locator('.inspector .reasons button', { hasText: 'Landslides' }).click(); await page.locator('.drow .tag', { hasText: 'Landslides' }).waitFor({ timeout: 3000 }) })
+await step('switch to table 4 with the key', async () => { await page.keyboard.press('Escape'); await page.keyboard.press('4'); await page.locator('.tchip.active', { hasText: 'Power' }).waitFor({ timeout: 3000 }) })
+await step('drop a pin for staging', async () => {
+  await page.locator('.layers .views button', { hasText: 'Drop a pin' }).click()
+  const p = await at(-66.1, 18.2)
+  await page.mouse.click(p.x, p.y)
+  await page.locator('.inspector .add-btn', { hasText: 'Stage here' }).click()
+  await page.locator('.kind-staging .drow').first().waitFor({ timeout: 3000 })
+})
+await page.screenshot({ path: `${out}/flow-1.png` })
+await step('next advisory', async () => { await page.getByRole('button', { name: /Next advisory/ }).click(); await page.locator('.round-label', { hasText: 'Round 2' }).waitFor({ timeout: 5000 }) })
+await step('decisions ask for review', async () => { await page.locator('.review-banner', { hasText: '2 to review' }).waitFor({ timeout: 3000 }) })
+await step('keep Utuado, drop the pin', async () => {
+  await page.locator('.drow', { hasText: 'Utuado' }).getByRole('button', { name: 'Keep' }).click()
+  await page.locator('.kind-staging .drow').first().getByRole('button', { name: 'Drop' }).click()
+  await page.locator('.review-banner').waitFor({ state: 'detached', timeout: 3000 })
+})
+await step('peek at round 1 from the timeline', async () => { await page.locator('.tl-round').first().click(); await page.locator('.peek-note').waitFor({ timeout: 3000 }); await page.locator('.peek-note button').click() })
+await step('ask the data: shelters', async () => { await page.getByRole('tab', { name: 'Ask the data' }).click(); await page.getByRole('button', { name: 'Which shelters need a second look?' }).click(); await page.locator('.lens-result ol.rows li').first().click(); await page.locator('.inspector').waitFor({ timeout: 3000 }) })
+await step('add closer look from the list', async () => { await page.locator('.inspector .add-btn', { hasText: 'Closer look' }).click(); await page.locator('.kind-closer .drow').first().waitFor({ timeout: 3000 }) })
+await step('write a public message', async () => { await page.locator('.message textarea').fill('Heavy rain could cause landslides in the central mountains from Saturday night. Charge phones and be ready to move if you live below a slope.'); await page.locator('.chk.ok').nth(3).waitFor({ timeout: 2000 }) })
+await page.screenshot({ path: `${out}/flow-2.png` })
+await step('advance to the reveal', async () => {
+  for (let i = 0; i < 4; i++) { await page.getByRole('button', { name: /Next advisory|Show what happened/ }).click(); await page.waitForTimeout(400) }
+  await page.locator('.reveal h1', { hasText: 'Fiona' }).waitFor({ timeout: 5000 })
+  await page.waitForTimeout(1500); await idle()
+})
+await page.screenshot({ path: `${out}/flow-3.png` })
+await step('debrief lists the standing decisions', async () => { await page.getByRole('button', { name: 'Go to the debrief' }).click(); await page.locator('.db-cols li', { hasText: 'Utuado' }).waitFor({ timeout: 3000 }) })
+await page.screenshot({ path: `${out}/flow-4.png`, fullPage: true })
+await step('state survives a reload', async () => { await page.reload({ waitUntil: 'domcontentloaded' }); await page.waitForFunction(() => globalThis.__landfall?.ready, null, { timeout: 30000 }); const n = await page.evaluate(() => __landfall.state.session.value.decisions.length); if (n !== 3) throw new Error('decisions after reload: ' + n) })
+console.log(errors.length ? `\n${errors.length} problems: ${JSON.stringify(errors.slice(0, 6))}` : '\nflow passed')
+await browser.close()
+process.exit(errors.length ? 1 : 0)

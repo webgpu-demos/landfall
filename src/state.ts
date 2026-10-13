@@ -76,11 +76,11 @@ export interface Layers {
   community: 'off' | 'svi' | 'age65' | 'noveh' | 'disab' | 'empower'
   surge: 'off' | 'c1' | 'c2' | 'c3' | 'c4' | 'c5'
   slide: boolean; roads: boolean
-  shelters: boolean; health: boolean; utilities: boolean; transport: boolean; housing: boolean; venues: boolean; responders: boolean
+  shelters: boolean; health: boolean; clinics: boolean; utilities: boolean; transport: boolean; housing: boolean; venues: boolean; responders: boolean
 }
 export const layers = signal<Layers>({
   wind: '34', cone: true, ghosts: true, radii: false, community: 'off', surge: 'off', slide: false, roads: false,
-  shelters: true, health: true, utilities: false, transport: false, housing: false, venues: false, responders: false,
+  shelters: true, health: true, clinics: false, utilities: false, transport: false, housing: false, venues: false, responders: false,
 })
 export function setLayer<K extends keyof Layers>(k: K, v: Layers[K]) { layers.value = { ...layers.value, [k]: v } }
 

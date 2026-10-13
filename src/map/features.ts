@@ -44,7 +44,7 @@ export function muniLabels(P: Places): GeoJSON.FeatureCollection {
 }
 
 const GROUP: Record<string, string> = {
-  shelter: 'shelters', hospital: 'health', clinic: 'health', water: 'utilities', power: 'utilities', substation: 'utilities',
+  shelter: 'shelters', hospital: 'health', clinic: 'clinics', water: 'utilities', power: 'utilities', substation: 'utilities',
   airport: 'transport', seaport: 'transport', housing: 'housing', venue: 'venues', fire: 'responders', police: 'responders',
 }
 const RANK: Record<string, number> = { hospital: 1, shelter: 2, airport: 2, seaport: 2, power: 3, water: 3, venue: 4, housing: 5, clinic: 6, fire: 6, police: 6, substation: 7 }

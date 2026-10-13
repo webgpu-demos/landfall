@@ -45,7 +45,7 @@ export function Inspector() {
 
       {w && !reveal && (
         <div class="wind-now">
-          <p class="lbl">{tg.type === 'municipio' ? t('windHereMuni') : t('windHere')}</p>
+          <p class="lbl">{tg.type === 'municipio' ? t('windHereMuni') : t('windHere')}<span class="derived" title={data.places.value?.derived.p}>NHC 5 km</span></p>
           <div class="bands">
             <span><small>{t('ts')}</small><b>{band(w.p34)}</b></span>
             <span><small>{t('dmg')}</small><b>{band(w.p50)}</b></span>

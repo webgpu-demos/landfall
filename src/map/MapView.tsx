@@ -297,7 +297,7 @@ function bind(map: maplibregl.Map, tipEl: HTMLDivElement) {
       const max = com === 'svi' ? 1 : com === 'age65' ? 0.4 : com === 'noveh' ? 0.4 : 0.35
       map.setPaintProperty('tract-fill', 'fill-color', ['case', ['<', ['get', com], 0], '#E5E7EB', ['interpolate', ['linear'], ['get', com], ...COMMUNITY.flatMap(([v, c]) => [v * max, c])]])
     }
-    const groups = (['shelters', 'health', 'utilities', 'transport', 'housing', 'venues', 'responders'] as const).filter(k => L[k])
+    const groups = (['shelters', 'health', 'clinics', 'utilities', 'transport', 'housing', 'venues', 'responders'] as const).filter(k => L[k])
     const f: any = ['in', ['get', 'group'], ['literal', groups]]
     map.setFilter('places-icons', f); map.setFilter('places-halo', f); map.setFilter('places-dots', f)
   }))
@@ -343,6 +343,7 @@ function bind(map: maplibregl.Map, tipEl: HTMLDivElement) {
       const L2 = { ...layers.value }
       if (kinds.has('shelter')) L2.shelters = true
       if (kinds.has('hospital')) L2.health = true
+      if (kinds.has('clinic')) L2.clinics = true
       if (kinds.has('water') || kinds.has('power')) L2.utilities = true
       if (kinds.has('airport') || kinds.has('seaport')) L2.transport = true
       if (JSON.stringify(L2) !== JSON.stringify(layers.value)) layers.value = L2

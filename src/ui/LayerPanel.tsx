@@ -74,6 +74,7 @@ export function LayerPanel() {
             <legend>{t('lPlaces')}</legend>
             <Check on={L.shelters} set={v => setLayer('shelters', v)} label={t('lShelters')} />
             <Check on={L.health} set={v => setLayer('health', v)} label={t('lHealth')} />
+            <Check on={L.clinics} set={v => setLayer('clinics', v)} label={t('lClinics')} />
             <Check on={L.utilities} set={v => setLayer('utilities', v)} label={t('lUtilities')} />
             <Check on={L.transport} set={v => setLayer('transport', v)} label={t('lTransport')} />
             <Check on={L.venues} set={v => setLayer('venues', v)} label={t('lVenues')} />
