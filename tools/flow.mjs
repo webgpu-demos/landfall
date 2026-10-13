@@ -63,9 +63,9 @@ await step('advance to the reveal', async () => {
   await page.locator('.reveal h1', { hasText: 'Fiona' }).waitFor({ timeout: 5000 })
   await page.locator('.scoreboard .sb-row').first().waitFor({ timeout: 3000 })
 })
-await step('points reveal runs, can be skipped, crowns a winner', async () => {
+await step('points reveal runs, can be skipped, marks the leader', async () => {
   await page.locator('.scoreboard.jackpot .sb-head button', { hasText: 'Skip' }).click({ timeout: 8000 })
-  await page.locator('.scoreboard.jackpot.done .sb-row.winner .crown').waitFor({ timeout: 3000 })
+  await page.locator('.scoreboard.jackpot.done .sb-row.winner').waitFor({ timeout: 3000 })
   if (await page.locator('.evchip:not(.hit):not(.miss)').count()) throw new Error('unrevealed outcomes after skip')
   await page.waitForTimeout(1200); await idle()
 })

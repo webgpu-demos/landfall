@@ -6,7 +6,7 @@ import { mph, weekdayLong, clock, num } from '../lib/format'
 import { earliestArrival, prStatus } from '../lib/conditions'
 import { reveal, live, goals, allGoals, type Badge, type RevealEvent } from '../lib/score'
 import { play } from '../fx/sound'
-import { floatAt, bump, confettiAt, reduced as fxReduced } from '../fx/fx'
+import { floatAt, bump, glow, reduced as fxReduced } from '../fx/fx'
 import { point } from '../data'
 import { flyTo } from '../map/MapView'
 import { StatusChip, TableDot } from './common'
@@ -250,20 +250,16 @@ export function RoundGoals() {
         <text y="1" text-anchor="middle" dominant-baseline="middle">{done ? '✓' : `${n}/4`}</text>
       </svg>
       <div class="goals-list">
-        <p class="goals-title">{done ? t('goalsDone') : t('goalsTitle')}{lv.streak >= 2 && <span class="streak" title={t('streakT', { n: lv.streak })}><Flame />{lv.streak}</span>}</p>
+        <p class="goals-title">{done ? t('goalsDone') : t('goalsTitle')}{lv.streak >= 2 && <span class="streak" title={t('streakT', { n: lv.streak })}>{t('streakShort', { n: lv.streak })}</span>}</p>
         <ul>{GOALS.map(k => <li class={'goal goal-' + k + (g[k] ? ' ok' : '')}><span class="gk">{g[k] ? '✓' : ''}</span>{t(('goal_' + k) as any)}</li>)}</ul>
       </div>
     </div>
   )
 }
 
-export function Flame() {
-  return <svg viewBox="0 0 12 14" width="10" height="12" aria-hidden="true"><path d="M6 0C7 3 10 4.5 10 8.5A4 4 0 0 1 2 8.5C2 6.5 3.2 5.4 4 4.5C4 6 4.8 6.8 5.6 6.8C5.6 4.5 4.8 2.5 6 0Z" fill="currentColor" /></svg>
-}
-
 // ---------------------------------------------------------------------------------------- the points reveal
 
-const BADGE_ICON: Record<Badge, string> = { calledEarly: '☂', firstMovers: '⚑', showedWork: '✎', drySupplies: '▣', changedCourse: '↻', onTarget: '◎', streak: '🔥' }
+const BADGE_ICON: Record<Badge, string> = { calledEarly: '☂', firstMovers: '⚑', showedWork: '✎', drySupplies: '▣', changedCourse: '↻', onTarget: '◎', streak: '≡' }
 const played = new Set<number>()
 
 interface Ev extends RevealEvent { i: number; calls?: { right: number; made: number } }
@@ -292,7 +288,7 @@ function BoardRow({ table, value, rank, max, winner, badges, showBadges }: { tab
   }, [value])
   return (
     <li class={'sb-row' + (winner ? ' winner' : '')} data-board={table} style={{ '--tc': tb?.color } as any}>
-      <span class="sb-rank">{winner ? <span class="crown" aria-label="1">♛</span> : rank}</span>
+      <span class="sb-rank">{rank}</span>
       <span class="sb-name"><TableDot color={tb?.color ?? '#999'} /> {tb?.name}</span>
       <span class="sb-bar"><span style={{ width: `${max ? (shown / max) * 100 : 0}%` }} /></span>
       <span class="sb-num">{Math.round(shown)}</span>
@@ -338,9 +334,8 @@ export function Jackpot() {
     // back to the top of the panel so the winner is in view, then the fanfare
     document.querySelector('.scoreboard.jackpot')?.scrollIntoView({ block: 'start', behavior: fxReduced() ? 'auto' : 'smooth' })
     const t0 = setTimeout(() => {
-      play('fanfare')
-      confettiAt('.sb-row.winner', undefined, 160)
-      setTimeout(() => play('badge'), 900)
+      play('resolve')
+      glow('.sb-row.winner')
     }, 650)
     return () => clearTimeout(t0)
   }, [done])
@@ -442,7 +437,7 @@ export function XpBadge({ table }: { table: string }) {
   const lv = live(session.value, table)
   return (
     <span class="txp" data-xp={table} title={t('xpTitle', { n: lv.total })}>
-      {lv.streak >= 2 && <span class="streak mini"><Flame /></span>}{lv.total}
+      {lv.total}
     </span>
   )
 }

@@ -327,6 +327,7 @@ const S = {
   goal_review: ['Review every decision', 'Revisar cada decisión'],
   goal_message: ['Public message', 'Mensaje al público'],
   streakT: ['{n} rounds complete in a row', '{n} rondas completas seguidas'],
+  streakShort: ['{n} in a row', '{n} seguidas'],
   finalPoints: ['Final points', 'Puntos finales'],
   skip: ['Skip', 'Saltar'],
   replay: ['Replay', 'Repetir'],

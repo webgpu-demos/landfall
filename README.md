@@ -35,12 +35,13 @@ public message it would give, checked for hazard, where, when, how sure and what
 **Game feel.** Each table has a limited set of teams (3 outreach teams, 2 supply caches, 2 inspection crews;
 dropping a decision frees its team), so tables must choose where to act first. Each round every table makes a
 one-tap *threat call*: the biggest threat to people in Puerto Rico, wind, rain and landslides, or storm surge. Every
-action pays at once: points pop off the table's chip with a coin sound that climbs in pitch for quick combos, a ring
-spreads on the map where a team deploys, and a ring of four round goals (threat call, a team deployed, every decision
-reviewed, a public message) ticks off and bursts into confetti when complete, with a flame for streaks. A full-screen
+action gets immediate, understated feedback: points rise off the table's chip with a soft tone, a ring spreads on the
+map where a team deploys, and four round goals (threat call, a team deployed, every decision reviewed, a public
+message) tick off and close a ring when complete. A full-screen
 card announces each new advisory (hours elapsed, the watch or warning, wind, rain and the countdown to tropical-storm
 winds), and points for decisions held through it arrive table by table. At the reveal every standing decision flips,
-one by one, to a hit or a miss against what happened, the board re-sorts, and the leader takes the crown. Sounds are
+one by one, to a hit or a miss against what happened, and the board re-sorts. The tone is an operations board, not an
+arcade: no confetti, trophies or fanfare, since the audience is emergency management professionals. Sounds are
 synthesised (Web Audio, no files) and can be muted; motion follows the system's reduced-motion setting.
 
 | Points | Rule |

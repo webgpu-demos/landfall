@@ -3,10 +3,10 @@ import { session, flash, activeTable, view, tableById } from '../state'
 import { data } from '../data'
 import { live, goals, allGoals, type Goals } from '../lib/score'
 import { play } from './sound'
-import { floatAtSelector, pulseMap, bump, confettiAt } from './fx'
+import { floatAtSelector, pulseMap, bump, glow } from './fx'
 
-// Watches the session and turns every change into feedback: points popping off the table chips, a pulse on the map
-// where a team was deployed, a tick for each round goal, a burst when a round is complete. Nothing here changes
+// Watches the session and turns every change into feedback: points rising off the table chips, a pulse on the map
+// where a team was deployed, a tick for each round goal, a glow when a round is complete. Nothing here changes
 // state; it only reacts.
 
 let prevXp: Record<string, number> | null = null
@@ -21,7 +21,7 @@ function popXp(table: string, delta: number, delay = 0) {
     if (delta > 0) {
       const now = performance.now()
       combo = now - comboAt < 1500 ? combo + 1 : 0; comboAt = now
-      play('coin', Math.min(combo, 7) * 2)
+      play('coin', Math.min(combo, 3))
       floatAtSelector(`[data-xp="${table}"]`, `+${delta}`, tableById.value[table]?.color ?? '#2F6B3B', delta >= 3)
     } else {
       floatAtSelector(`[data-xp="${table}"]`, `${delta}`, '#8A94A3')
@@ -73,8 +73,7 @@ export function startFx() {
       const newly = (['call', 'deploy', 'review', 'message'] as const).filter(k => g[k] && !p[k])
       if (newly.length) {
         if (allGoals(g)) {
-          setTimeout(() => { play('complete'); confettiAt('.goals', [tableById.value[activeTable.value]?.color ?? '#0E7C86', '#F2C500', '#fff'], 70) }, 120)
-          bump('.goals')
+          setTimeout(() => { play('complete'); glow('.goals') }, 120)
         } else setTimeout(() => play('tick'), 60)
         newly.forEach(k => bump(`.goal-${k}`))
       }
