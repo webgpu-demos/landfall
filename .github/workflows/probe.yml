@@ -1,0 +1,34 @@
+# Runs a small shell script on a GitHub runner and publishes what it writes. The development sandbox reaches only
+# GitHub and npm, so this is how a data source is looked at before a pipeline stage is written for it. Triggered by
+# pushing a branch named probe/<name> that carries probe.sh; whatever the script writes under $OUT lands on the
+# branch probe-out/<name>. See tools/probe.sh. (Pattern carried over from webgpu-demos/garita.)
+name: probe
+on:
+  push:
+    branches: ['probe/**']
+permissions:
+  contents: write
+jobs:
+  probe:
+    # Free on a public repository; private repositories are billed by the minute. Never run there.
+    if: github.event.repository.private == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run
+        run: |
+          mkdir -p out
+          export OUT="$PWD/out"
+          set +e
+          timeout 17m bash probe.sh > out/stdout.txt 2> out/stderr.txt
+          echo "exit code $?" >> out/stdout.txt
+          du -sh out | tee -a out/stdout.txt
+      - name: Publish
+        if: always()
+        run: |
+          NAME="${GITHUB_REF_NAME#probe/}"
+          find out -type f -size +45M -print -delete | sed 's/^/dropped (over 45 MB): /' >> out/stdout.txt || true
+          cd out && git init -q -b "probe-out/$NAME" && git config user.name "landfall-pipeline" && git config user.email "actions@users.noreply.github.com"
+          git add -A && git commit -q -m "probe $NAME $(date -u +%FT%TZ)"
+          git push -q -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" "HEAD:refs/heads/probe-out/$NAME"
