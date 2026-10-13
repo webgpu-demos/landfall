@@ -103,7 +103,6 @@ function build(map: maplibregl.Map) {
     paint: { 'line-color': C.HWR, 'line-width': ['interpolate', ['linear'], ['zoom'], 7.4, 7, 10, 12], 'line-opacity': ['interpolate', ['linear'], ['zoom'], 7.4, 0, 7.8, 1] } })
   add({ id: 'land-pr', type: 'fill', source: 'land', filter: ['==', ['get', 'pr'], 1], paint: { 'fill-color': C.landPR } })
   if (data.hillshade.value) add({ id: 'hillshade', type: 'raster', source: 'hillshade', paint: { 'raster-opacity': ['interpolate', ['linear'], ['zoom'], 6, 0.35, 8.5, 0.85, 12, 0.6], 'raster-fade-duration': 0, 'raster-resampling': 'linear' } })
-  add({ id: 'land-pr-edge', type: 'line', source: 'land', filter: ['==', ['get', 'pr'], 1], paint: { 'line-color': '#7E8C9B', 'line-width': ['interpolate', ['linear'], ['zoom'], 6, 0.5, 10, 1.1] } })
 
   // community choropleths
   const ramp = (prop: string, max = 1): any => ['interpolate', ['linear'], ['get', prop], ...COMMUNITY.flatMap(([v, c]) => [v * max, c])]
@@ -117,11 +116,13 @@ function build(map: maplibregl.Map) {
   add({ id: 'slide', type: 'raster', source: 'slide', layout: { visibility: 'none' }, paint: { 'raster-opacity': 0.8, 'raster-fade-duration': 0, 'raster-resampling': 'nearest' } })
 
   // wind probabilities: filled bands, or contour lines when a community map is underneath
-  add({ id: 'prob-fill', type: 'fill', source: 'prob', paint: { 'fill-color': probColor, 'fill-opacity': ['interpolate', ['linear'], ['zoom'], 5, 0.62, 9, 0.5, 11, 0.38], 'fill-antialias': false } })
+  add({ id: 'prob-fill', type: 'fill', source: 'prob', paint: { 'fill-color': probColor, 'fill-opacity': ['interpolate', ['linear'], ['zoom'], 5, 0.55, 8, 0.48, 11, 0.36], 'fill-antialias': false } })
   add({ id: 'prob-line', type: 'line', source: 'prob', paint: { 'line-color': probColor, 'line-width': ['interpolate', ['linear'], ['get', 'lo'], 5, 0.6, 50, 1.6, 90, 2.6], 'line-opacity': 0.9 } })
 
-  // coastlines of the other islands stay legible over the probability shading
+  // coastlines stay legible over the probability shading
   add({ id: 'land-other-line', type: 'line', source: 'land', filter: ['==', ['get', 'pr'], 0], paint: { 'line-color': '#6F7D8C', 'line-width': ['interpolate', ['linear'], ['zoom'], 5, 0.6, 9, 1.1] } })
+  add({ id: 'land-pr-halo', type: 'line', source: 'land', filter: ['==', ['get', 'pr'], 2], maxzoom: 8.5, paint: { 'line-color': 'rgba(255,255,255,0.85)', 'line-width': ['interpolate', ['linear'], ['zoom'], 5, 2.5, 8.5, 4] } })
+  add({ id: 'land-pr-edge', type: 'line', source: 'land', filter: ['==', ['get', 'pr'], 1], paint: { 'line-color': '#2E3B4E', 'line-width': ['interpolate', ['linear'], ['zoom'], 5, 0.9, 8, 1.2, 11, 1.4] } })
 
   // lens highlight
   add({ id: 'muni-hl', type: 'fill', source: 'munis', paint: { 'fill-color': '#F2B705', 'fill-opacity': ['case', ['boolean', ['feature-state', 'hl'], false], 0.32, 0] } })

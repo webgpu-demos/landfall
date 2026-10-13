@@ -31,6 +31,7 @@ check(dt.datetime.fromtimestamp(lf['t'] / 1000, dt.timezone.utc).strftime('%Y-%m
 check(A[6]['rainPR'] and (A[6]['rainPR']['low_in'], A[6]['rainPR']['high_in'], A[6]['rainPR']['max_in']) == (4, 6, 10), 'adv 6 rain for PR: 4-6 in, isolated 10')
 check(A[13]['rainPR'] and (A[13]['rainPR']['low_in'], A[13]['rainPR']['high_in'], A[13]['rainPR']['max_in']) == (12, 16, 20), 'adv 13 rain for PR: 12-16 in, local 20')
 check(A[16]['rainPR'] and A[16]['rainPR']['max_in'] == 25, 'adv 16 rain for PR: local maximum 25 in')
+check(A[9]['rainPR'] and A[9]['rainPR']['max_in'] == 12 and A[12]['rainPR']['max_in'] == 16 and A[4]['rainPR']['max_in'] is None, 'adv 9 maximum 12 in; adv 12 local 16 in; adv 4 none stated')
 
 # 4. NHC's own station table vs the probability contours sampled at the stations (within one band)
 ST = {'San Juan': (18.43, -66.0), 'Ponce': (18.01, -66.56), 'Aguadilla': (18.49, -67.13), 'Vieques': (18.13, -65.49)}

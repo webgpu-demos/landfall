@@ -117,7 +117,8 @@ def rainfall_pr(rain):
         head = para.split(':')[0]
         if 'Puerto Rico' not in head and not para.startswith('Puerto Rico'): continue
         m = re.search(r'(\d+) to (\d+) inches', para)
-        mx = re.search(r'(?:isolated|local)\s+(?:maximum\s+)?(?:totals\s+)?(?:of\s+)?(\d+) inches', para)
+        # "isolated maximum totals of 10", "local maximum of 25", "maximum totals of 12", "local 16 inches possible"
+        mx = re.search(r'(?:maximum|local|isolated)[^.;]*?(\d+) inches', para[m.end():]) if m else None
         if m:
             return {'low_in': int(m.group(1)), 'high_in': int(m.group(2)),
                     'max_in': int(mx.group(1)) if mx else None, 'text': para}

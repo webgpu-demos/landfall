@@ -8,7 +8,7 @@ import { Src } from './common'
 export function About() {
   if (!about.value) return null
   const es = lang.value === 'es'
-  const P = data.places.value, S = data.scenario.value
+  const S = data.scenario.value
   const L = (en: string, sp: string) => (es ? sp : en)
   return (
     <div class="drawer-scrim" onClick={(e) => { if (e.target === e.currentTarget) about.value = false }}>
@@ -29,7 +29,10 @@ export function About() {
           </ul>
           <h3>{L('Computed here (marked on screen)', 'Calculado aquí (marcado en pantalla)')}</h3>
           <ul>
-            {P && Object.entries(P.derived).map(([, v]) => <li>{v}</li>)}
+            <li>{L('Chance of wind at a place: the NHC 5-km probability band the place falls in; for a municipio, the highest band touching it. NHC\'s own table for named places can read a few points different.', 'Probabilidad de viento en un lugar: la banda de probabilidad de 5 km del NHC donde cae el lugar; para un municipio, la banda más alta que lo toca. La tabla del NHC para lugares con nombre puede diferir unos puntos.')}</li>
+            <li>{L('Arrival of 39 mph and 74 mph winds: when NHC\'s forecast wind radii, interpolated hour by hour, first reach the place. NHC publishes its own arrival-time graphics; this stands in for them.', 'Llegada de vientos de 39 y 74 mph: cuándo los radios de viento pronosticados por el NHC, interpolados hora a hora, alcanzan el lugar. El NHC publica sus propios gráficos de llegada; esto los sustituye.')}</li>
+            <li>{L('Roads and bridges: OpenStreetMap main roads sampled every 40 m against the USGS landslide map, and bridges on public roads in a FEMA flood zone or on High or greater landslide ground.', 'Carreteras y puentes: carreteras principales de OpenStreetMap muestreadas cada 40 m contra el mapa de deslizamientos del USGS, y puentes de vías públicas en zona inundable de FEMA o en terreno de susceptibilidad Alta o mayor.')}</li>
+            <li>{L('Shelter and facility flags: FEMA flood zone, surge category, landslide class and ground elevation at the point, as computed for Garita.', 'Señales de refugios e instalaciones: zona inundable de FEMA, categoría de marejada, clase de deslizamiento y elevación del terreno en el punto, calculadas para Garita.')}</li>
             <li>{L('Closest approach: the official forecast points interpolated hourly.', 'Paso más cercano: los puntos del pronóstico oficial interpolados por hora.')}</li>
             <li>{L('Questions for the tables are generated from what changed between advisories; they are prompts, not forecasts.', 'Las preguntas para las mesas se generan a partir de lo que cambió entre avisos; son guías, no pronósticos.')}</li>
           </ul>
