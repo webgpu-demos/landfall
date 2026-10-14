@@ -1,0 +1,586 @@
++ pip install -q netCDF4 numpy pillow shapely
++ tail -1
++ RAW=/home/runner/work/landfall/landfall/raw
++ mkdir -p /home/runner/work/landfall/landfall/raw/goes /home/runner/work/landfall/landfall/raw/ne /home/runner/work/landfall/landfall/raw/dem
+++ date -u -d '2022-09-12 12:00' +%s
++ t=1662984000
+++ date -u -d '2022-09-15 21:00' +%s
++ end=1663275600
++ '[' 1662984000 -le 1663275600 ']'
+++ date -u -d @1662984000 +%j
++ doy=255
+++ date -u -d @1662984000 +%H
++ hh=12
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/255/12/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222551200206_e20222551209525_c20222551210015.nc
++ echo '255 12 OR_ABI-L2-CMIPF-M6C13_G16_s20222551200206_e20222551209525_c20222551210015.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222551200206_e20222551209525_c20222551210015.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/255/12/OR_ABI-L2-CMIPF-M6C13_G16_s20222551200206_e20222551209525_c20222551210015.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222551200206_e20222551209525_c20222551210015.nc
++ t=1662991200
++ '[' 1662991200 -le 1663275600 ']'
+++ date -u -d @1662991200 +%j
++ doy=255
+++ date -u -d @1662991200 +%H
++ hh=14
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/255/14/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222551400206_e20222551409525_c20222551410007.nc
++ echo '255 14 OR_ABI-L2-CMIPF-M6C13_G16_s20222551400206_e20222551409525_c20222551410007.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222551400206_e20222551409525_c20222551410007.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/255/14/OR_ABI-L2-CMIPF-M6C13_G16_s20222551400206_e20222551409525_c20222551410007.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222551400206_e20222551409525_c20222551410007.nc
++ t=1662998400
++ '[' 1662998400 -le 1663275600 ']'
+++ date -u -d @1662998400 +%j
++ doy=255
+++ date -u -d @1662998400 +%H
++ hh=16
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/255/16/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222551600206_e20222551609526_c20222551610006.nc
++ echo '255 16 OR_ABI-L2-CMIPF-M6C13_G16_s20222551600206_e20222551609526_c20222551610006.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222551600206_e20222551609526_c20222551610006.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/255/16/OR_ABI-L2-CMIPF-M6C13_G16_s20222551600206_e20222551609526_c20222551610006.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222551600206_e20222551609526_c20222551610006.nc
++ t=1663005600
++ '[' 1663005600 -le 1663275600 ']'
+++ date -u -d @1663005600 +%j
++ doy=255
+++ date -u -d @1663005600 +%H
++ hh=18
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/255/18/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222551800204_e20222551809523_c20222551809599.nc
++ echo '255 18 OR_ABI-L2-CMIPF-M6C13_G16_s20222551800204_e20222551809523_c20222551809599.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222551800204_e20222551809523_c20222551809599.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/255/18/OR_ABI-L2-CMIPF-M6C13_G16_s20222551800204_e20222551809523_c20222551809599.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222551800204_e20222551809523_c20222551809599.nc
++ t=1663012800
++ '[' 1663012800 -le 1663275600 ']'
+++ date -u -d @1663012800 +%j
++ doy=255
+++ date -u -d @1663012800 +%H
++ hh=20
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/255/20/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222552000204_e20222552009523_c20222552009597.nc
++ echo '255 20 OR_ABI-L2-CMIPF-M6C13_G16_s20222552000204_e20222552009523_c20222552009597.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222552000204_e20222552009523_c20222552009597.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/255/20/OR_ABI-L2-CMIPF-M6C13_G16_s20222552000204_e20222552009523_c20222552009597.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222552000204_e20222552009523_c20222552009597.nc
++ t=1663020000
++ '[' 1663020000 -le 1663275600 ']'
+++ date -u -d @1663020000 +%j
++ doy=255
+++ date -u -d @1663020000 +%H
++ hh=22
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/255/22/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222552200204_e20222552209523_c20222552210007.nc
++ echo '255 22 OR_ABI-L2-CMIPF-M6C13_G16_s20222552200204_e20222552209523_c20222552210007.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222552200204_e20222552209523_c20222552210007.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/255/22/OR_ABI-L2-CMIPF-M6C13_G16_s20222552200204_e20222552209523_c20222552210007.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222552200204_e20222552209523_c20222552210007.nc
++ t=1663027200
++ '[' 1663027200 -le 1663275600 ']'
+++ date -u -d @1663027200 +%j
++ doy=256
+++ date -u -d @1663027200 +%H
++ hh=00
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/256/00/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222560000204_e20222560009523_c20222560010005.nc
++ echo '256 00 OR_ABI-L2-CMIPF-M6C13_G16_s20222560000204_e20222560009523_c20222560010005.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222560000204_e20222560009523_c20222560010005.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/256/00/OR_ABI-L2-CMIPF-M6C13_G16_s20222560000204_e20222560009523_c20222560010005.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222560000204_e20222560009523_c20222560010005.nc
++ t=1663034400
++ '[' 1663034400 -le 1663275600 ']'
+++ date -u -d @1663034400 +%j
++ doy=256
+++ date -u -d @1663034400 +%H
++ hh=02
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/256/02/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222560200204_e20222560209523_c20222560210017.nc
++ echo '256 02 OR_ABI-L2-CMIPF-M6C13_G16_s20222560200204_e20222560209523_c20222560210017.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222560200204_e20222560209523_c20222560210017.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/256/02/OR_ABI-L2-CMIPF-M6C13_G16_s20222560200204_e20222560209523_c20222560210017.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222560200204_e20222560209523_c20222560210017.nc
++ t=1663041600
++ '[' 1663041600 -le 1663275600 ']'
+++ date -u -d @1663041600 +%j
++ doy=256
+++ date -u -d @1663041600 +%H
++ hh=04
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/256/04/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222560400204_e20222560409523_c20222560410014.nc
++ echo '256 04 OR_ABI-L2-CMIPF-M6C13_G16_s20222560400204_e20222560409523_c20222560410014.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222560400204_e20222560409523_c20222560410014.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/256/04/OR_ABI-L2-CMIPF-M6C13_G16_s20222560400204_e20222560409523_c20222560410014.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222560400204_e20222560409523_c20222560410014.nc
++ t=1663048800
++ '[' 1663048800 -le 1663275600 ']'
+++ date -u -d @1663048800 +%j
++ doy=256
+++ date -u -d @1663048800 +%H
++ hh=06
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/256/06/
+++ head -1
+++ awk '{print $4}'
+++ grep M6C13
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222560600206_e20222560609526_c20222560609599.nc
++ echo '256 06 OR_ABI-L2-CMIPF-M6C13_G16_s20222560600206_e20222560609526_c20222560609599.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222560600206_e20222560609526_c20222560609599.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/256/06/OR_ABI-L2-CMIPF-M6C13_G16_s20222560600206_e20222560609526_c20222560609599.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222560600206_e20222560609526_c20222560609599.nc
++ t=1663056000
++ '[' 1663056000 -le 1663275600 ']'
+++ date -u -d @1663056000 +%j
++ doy=256
+++ date -u -d @1663056000 +%H
++ hh=08
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/256/08/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222560800206_e20222560809526_c20222560810017.nc
++ echo '256 08 OR_ABI-L2-CMIPF-M6C13_G16_s20222560800206_e20222560809526_c20222560810017.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222560800206_e20222560809526_c20222560810017.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/256/08/OR_ABI-L2-CMIPF-M6C13_G16_s20222560800206_e20222560809526_c20222560810017.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222560800206_e20222560809526_c20222560810017.nc
++ t=1663063200
++ '[' 1663063200 -le 1663275600 ']'
+++ date -u -d @1663063200 +%j
++ doy=256
+++ date -u -d @1663063200 +%H
++ hh=10
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/256/10/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222561000206_e20222561009526_c20222561010006.nc
++ echo '256 10 OR_ABI-L2-CMIPF-M6C13_G16_s20222561000206_e20222561009526_c20222561010006.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222561000206_e20222561009526_c20222561010006.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/256/10/OR_ABI-L2-CMIPF-M6C13_G16_s20222561000206_e20222561009526_c20222561010006.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222561000206_e20222561009526_c20222561010006.nc
++ t=1663070400
++ '[' 1663070400 -le 1663275600 ']'
+++ date -u -d @1663070400 +%j
++ doy=256
+++ date -u -d @1663070400 +%H
++ hh=12
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/256/12/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=
++ echo '256 12 '
++ '[' -n '' ']'
++ t=1663077600
++ '[' 1663077600 -le 1663275600 ']'
+++ date -u -d @1663077600 +%j
++ doy=256
+++ date -u -d @1663077600 +%H
++ hh=14
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/256/14/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=
++ echo '256 14 '
++ '[' -n '' ']'
++ t=1663084800
++ '[' 1663084800 -le 1663275600 ']'
+++ date -u -d @1663084800 +%j
++ doy=256
+++ date -u -d @1663084800 +%H
++ hh=16
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/256/16/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=
++ echo '256 16 '
++ '[' -n '' ']'
++ t=1663092000
++ '[' 1663092000 -le 1663275600 ']'
+++ date -u -d @1663092000 +%j
++ doy=256
+++ date -u -d @1663092000 +%H
++ hh=18
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/256/18/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=
++ echo '256 18 '
++ '[' -n '' ']'
++ t=1663099200
++ '[' 1663099200 -le 1663275600 ']'
+++ date -u -d @1663099200 +%j
++ doy=256
+++ date -u -d @1663099200 +%H
++ hh=20
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/256/20/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=
++ echo '256 20 '
++ '[' -n '' ']'
++ t=1663106400
++ '[' 1663106400 -le 1663275600 ']'
+++ date -u -d @1663106400 +%j
++ doy=256
+++ date -u -d @1663106400 +%H
++ hh=22
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/256/22/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222562200204_e20222562209523_c20222562210007.nc
++ echo '256 22 OR_ABI-L2-CMIPF-M6C13_G16_s20222562200204_e20222562209523_c20222562210007.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222562200204_e20222562209523_c20222562210007.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/256/22/OR_ABI-L2-CMIPF-M6C13_G16_s20222562200204_e20222562209523_c20222562210007.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222562200204_e20222562209523_c20222562210007.nc
++ t=1663113600
++ '[' 1663113600 -le 1663275600 ']'
+++ date -u -d @1663113600 +%j
++ doy=257
+++ date -u -d @1663113600 +%H
++ hh=00
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/257/00/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222570000204_e20222570009523_c20222570010007.nc
++ echo '257 00 OR_ABI-L2-CMIPF-M6C13_G16_s20222570000204_e20222570009523_c20222570010007.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222570000204_e20222570009523_c20222570010007.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/257/00/OR_ABI-L2-CMIPF-M6C13_G16_s20222570000204_e20222570009523_c20222570010007.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222570000204_e20222570009523_c20222570010007.nc
++ t=1663120800
++ '[' 1663120800 -le 1663275600 ']'
+++ date -u -d @1663120800 +%j
++ doy=257
+++ date -u -d @1663120800 +%H
++ hh=02
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/257/02/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222570200204_e20222570209523_c20222570210005.nc
++ echo '257 02 OR_ABI-L2-CMIPF-M6C13_G16_s20222570200204_e20222570209523_c20222570210005.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222570200204_e20222570209523_c20222570210005.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/257/02/OR_ABI-L2-CMIPF-M6C13_G16_s20222570200204_e20222570209523_c20222570210005.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222570200204_e20222570209523_c20222570210005.nc
++ t=1663128000
++ '[' 1663128000 -le 1663275600 ']'
+++ date -u -d @1663128000 +%j
++ doy=257
+++ date -u -d @1663128000 +%H
++ hh=04
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/257/04/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222570400204_e20222570409524_c20222570410005.nc
++ echo '257 04 OR_ABI-L2-CMIPF-M6C13_G16_s20222570400204_e20222570409524_c20222570410005.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222570400204_e20222570409524_c20222570410005.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/257/04/OR_ABI-L2-CMIPF-M6C13_G16_s20222570400204_e20222570409524_c20222570410005.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222570400204_e20222570409524_c20222570410005.nc
++ t=1663135200
++ '[' 1663135200 -le 1663275600 ']'
+++ date -u -d @1663135200 +%j
++ doy=257
+++ date -u -d @1663135200 +%H
++ hh=06
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/257/06/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222570600207_e20222570609526_c20222570610016.nc
++ echo '257 06 OR_ABI-L2-CMIPF-M6C13_G16_s20222570600207_e20222570609526_c20222570610016.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222570600207_e20222570609526_c20222570610016.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/257/06/OR_ABI-L2-CMIPF-M6C13_G16_s20222570600207_e20222570609526_c20222570610016.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222570600207_e20222570609526_c20222570610016.nc
++ t=1663142400
++ '[' 1663142400 -le 1663275600 ']'
+++ date -u -d @1663142400 +%j
++ doy=257
+++ date -u -d @1663142400 +%H
++ hh=08
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/257/08/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222570800207_e20222570809526_c20222570810018.nc
++ echo '257 08 OR_ABI-L2-CMIPF-M6C13_G16_s20222570800207_e20222570809526_c20222570810018.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222570800207_e20222570809526_c20222570810018.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/257/08/OR_ABI-L2-CMIPF-M6C13_G16_s20222570800207_e20222570809526_c20222570810018.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222570800207_e20222570809526_c20222570810018.nc
++ t=1663149600
++ '[' 1663149600 -le 1663275600 ']'
+++ date -u -d @1663149600 +%j
++ doy=257
+++ date -u -d @1663149600 +%H
++ hh=10
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/257/10/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222571000207_e20222571009526_c20222571010016.nc
++ echo '257 10 OR_ABI-L2-CMIPF-M6C13_G16_s20222571000207_e20222571009526_c20222571010016.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222571000207_e20222571009526_c20222571010016.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/257/10/OR_ABI-L2-CMIPF-M6C13_G16_s20222571000207_e20222571009526_c20222571010016.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222571000207_e20222571009526_c20222571010016.nc
++ t=1663156800
++ '[' 1663156800 -le 1663275600 ']'
+++ date -u -d @1663156800 +%j
++ doy=257
+++ date -u -d @1663156800 +%H
++ hh=12
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/257/12/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222571200207_e20222571209526_c20222571210007.nc
++ echo '257 12 OR_ABI-L2-CMIPF-M6C13_G16_s20222571200207_e20222571209526_c20222571210007.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222571200207_e20222571209526_c20222571210007.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/257/12/OR_ABI-L2-CMIPF-M6C13_G16_s20222571200207_e20222571209526_c20222571210007.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222571200207_e20222571209526_c20222571210007.nc
++ t=1663164000
++ '[' 1663164000 -le 1663275600 ']'
+++ date -u -d @1663164000 +%j
++ doy=257
+++ date -u -d @1663164000 +%H
++ hh=14
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/257/14/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222571400207_e20222571409526_c20222571410005.nc
++ echo '257 14 OR_ABI-L2-CMIPF-M6C13_G16_s20222571400207_e20222571409526_c20222571410005.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222571400207_e20222571409526_c20222571410005.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/257/14/OR_ABI-L2-CMIPF-M6C13_G16_s20222571400207_e20222571409526_c20222571410005.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222571400207_e20222571409526_c20222571410005.nc
++ t=1663171200
++ '[' 1663171200 -le 1663275600 ']'
+++ date -u -d @1663171200 +%j
++ doy=257
+++ date -u -d @1663171200 +%H
++ hh=16
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/257/16/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222571600207_e20222571609526_c20222571610017.nc
++ echo '257 16 OR_ABI-L2-CMIPF-M6C13_G16_s20222571600207_e20222571609526_c20222571610017.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222571600207_e20222571609526_c20222571610017.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/257/16/OR_ABI-L2-CMIPF-M6C13_G16_s20222571600207_e20222571609526_c20222571610017.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222571600207_e20222571609526_c20222571610017.nc
++ t=1663178400
++ '[' 1663178400 -le 1663275600 ']'
+++ date -u -d @1663178400 +%j
++ doy=257
+++ date -u -d @1663178400 +%H
++ hh=18
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/257/18/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222571800205_e20222571809524_c20222571810007.nc
++ echo '257 18 OR_ABI-L2-CMIPF-M6C13_G16_s20222571800205_e20222571809524_c20222571810007.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222571800205_e20222571809524_c20222571810007.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/257/18/OR_ABI-L2-CMIPF-M6C13_G16_s20222571800205_e20222571809524_c20222571810007.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222571800205_e20222571809524_c20222571810007.nc
++ t=1663185600
++ '[' 1663185600 -le 1663275600 ']'
+++ date -u -d @1663185600 +%j
++ doy=257
+++ date -u -d @1663185600 +%H
++ hh=20
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/257/20/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222572000205_e20222572009524_c20222572010015.nc
++ echo '257 20 OR_ABI-L2-CMIPF-M6C13_G16_s20222572000205_e20222572009524_c20222572010015.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222572000205_e20222572009524_c20222572010015.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/257/20/OR_ABI-L2-CMIPF-M6C13_G16_s20222572000205_e20222572009524_c20222572010015.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222572000205_e20222572009524_c20222572010015.nc
++ t=1663192800
++ '[' 1663192800 -le 1663275600 ']'
+++ date -u -d @1663192800 +%j
++ doy=257
+++ date -u -d @1663192800 +%H
++ hh=22
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/257/22/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222572200205_e20222572209524_c20222572210006.nc
++ echo '257 22 OR_ABI-L2-CMIPF-M6C13_G16_s20222572200205_e20222572209524_c20222572210006.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222572200205_e20222572209524_c20222572210006.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/257/22/OR_ABI-L2-CMIPF-M6C13_G16_s20222572200205_e20222572209524_c20222572210006.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222572200205_e20222572209524_c20222572210006.nc
++ t=1663200000
++ '[' 1663200000 -le 1663275600 ']'
+++ date -u -d @1663200000 +%j
++ doy=258
+++ date -u -d @1663200000 +%H
++ hh=00
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/258/00/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222580000205_e20222580009524_c20222580010010.nc
++ echo '258 00 OR_ABI-L2-CMIPF-M6C13_G16_s20222580000205_e20222580009524_c20222580010010.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222580000205_e20222580009524_c20222580010010.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/258/00/OR_ABI-L2-CMIPF-M6C13_G16_s20222580000205_e20222580009524_c20222580010010.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222580000205_e20222580009524_c20222580010010.nc
++ t=1663207200
++ '[' 1663207200 -le 1663275600 ']'
+++ date -u -d @1663207200 +%j
++ doy=258
+++ date -u -d @1663207200 +%H
++ hh=02
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/258/02/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222580200205_e20222580209524_c20222580210015.nc
++ echo '258 02 OR_ABI-L2-CMIPF-M6C13_G16_s20222580200205_e20222580209524_c20222580210015.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222580200205_e20222580209524_c20222580210015.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/258/02/OR_ABI-L2-CMIPF-M6C13_G16_s20222580200205_e20222580209524_c20222580210015.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222580200205_e20222580209524_c20222580210015.nc
++ t=1663214400
++ '[' 1663214400 -le 1663275600 ']'
+++ date -u -d @1663214400 +%j
++ doy=258
+++ date -u -d @1663214400 +%H
++ hh=04
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/258/04/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222580400205_e20222580409524_c20222580410000.nc
++ echo '258 04 OR_ABI-L2-CMIPF-M6C13_G16_s20222580400205_e20222580409524_c20222580410000.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222580400205_e20222580409524_c20222580410000.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/258/04/OR_ABI-L2-CMIPF-M6C13_G16_s20222580400205_e20222580409524_c20222580410000.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222580400205_e20222580409524_c20222580410000.nc
++ t=1663221600
++ '[' 1663221600 -le 1663275600 ']'
+++ date -u -d @1663221600 +%j
++ doy=258
+++ date -u -d @1663221600 +%H
++ hh=06
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/258/06/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222580600207_e20222580609526_c20222580610015.nc
++ echo '258 06 OR_ABI-L2-CMIPF-M6C13_G16_s20222580600207_e20222580609526_c20222580610015.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222580600207_e20222580609526_c20222580610015.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/258/06/OR_ABI-L2-CMIPF-M6C13_G16_s20222580600207_e20222580609526_c20222580610015.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222580600207_e20222580609526_c20222580610015.nc
++ t=1663228800
++ '[' 1663228800 -le 1663275600 ']'
+++ date -u -d @1663228800 +%j
++ doy=258
+++ date -u -d @1663228800 +%H
++ hh=08
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/258/08/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222580800207_e20222580809526_c20222580810006.nc
++ echo '258 08 OR_ABI-L2-CMIPF-M6C13_G16_s20222580800207_e20222580809526_c20222580810006.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222580800207_e20222580809526_c20222580810006.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/258/08/OR_ABI-L2-CMIPF-M6C13_G16_s20222580800207_e20222580809526_c20222580810006.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222580800207_e20222580809526_c20222580810006.nc
++ t=1663236000
++ '[' 1663236000 -le 1663275600 ']'
+++ date -u -d @1663236000 +%j
++ doy=258
+++ date -u -d @1663236000 +%H
++ hh=10
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/258/10/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222581000207_e20222581009526_c20222581010019.nc
++ echo '258 10 OR_ABI-L2-CMIPF-M6C13_G16_s20222581000207_e20222581009526_c20222581010019.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222581000207_e20222581009526_c20222581010019.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/258/10/OR_ABI-L2-CMIPF-M6C13_G16_s20222581000207_e20222581009526_c20222581010019.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222581000207_e20222581009526_c20222581010019.nc
++ t=1663243200
++ '[' 1663243200 -le 1663275600 ']'
+++ date -u -d @1663243200 +%j
++ doy=258
+++ date -u -d @1663243200 +%H
++ hh=12
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/258/12/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222581200207_e20222581209526_c20222581210017.nc
++ echo '258 12 OR_ABI-L2-CMIPF-M6C13_G16_s20222581200207_e20222581209526_c20222581210017.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222581200207_e20222581209526_c20222581210017.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/258/12/OR_ABI-L2-CMIPF-M6C13_G16_s20222581200207_e20222581209526_c20222581210017.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222581200207_e20222581209526_c20222581210017.nc
++ t=1663250400
++ '[' 1663250400 -le 1663275600 ']'
+++ date -u -d @1663250400 +%j
++ doy=258
+++ date -u -d @1663250400 +%H
++ hh=14
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/258/14/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222581400207_e20222581409526_c20222581410015.nc
++ echo '258 14 OR_ABI-L2-CMIPF-M6C13_G16_s20222581400207_e20222581409526_c20222581410015.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222581400207_e20222581409526_c20222581410015.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/258/14/OR_ABI-L2-CMIPF-M6C13_G16_s20222581400207_e20222581409526_c20222581410015.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222581400207_e20222581409526_c20222581410015.nc
++ t=1663257600
++ '[' 1663257600 -le 1663275600 ']'
+++ date -u -d @1663257600 +%j
++ doy=258
+++ date -u -d @1663257600 +%H
++ hh=16
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/258/16/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222581600207_e20222581609526_c20222581610024.nc
++ echo '258 16 OR_ABI-L2-CMIPF-M6C13_G16_s20222581600207_e20222581609526_c20222581610024.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222581600207_e20222581609526_c20222581610024.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/258/16/OR_ABI-L2-CMIPF-M6C13_G16_s20222581600207_e20222581609526_c20222581610024.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222581600207_e20222581609526_c20222581610024.nc
++ t=1663264800
++ '[' 1663264800 -le 1663275600 ']'
+++ date -u -d @1663264800 +%j
++ doy=258
+++ date -u -d @1663264800 +%H
++ hh=18
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/258/18/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222581800205_e20222581809524_c20222581810005.nc
++ echo '258 18 OR_ABI-L2-CMIPF-M6C13_G16_s20222581800205_e20222581809524_c20222581810005.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222581800205_e20222581809524_c20222581810005.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/258/18/OR_ABI-L2-CMIPF-M6C13_G16_s20222581800205_e20222581809524_c20222581810005.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222581800205_e20222581809524_c20222581810005.nc
++ t=1663272000
++ '[' 1663272000 -le 1663275600 ']'
+++ date -u -d @1663272000 +%j
++ doy=258
+++ date -u -d @1663272000 +%H
++ hh=20
+++ aws s3 ls --no-sign-request s3://noaa-goes16/ABI-L2-CMIPF/2022/258/20/
+++ awk '{print $4}'
+++ grep M6C13
+++ head -1
++ f=OR_ABI-L2-CMIPF-M6C13_G16_s20222582000205_e20222582009525_c20222582010003.nc
++ echo '258 20 OR_ABI-L2-CMIPF-M6C13_G16_s20222582000205_e20222582009525_c20222582010003.nc'
++ '[' -n OR_ABI-L2-CMIPF-M6C13_G16_s20222582000205_e20222582009525_c20222582010003.nc ']'
++ aws s3 cp --no-sign-request --only-show-errors s3://noaa-goes16/ABI-L2-CMIPF/2022/258/20/OR_ABI-L2-CMIPF-M6C13_G16_s20222582000205_e20222582009525_c20222582010003.nc /home/runner/work/landfall/landfall/raw/goes/OR_ABI-L2-CMIPF-M6C13_G16_s20222582000205_e20222582009525_c20222582010003.nc
++ t=1663279200
++ '[' 1663279200 -le 1663275600 ']'
++ ls -la /home/runner/work/landfall/landfall/raw/goes
++ head -5
++ du -sh /home/runner/work/landfall/landfall/raw/goes
++ curl -sSL -o /home/runner/work/landfall/landfall/raw/ne/ne_50m_land.geojson https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_50m_land.geojson
++ python3 -
++ python3 build_intro.py /home/runner/work/landfall/landfall/raw /home/runner/work/landfall/landfall/out/o
++ du -sh /home/runner/work/landfall/landfall/out/o/intro/sat /home/runner/work/landfall/landfall/out/o/tiles/dem
++ python3 -
