@@ -15,7 +15,7 @@ operational use. Built with the lessons and the baked data of [Garita](https://g
 
 | Part | Time | What happens |
 |---|---|---|
-| Opening | ~1 min | Plays when the app opens (or from setup: *Play the opening*). Real GOES-16 infrared imagery of the storm forming over the Atlantic, its best track up to the first round, advisory 6's cone reaching Puerto Rico, then down onto the island in 3D: people, shelters and hospitals, electricity-dependent Medicare users, roads on landslide ground. Ends on the title. Space pauses, → jumps to the next line, Esc skips |
+| Opening | ~1 min | Plays when the app opens on setup (or from setup: *Play the opening*; or any time with `?intro` on the address). Real GOES-16 infrared imagery of the storm forming over the Atlantic, its best track up to the first round, advisory 6's cone reaching Puerto Rico, then down onto the island in 3D: people, shelters and hospitals, electricity-dependent Medicare users, roads on landslide ground. Ends on the title. Space pauses, → jumps to the next line, Esc skips |
 | Setup | before | Facilitator opens the site on the projector laptop, names the tables (default: municipal emergency management, health and medical, housing and shelters, power, water and roads), picks the rounds, waits for "Saved for offline use" |
 | 5 rounds | ~10 min each | Advisories 6, 9, 12, 13, 16: Thu 5 PM (tropical storm watch, 70 h before landfall) to Sun 5 AM (hurricane warning, 10 h). Each round: headline and "For the tables" prompts, tables decide, one report each |
 | Reveal | ~10 min | The storm was Fiona (2022): actual track, landfall, flash flood warnings, measured rain, river crests, FEMA aid, and where each table acted |
