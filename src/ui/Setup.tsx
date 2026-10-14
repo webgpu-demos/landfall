@@ -38,7 +38,9 @@ export function Setup() {
   const startOver = () => { if (confirm(t('confirmNew'))) resetSession() }
   const nd = s.decisions.length === 1 ? t('oneDecision') : t('nDecisions', { n: s.decisions.length })
   const startLabel = atReveal ? t('toReveal') : resumable ? t('resume', { n: roundNo }) : t('start')
-  const steps = [1, 2, 3, 4, 5].map(i => ({ h: t(('how' + i) as any), d: t(('how' + i + 'd') as any), m: t(('how' + i + 'm') as any, { n: s.rounds.length, m: s.timerMin }) }))
+  // the session is named for the last 72 hours; if the facilitator picks an earlier first advisory, say so
+  const firstH = Math.round((S.landfall.t - (S.advisories.find(a => a.num === s.rounds[0])?.issued ?? S.landfall.t)) / 3600e3)
+  const steps = [1, 2, 3, 4, 5].map(i => ({ h: t(('how' + i) as any), d: i === 2 && firstH > 72 ? t('how2dFrom', { h: firstH }) : t(('how' + i + 'd') as any), m: t(('how' + i + 'm') as any, { n: s.rounds.length, m: s.timerMin }) }))
   const built = new Date(__BUILD__.time)
   const version = `${built.toISOString().slice(0, 16).replace('T', ' ')} UTC${__BUILD__.sha ? ' · ' + __BUILD__.sha : ''}`
   return (
