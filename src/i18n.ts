@@ -254,7 +254,7 @@ const S = {
   loading: ['Loading the scenario', 'Cargando el escenario'],
   loadError: ['The scenario data did not load: {e}. Reload the page; if it persists the site is missing its data files.', 'Los datos del escenario no cargaron: {e}. Recarga la página; si sigue, al sitio le faltan los archivos de datos.'],
   offReady: ['Saved for offline use: this browser can run the whole exercise without a connection.', 'Guardado para usar sin conexión: este navegador puede correr todo el ejercicio sin internet.'],
-  offSaving: ['Saving for offline use. Keep this page open a minute before the session.', 'Guardando para usar sin conexión. Deja esta página abierta un minuto antes de la sesión.'],
+  offSaving: ['Saving for offline use: keep this page open for a few minutes before the session.', 'Guardando para usar sin conexión: deja esta página abierta unos minutos antes de la sesión.'],
   offNo: ['Offline use is not available in this browser; keep a connection during the session.', 'Este navegador no permite el uso sin conexión; mantén la conexión durante la sesión.'],
   slHigh: ['High', 'Alta'], slVery: ['Very high', 'Muy alta'], slExt: ['Extremely high', 'Extremadamente alta'],
   bigText: ['Large text', 'Texto grande'],
