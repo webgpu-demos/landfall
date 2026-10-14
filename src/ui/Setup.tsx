@@ -1,4 +1,4 @@
-import { session, update, view, lang, TABLE_COLORS, DEFAULT_ROUNDS, DEFAULT_BUDGET, resetSession, importSession, activeTable, offline, about, flash, introOn } from '../state'
+import { session, update, view, lang, TABLE_COLORS, DEFAULT_ROUNDS, DEFAULT_BUDGET, resetSession, importSession, activeTable, offline, about, flash, introOn, updateReady, updater } from '../state'
 import { data } from '../data'
 import { t } from '../i18n'
 import { when } from '../lib/format'
@@ -26,29 +26,69 @@ export function Setup() {
   const S = data.scenario.value!
   const file = useRef<HTMLInputElement>(null)
   const inProgress = s.started && s.decisions.length > 0
+  const resumable = s.started && (s.round > 0 || s.decisions.length > 0)
+  const atReveal = s.started && s.round >= s.rounds.length
+  const roundNo = Math.min(s.round + 1, s.rounds.length)
   const start = () => {
     update(x => { x.started = true; if (!inProgress) { x.round = 0 } })
     activeTable.value = session.value.tables[0]?.id ?? 't1'
     view.value = session.value.round >= session.value.rounds.length ? 'reveal' : 'exercise'
     if (view.value === 'exercise') flash.value = session.value.round
   }
+  const startOver = () => { if (confirm(t('confirmNew'))) resetSession() }
+  const nd = s.decisions.length === 1 ? t('oneDecision') : t('nDecisions', { n: s.decisions.length })
+  const startLabel = atReveal ? t('toReveal') : resumable ? t('resume', { n: roundNo }) : t('start')
+  const steps = [1, 2, 3, 4, 5].map(i => ({ h: t(('how' + i) as any), d: t(('how' + i + 'd') as any), m: t(('how' + i + 'm') as any, { n: s.rounds.length, m: s.timerMin }) }))
+  const built = new Date(__BUILD__.time)
+  const version = `${built.toISOString().slice(0, 16).replace('T', ' ')} UTC${__BUILD__.sha ? ' · ' + __BUILD__.sha : ''}`
   return (
     <div class="setup">
-      <div class="setup-inner">
-        <header class="setup-head">
-          <div class="seg" role="group" aria-label="Language">
-            <button aria-pressed={lang.value === 'en'} onClick={() => (lang.value = 'en')}>English</button>
-            <button aria-pressed={lang.value === 'es'} onClick={() => (lang.value = 'es')}>Español</button>
-          </div>
-          <h1>{t('appTitle')}</h1>
-          <p class="lede">{t('appSub')}</p>
-          <button class="play-opening" onClick={() => (introOn.value = true)}><svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path d="M2 1l9 5-9 5z" fill="currentColor" /></svg>{t('introPlayOpening')}</button>
-          <p>{t('setupIntro')}</p>
-        </header>
+      <div class="setup-top">
+        <div class="setup-inner">
+          {updateReady.value && (
+            <div class="update-bar" role="status">
+              <span>{t('updateReady')} {t('updateKept')}</span>
+              <button class="primary" onClick={() => updater.apply()}>{t('updateReload')}</button>
+            </div>
+          )}
+          <header class="setup-head">
+            <div class="seg" role="group" aria-label="Language">
+              <button aria-pressed={lang.value === 'en'} onClick={() => (lang.value = 'en')}>English</button>
+              <button aria-pressed={lang.value === 'es'} onClick={() => (lang.value = 'es')}>Español</button>
+            </div>
+            <h1>{t('appTitle')}</h1>
+            <p class="lede">{t('appSub')}</p>
+            <div class="home-actions">
+              {resumable ? (
+                <div class="resume-card">
+                  <p class="rc-k">{t('inProgress')}</p>
+                  <p class="rc-v">{atReveal ? t('inReveal', { d: nd }) : t('inProgressD', { r: roundNo, n: s.rounds.length, d: nd })}</p>
+                  <div class="rc-row">
+                    <button class="primary big" onClick={start}>{startLabel}</button>
+                    <button class="link" onClick={startOver}>{t('startOver')}</button>
+                  </div>
+                </div>
+              ) : <button class="primary big start-btn" onClick={start}>{startLabel} <span aria-hidden="true">→</span></button>}
+              <button class="play-opening" onClick={() => (introOn.value = true)}><svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path d="M2 1l9 5-9 5z" fill="currentColor" /></svg>{t('playOpening1')}</button>
+            </div>
+            {offline.value !== 'unknown' && <p class={'offline ' + offline.value}>{offline.value === 'ready' ? t('offReady') : offline.value === 'saving' ? t('offSaving') : t('offNo')}</p>}
+          </header>
 
+          <section class="how" aria-labelledby="how-h">
+            <h2 id="how-h">{t('howTitle')}</h2>
+            <ol class="how-steps">
+              {steps.map((st, i) => <li><span class="how-n">{i + 1}</span><h3>{st.h}</h3><p>{st.d}</p><small>{st.m}</small></li>)}
+            </ol>
+            <p class="how-roles">{t('howRoles')}</p>
+          </section>
+        </div>
+      </div>
+
+      <div class="setup-inner">
+        <h2 class="before-h">{t('beforeTitle')}</h2>
+        <p class="before-note">{t('beforeNote')}</p>
         <div class="setup-grid">
           <section>
-            <h2>{t('setupTitle')}</h2>
             <label class="field"><span>{t('sessionTitle')}</span>
               <input value={s.title} onInput={(e) => update(x => { x.title = (e.target as HTMLInputElement).value })} /></label>
             <label class="field"><span>{t('codename')}</span>
@@ -104,19 +144,19 @@ export function Setup() {
           </section>
         </div>
 
-        <section class="guide">
-          <h2>{lang.value === 'es' ? 'Cómo correr la sesión' : 'How to run the session'}</h2>
+        <details class="guide">
+          <summary>{t('facNotes')}</summary>
           <ol class="guide-steps">
             {(lang.value === 'es' ? GUIDE_ES : GUIDE_EN).map(([h, p]) => <li><h3>{h}</h3><p>{p}</p></li>)}
           </ol>
-        </section>
+        </details>
 
         <footer class="setup-foot">
-          <button class="primary big" onClick={start}>{s.started && s.round > 0 ? t('resume', { n: Math.min(s.round + 1, s.rounds.length) }) : t('start')}</button>
+          <button class="primary big" onClick={start}>{startLabel}</button>
           <button class="link" onClick={() => file.current?.click()}>{t('importFile')}</button>
-          {s.started && <button class="link" onClick={() => { if (confirm(t('confirmNew'))) resetSession() }}>{t('newSessionBtn')}</button>}
+          {s.started && <button class="link" onClick={startOver}>{t('newSessionBtn')}</button>}
           <button class="link" onClick={() => (about.value = true)}>{t('about')}</button>
-          {offline.value !== 'unknown' && <span class={'offline ' + offline.value}>{offline.value === 'ready' ? t('offReady') : offline.value === 'saving' ? t('offSaving') : t('offNo')}</span>}
+          <span class="version" title={__BUILD__.time}>{t('version', { v: version })}</span>
           <input ref={file} type="file" accept=".json,application/json" hidden onChange={async (e) => {
             const f = (e.target as HTMLInputElement).files?.[0]
             if (f) { try { await importSession(f) } catch (err) { alert(String(err)) } }

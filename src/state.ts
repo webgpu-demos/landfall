@@ -68,9 +68,18 @@ export function update(fn: (s: Session) => void) {
 // ------------------------------------------------------------------------------------------------- ui
 
 export type View = 'setup' | 'exercise' | 'reveal' | 'debrief'
-export const view = signal<View>(session.value.started ? (session.value.round >= session.value.rounds.length ? 'reveal' : 'exercise') : 'setup')
-/** The opening plays when the app opens on setup (not mid-session); ?intro plays it anyway, ?nointro skips it. */
-export const introOn = signal<boolean>(/[?&]intro\b/.test(location.search) || (view.value === 'setup' && !/[?&]nointro\b/.test(location.search)))
+/** Where the saved session left off. */
+export const savedView = (): View => session.value.started ? (session.value.round >= session.value.rounds.length ? 'reveal' : 'exercise') : 'setup'
+// Every visit, and every reload, starts the same way: the opening, then the setup page, which offers to resume a saved
+// session. The app never opens straight onto the dashboard: what the browser remembers (the saved session, a cached
+// version of the app) must not decide where people land. ?resume goes straight back to the saved session and
+// ?nointro skips the opening (both for tests and screenshots).
+const Q = location.search
+export const view = signal<View>(/[?&]resume\b/.test(Q) ? savedView() : 'setup')
+export const introOn = signal<boolean>(!/[?&](nointro|resume)\b/.test(Q))
+/** A newer version of the app has been downloaded and is waiting; applyUpdate() reloads into it. */
+export const updateReady = signal(false)
+export const updater = { apply: () => location.reload() }
 export const activeTable = signal<string>(session.value.tables[0]?.id ?? 't1')
 export const selected = signal<Target | null>(null)
 export const lens = signal<string | null>(null)

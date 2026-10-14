@@ -360,16 +360,15 @@ pre.teletype { margin: 0; padding: 18px 22px 28px; overflow: auto; font-family: 
 :root.big pre.teletype { font-size: 16px; }
 
 /* ---------------------------------------------------------------------------------------------- setup */
-.setup { height: 100%; overflow-y: auto; background: linear-gradient(180deg, var(--ink) 0 330px, var(--panel) 330px); }
+.setup { height: 100%; overflow-y: auto; background: var(--panel); }
 .setup-inner { max-width: 1120px; margin: 0 auto; padding: 36px 32px 60px; }
-.setup-head { color: #fff; max-width: 780px; }
+.setup-head { color: #fff; }
 .setup-head .seg { float: right; margin-top: 4px; }
 .setup-head .seg button { background: transparent; color: #fff; }
 .setup-head .seg button[aria-pressed='true'] { background: #fff; color: var(--ink); }
 .setup-head h1 { font-size: var(--fs-6); line-height: 1.04; letter-spacing: -0.03em; font-weight: 800; margin-top: 18px; }
 .setup-head .lede { font-size: var(--fs-4); color: #C8D3E3; margin: 10px 0 18px; font-weight: 500; }
-.setup-head p:last-child { color: #E4EAF3; max-width: 70ch; }
-.setup-grid { display: grid; grid-template-columns: 1fr 1.25fr; gap: 26px; margin-top: 36px; }
+.setup-grid { display: grid; grid-template-columns: 1fr 1.25fr; gap: 26px; margin-top: 16px; }
 .setup-grid section { background: #fff; border-radius: 12px; padding: 22px 24px; box-shadow: 0 1px 3px rgba(10,20,40,0.08); }
 .setup-grid h2 { font-size: var(--fs-4); margin-bottom: 12px; }
 .setup-grid h3 { font-size: var(--fs-3); margin-top: 20px; }
@@ -762,3 +761,39 @@ dl.rules dd { margin: 0; }
 .setup-head .play-opening { display: inline-flex; align-items: center; gap: 8px; margin: 2px 0 14px; padding: 7px 14px 7px 12px; border: 1px solid rgba(255,255,255,0.35); border-radius: 999px; color: #fff; text-decoration: none; font-weight: 600; background: rgba(255,255,255,0.06); }
 .setup-head .play-opening:hover { background: rgba(255,255,255,0.14); border-color: #fff; }
 @media (prefers-reduced-motion: reduce) { .intro-cap, .intro-title, .intro-hud { animation: none; } }
+
+/* ---------------------------------------------------------------------------------- setup as the way in */
+.setup-top { background: var(--ink); color: #fff; }
+.setup-top .setup-inner { padding-bottom: 36px; }
+.setup-top button.primary { background: #fff; color: var(--ink); border-color: #fff; }
+.setup-top button.primary:hover:not(:disabled) { background: #E3EBF5; }
+.home-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 14px 20px; margin: 4px 0 8px; }
+.start-btn { font-weight: 700; }
+.resume-card { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.22); border-radius: 12px; padding: 12px 18px 14px; }
+.rc-k { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #9FB7D6; }
+.rc-v { color: #E4EAF3; margin-top: 2px; }
+.rc-row { display: flex; align-items: center; gap: 18px; margin-top: 10px; }
+.setup-top button.link { color: #C8D3E3; }
+.setup-head .offline { color: #9FB2CC; margin-top: 4px; }
+.setup-head .offline.ready { color: #8FD3A4; } .setup-head .offline.ready::before { background: #8FD3A4; }
+.how { margin-top: 30px; }
+.how h2 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #9FB7D6; }
+.how-steps { list-style: none; padding: 0; margin: 12px 0 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; }
+.how-steps li { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 16px 16px 14px; display: flex; flex-direction: column; gap: 6px; }
+.how-n { width: 28px; height: 28px; border-radius: 50%; background: #fff; color: var(--ink); font-weight: 800; font-size: 14px; display: grid; place-items: center; }
+.how-steps h3 { font-size: var(--fs-3); color: #fff; margin-top: 4px; }
+.how-steps p { font-size: var(--fs-1); color: #C8D3E3; line-height: 1.45; flex: 1; }
+.how-steps small { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.05em; color: #8FA6C2; }
+.how-roles { margin-top: 16px; color: #C8D3E3; max-width: 90ch; }
+.before-h { font-size: var(--fs-4); margin-top: 30px; }
+.before-note { color: var(--muted); margin-top: 4px; }
+details.guide > summary { cursor: pointer; font-weight: 700; font-size: var(--fs-3); }
+details.guide[open] > summary { margin-bottom: 14px; }
+.update-bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; background: var(--hl); color: var(--ink); border-radius: 10px; padding: 10px 12px 10px 16px; margin-bottom: 18px; font-weight: 600; }
+.setup-top .update-bar button.primary { background: var(--ink); color: #fff; border-color: var(--ink); }
+.version { margin-left: auto; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12px; color: var(--muted); }
+@media (max-width: 1100px) { .how-steps { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 700px) { .how-steps { grid-template-columns: 1fr; } .setup-foot { flex-wrap: wrap; } .version { margin-left: 0; } }
+.menu-btn.has-update { position: relative; }
+.menu-btn.has-update::after { content: ''; position: absolute; top: 4px; right: 2px; width: 8px; height: 8px; border-radius: 50%; background: var(--hl); }
+.menu-pop .menu-update { background: var(--hl); color: var(--ink); font-weight: 600; border-color: var(--hl); }

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'preact/hooks'
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import { data, loadAdv } from '../data'
-import { lang, introOn } from '../state'
+import { lang, introOn, updateReady, updater } from '../state'
 import { t } from '../i18n'
 import { num, mph, when, dayTime } from '../lib/format'
 import { muted } from '../fx/sound'
@@ -144,6 +144,9 @@ export function Intro() {
     setTimeout(() => (introOn.value = false), still ? 0 : 650)
   }
   const nextBeat = () => { const s = T.current; const n = beats.find(b => b.t0 > s.t + 0.05); s.t = n ? n.t0 - 0.2 : TITLE_AT }
+
+  // a newer version downloaded while the title is up: take it now, nothing has started
+  useEffect(() => { if (updateReady.value && phase === 'title') updater.apply() }, [updateReady.value, phase])
 
   // keys
   useEffect(() => {

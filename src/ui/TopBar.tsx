@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'preact/hooks'
 import { signal, effect } from '@preact/signals'
 import { play, muted } from '../fx/sound'
-import { session, advisory, isReveal, advance, startTimer, pauseTimer, resetTimer, lang, bigText, view, exportSession, importSession, resetSession, focusMap, peek, pendingReview, about, armed, flash } from '../state'
+import { session, advisory, isReveal, advance, startTimer, pauseTimer, resetTimer, lang, bigText, view, exportSession, importSession, resetSession, focusMap, peek, pendingReview, about, armed, flash, updateReady, updater } from '../state'
 import { data } from '../data'
 import { t } from '../i18n'
 import { when } from '../lib/format'
@@ -96,7 +96,7 @@ export function TopBar() {
           <Speaker off={muted.value} />
         </button>
         <div class="menu">
-          <button class="ghost menu-btn" aria-expanded={menu} onClick={(e) => { e.stopPropagation(); setMenu(!menu) }}>{t('menu')}</button>
+          <button class={'ghost menu-btn' + (updateReady.value ? ' has-update' : '')} aria-expanded={menu} onClick={(e) => { e.stopPropagation(); setMenu(!menu) }}>{t('menu')}</button>
           {menu && (
             <div class="menu-pop" role="menu">
               <div class="seg" role="group" aria-label="Language">
@@ -106,6 +106,7 @@ export function TopBar() {
               <label class="check"><input type="checkbox" checked={bigText.value} onChange={(e) => (bigText.value = (e.target as HTMLInputElement).checked)} /> {t('bigText')}</label>
               <label class="check"><input type="checkbox" checked={focusMap.value} onChange={(e) => (focusMap.value = (e.target as HTMLInputElement).checked)} /> {t('mapOnly')}</label>
               <hr />
+              {updateReady.value && <button class="menu-update" onClick={() => updater.apply()}>{t('updateMenu')}</button>}
               <button onClick={() => { setMenu(false); view.value = 'setup' }}>{t('setup')}</button>
               <button onClick={() => { setMenu(false); view.value = 'debrief' }}>{t('debrief')}</button>
               <button onClick={() => download(exportSession(), `landfall-session-${new Date().toISOString().slice(0, 16).replace(':', '')}.json`)}>{t('exportFile')}</button>
@@ -114,7 +115,7 @@ export function TopBar() {
               <button onClick={() => { setMenu(false); about.value = true }}>{t('about')}</button>
               <hr />
               <p class="menu-note">{t('shortcuts')}</p>
-              <p class="menu-note">{data.scenario.value && `NHC ${data.scenario.value.storm.id}`}{data.garita.value && `; Garita ${data.garita.value.seedVersion}`}</p>
+              <p class="menu-note">{data.scenario.value && isReveal.value && `NHC ${data.scenario.value.storm.id}`}{data.garita.value && `; Garita ${data.garita.value.seedVersion}`}</p>
               <input ref={file} type="file" accept="application/json,.json" hidden onChange={async (e) => {
                 const f = (e.target as HTMLInputElement).files?.[0]
                 if (f) { try { await importSession(f); setMenu(false) } catch (err) { alert(String(err)) } }

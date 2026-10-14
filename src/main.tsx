@@ -18,11 +18,24 @@ import * as fx from './fx/fx'
 loadAll()
 startFx()
 
-// offline: the service worker precaches the app, data, tiles and fonts; the setup page says when that is done
-import('virtual:pwa-register').then(({ registerSW }) => registerSW({
-  immediate: true,
-  onOfflineReady() { state.offline.value = 'ready' },
-  onRegisteredSW(_url, r) { state.offline.value = r?.active && navigator.serviceWorker.controller ? 'ready' : 'saving' },
-  onRegisterError() { state.offline.value = 'unavailable' },
-})).catch(() => { state.offline.value = 'unavailable' })
+// Offline: the service worker precaches the app, data, tiles and fonts; the setup page says when that is done.
+// Updates never reload the page by themselves (that could happen mid-session): a newer version downloads in the
+// background, then the setup page and the Session menu offer to reload into it. It is applied on its own only on the
+// opening's title screen, before anything has started. Checked on load, every 20 minutes, and on return to the tab.
+import('virtual:pwa-register').then(({ registerSW }) => {
+  const update = registerSW({
+    immediate: true,
+    onNeedRefresh() { state.updateReady.value = true },
+    onOfflineReady() { state.offline.value = 'ready' },
+    onRegisteredSW(_url, r) {
+      state.offline.value = r?.active && navigator.serviceWorker.controller ? 'ready' : 'saving'
+      if (!r) return
+      const check = () => { if (navigator.onLine) r.update().catch(() => {}) }
+      setInterval(check, 20 * 60e3)
+      document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') check() })
+    },
+    onRegisterError() { state.offline.value = 'unavailable' },
+  })
+  state.updater.apply = () => update(true)
+}).catch(() => { state.offline.value = 'unavailable' })
 render(<App />, document.getElementById('app')!)
