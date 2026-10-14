@@ -18,4 +18,6 @@ const MARK = 'landfall-sw-asks-before-update'
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.has(MARK).then(asks => { if (self.registration.active && !asks) return self.skipWaiting() }))
 })
-self.addEventListener('activate', (e) => { e.waitUntil(caches.open(MARK).then(() => undefined)) })
+// take charge of open pages at once, so a first visit is covered offline without a reload (an update only activates
+// when the app asks, and the app reloads right after)
+self.addEventListener('activate', (e) => { e.waitUntil(caches.open(MARK).then(() => self.clients.claim())) })
