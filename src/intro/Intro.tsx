@@ -158,6 +158,9 @@ export function Intro() {
   }
   const nextBeat = () => { const s = T.current; const n = beats.find(b => b.t0 > s.t + 0.05); s.t = n ? n.t0 - 0.2 : TITLE_AT }
 
+  // sound switched on mid-opening: bring the bed in (switching it off stops it, in Ambience)
+  useEffect(() => { if (!muted.value && phase === 'play' && !amb.current.running && T.current.t < END) { amb.current = new Ambience(); amb.current.start() } }, [muted.value, phase])
+
   // a newer version downloaded while the title is up: take it now, nothing has started
   useEffect(() => { if (updateReady.value && phase === 'title') updater.apply() }, [updateReady.value, phase])
 

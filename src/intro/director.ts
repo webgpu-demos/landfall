@@ -67,11 +67,13 @@ export interface Deps {
 
 export interface Frame { t: number; clock: number; storm: { lon: number; lat: number; status: string; wind: number } | null }
 
+const RANK: Record<string, number> = { HWR: 4, HWA: 3, TWR: 2, TWA: 1 }
 const TRAIL_START = 0 // index into best track: the depression forms at the first point
 
 export class Director {
   private last: Record<string, number> = {}
   private relief = -1
+  private prColor: string | null = null
   private satLive = true
   private width = 1
   private height = 1
@@ -137,7 +139,13 @@ export class Director {
     for (const k of ['trail', 'storm', 'ftrack', 'fpts']) map.addSource(k, gj(empty, 6))
     map.addSource('roads', gj(empty, 9))
     map.addSource('cone', gj({ type: 'FeatureCollection', features: d.adv.cone }, 6))
-    map.addSource('watch', gj(d.adv.warnings, 7))
+    // NHC draws watches and warnings as straight lines between coastal breakpoints. For Puerto Rico (and Vieques and
+    // Culebra) the opening draws the watch on the island's own coast instead, from the Census boundary the rest of
+    // the app uses; the other islands keep NHC's lines.
+    const inPR = (f: GeoJSON.Feature) => { const c = (f.geometry as GeoJSON.LineString).coordinates; return c.every(([x, y]) => x >= PR_BBOX[0] && x <= -65.15 && y >= PR_BBOX[1] && y <= PR_BBOX[3]) }
+    const prCode = d.adv.warnings.features.filter(inPR).map(f => (f.properties as any).code as string).sort((a, b) => RANK[b] - RANK[a])[0] ?? null
+    this.prColor = prCode ? ({ HWR: C.HWR, HWA: C.HWA, TWR: C.TWR, TWA: C.TWA } as Record<string, string>)[prCode] : null
+    map.addSource('watch', gj({ type: 'FeatureCollection', features: d.adv.warnings.features.filter(f => !inPR(f)) }, 7))
     map.addSource('munis', gj(d.municipios, 9))
     const P = d.places
     map.addSource('dme', gj(fc(P.municipios.filter(m => m.empower).map(m => pt(m.lon, m.lat, { n: m.empower!.dme }))), 7))
@@ -162,6 +170,12 @@ export class Director {
     add({ id: 'cone-line', type: 'line', source: 'cone', paint: { 'line-color': '#FFFFFF', 'line-width': 1.2, 'line-opacity': 0, 'line-dasharray': [3, 2] } })
     add({ id: 'watch', type: 'line', source: 'watch', layout: { 'line-cap': 'round', 'line-join': 'round' },
       paint: { 'line-color': ['match', ['get', 'code'], 'HWR', C.HWR, 'HWA', C.HWA, 'TWR', C.TWR, C.TWA], 'line-width': ['interpolate', ['linear'], ['zoom'], 4, 3, 7, 6], 'line-opacity': 0 } })
+    if (this.prColor) {
+      add({ id: 'watch-pr-glow', type: 'line', source: 'land', filter: ['==', ['get', 'pr'], 2], layout: { 'line-join': 'round' },
+        paint: { 'line-color': this.prColor, 'line-width': ['interpolate', ['linear'], ['zoom'], 4, 6, 7, 12, 10, 18], 'line-blur': 6, 'line-opacity': 0 } })
+      add({ id: 'watch-pr', type: 'line', source: 'land', filter: ['==', ['get', 'pr'], 2], layout: { 'line-join': 'round' },
+        paint: { 'line-color': this.prColor, 'line-width': ['interpolate', ['linear'], ['zoom'], 4, 2, 7, 3.5, 10, 4.5], 'line-opacity': 0 } })
+    }
     add({ id: 'ftrack', type: 'line', source: 'ftrack', layout: { 'line-cap': 'round' }, paint: { 'line-color': '#FFFFFF', 'line-width': 1.6, 'line-opacity': 0.9, 'line-dasharray': [1, 1.6] } })
     add({ id: 'fpts', type: 'circle', source: 'fpts', paint: { 'circle-radius': 3.2, 'circle-color': '#0A1422', 'circle-stroke-color': '#FFFFFF', 'circle-stroke-width': 1.4 } })
     add({ id: 'fpts-label', type: 'symbol', source: 'fpts', layout: { 'text-field': ['get', 'label'], 'text-font': ['Open Sans Semibold'], 'text-size': 12, 'text-anchor': 'top', 'text-offset': [0, 0.7], 'text-allow-overlap': false },
@@ -259,7 +273,9 @@ export class Director {
     this.paint('fpts', 'circle-opacity', coneA); this.paint('fpts', 'circle-stroke-opacity', coneA)
     this.paint('fpts-label', 'text-opacity', coneA * (1 - smooth(38, 40, t)))
     const pulse = t > 33 && t < 39 ? 0.75 + 0.25 * Math.sin((t - 33) * 5) : 1
-    this.paint('watch', 'line-opacity', env(t, 33, 34.5, 42, 45) * pulse)
+    const watchA = env(t, 33, 34.5, 42, 45) * pulse
+    this.paint('watch', 'line-opacity', watchA)
+    if (this.prColor) { this.paint('watch-pr', 'line-opacity', watchA); this.paint('watch-pr-glow', 'line-opacity', 0.45 * watchA) }
 
     // Puerto Rico, today
     this.paint('shade', 'hillshade-exaggeration', 0.7 * smooth(38, 44, t))

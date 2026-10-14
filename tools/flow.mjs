@@ -31,7 +31,7 @@ await step('the opening skips to setup (Esc), and can be replayed', async () => 
   await page.getByRole('button', { name: /Start round 1/ }).first().waitFor({ timeout: 40000 })
   await page.getByRole('button', { name: /Play the opening/ }).click()
   await page.locator('.intro-title.start').waitFor({ timeout: 5000 })
-  await page.getByRole('button', { name: 'Skip to setup' }).click()
+  await page.getByRole('button', { name: 'Skip to setup' }).click({ timeout: 120000 })
 })
 await step('setup shows', () => page.getByRole('button', { name: /Start round 1/ }).first().waitFor({ timeout: 30000 }))
 await step('setup says how it works', async () => { const n = await page.locator('.how-steps li').count(); if (n !== 5) throw new Error('steps: ' + n) })

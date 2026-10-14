@@ -12,9 +12,10 @@ import { loadAll, data } from './data'
 import * as state from './state'
 import { startFx } from './fx/watch'
 import * as fx from './fx/fx'
+import { Ambience } from './intro/audio'
 
 // test hook: screenshots and checks drive the app through this (no effect on normal use)
-;(globalThis as any).__landfall = { ready: false, state, data, fx }
+;(globalThis as any).__landfall = { ready: false, state, data, fx, Ambience }
 loadAll()
 startFx()
 
