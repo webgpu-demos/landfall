@@ -1,0 +1,116 @@
+GOES-16 frames: 49
+terrain tiles 72
+fetch finished with 0 failures
+20
+68
+20
+{ "seedVersion": "2026.10.11b", "built": "2026-10-11T04:51:15Z" }
+adv 004 500 AM AST Thu Sep 15 2022: 45 kt, PR [], rain (3, 6, None), 13 prob bands, 12 radii, HLS None
+adv 005 1100 AM AST Thu Sep 15 2022: 45 kt, PR [], rain (4, 6, 10), 13 prob bands, 11 radii, HLS None
+adv 006 500 PM AST Thu Sep 15 2022: 50 kt, PR ['TWA'], rain (4, 6, 10), 20 prob bands, 14 radii, HLS 511 PM AST Thu Sep 15 2022
+adv 007 1100 PM AST Thu Sep 15 2022: 50 kt, PR ['TWA'], rain (4, 6, 10), 15 prob bands, 14 radii, HLS 1101 PM AST Thu Sep 15 2022
+adv 008 500 AM AST Fri Sep 16 2022: 45 kt, PR ['TWA'], rain (4, 6, 10), 16 prob bands, 13 radii, HLS 514 AM AST Fri Sep 16 2022
+adv 009 1100 AM AST Fri Sep 16 2022: 45 kt, PR ['TWR'], rain (4, 8, 12), 14 prob bands, 13 radii, HLS 1129 AM AST Fri Sep 16 2022
+adv 010 500 PM AST Fri Sep 16 2022: 45 kt, PR ['TWR'], rain (4, 8, 12), 15 prob bands, 13 radii, HLS 503 PM AST Fri Sep 16 2022
+adv 011 1100 PM AST Fri Sep 16 2022: 50 kt, PR ['TWR'], rain (4, 8, 12), 22 prob bands, 14 radii, HLS 1133 PM AST Fri Sep 16 2022
+adv 012 500 AM AST Sat Sep 17 2022: 50 kt, PR ['HWA', 'TWR'], rain (5, 10, 16), 20 prob bands, 15 radii, HLS 532 AM AST Sat Sep 17 2022
+adv 013 1100 AM AST Sat Sep 17 2022: 50 kt, PR ['HWR'], rain (12, 16, 20), 20 prob bands, 16 radii, HLS 1116 AM AST Sat Sep 17 2022
+adv 014 500 PM AST Sat Sep 17 2022: 50 kt, PR ['HWR'], rain (12, 16, 20), 22 prob bands, 17 radii, HLS 504 PM AST Sat Sep 17 2022
+adv 015 1100 PM AST Sat Sep 17 2022: 50 kt, PR ['HWR'], rain (12, 16, 20), 22 prob bands, 17 radii, HLS 1107 PM AST Sat Sep 17 2022
+adv 016 500 AM AST Sun Sep 18 2022: 55 kt, PR ['HWR'], rain (12, 16, 25), 25 prob bands, 18 radii, HLS 511 AM AST Sun Sep 18 2022
+adv 017 1100 AM AST Sun Sep 18 2022: 70 kt, PR ['HWR'], rain (12, 16, 25), 27 prob bands, 19 radii, HLS 1116 AM AST Sun Sep 18 2022
+adv 018 500 PM AST Sun Sep 18 2022: 75 kt, PR ['HWR'], rain (12, 18, 30), 28 prob bands, 19 radii, HLS 506 PM AST Sun Sep 18 2022
+scenario.json 533122 bytes
+emPOWER municipios 78
+municipios 78 with IA 78
+tracts 922
+points 2420 [('housing', 500), ('clinic', 430), ('substation', 401), ('shelter', 336), ('venue', 303), ('police', 127), ('hospital', 87), ('fire', 70), ('power', 67), ('water', 61), ('airport', 24), ('seaport', 14)] venues 303
+roads kept for map 10201 bridges flagged 1167
+places.json 1660872
+flash flood emergencies (event ids) [52]
+warnings 40
+rain stations (TCR Table 3) 66 max {'name': 'Rio Cerrillos near Ponce', 'id': 'PCEP4', 'network': 'United States Geological Survey (USGS) Rain Gauges', 'lat': 18.11, 'lon': -66.6, 'in': 32.4}
+river gauges 72 Counter({'moderate': 23, 'major': 22, 'minor': 15, 'action': 9, None: 3})
+observed.json 55092
+hillshade (2039, 567) 506627 bytes outliers fixed 25
+subset rows 1260 2503 cols 2760 4898
+2022-09-13T21:10:00+00:00 00.webp 93242
+2022-09-13T22:00:00+00:00 01.webp 94088
+2022-09-13T23:00:00+00:00 02.webp 95264
+2022-09-14T00:00:00+00:00 03.webp 91908
+2022-09-14T01:00:00+00:00 04.webp 90120
+2022-09-14T02:00:00+00:00 05.webp 92106
+2022-09-14T03:00:00+00:00 06.webp 89158
+2022-09-14T04:00:00+00:00 07.webp 86266
+2022-09-14T05:00:00+00:00 08.webp 82962
+2022-09-14T06:00:00+00:00 09.webp 81062
+2022-09-14T07:00:00+00:00 10.webp 77940
+2022-09-14T08:00:00+00:00 11.webp 76416
+2022-09-14T09:00:00+00:00 12.webp 75538
+2022-09-14T10:00:00+00:00 13.webp 73836
+2022-09-14T11:00:00+00:00 14.webp 74784
+2022-09-14T12:00:00+00:00 15.webp 76906
+2022-09-14T13:00:00+00:00 16.webp 75642
+2022-09-14T14:00:00+00:00 17.webp 74644
+2022-09-14T15:00:00+00:00 18.webp 75702
+2022-09-14T16:00:00+00:00 19.webp 79174
+2022-09-14T17:00:00+00:00 20.webp 84176
+2022-09-14T18:00:00+00:00 21.webp 88734
+2022-09-14T19:00:00+00:00 22.webp 93090
+2022-09-14T20:00:00+00:00 23.webp 93346
+2022-09-14T21:00:00+00:00 24.webp 95304
+2022-09-14T22:00:00+00:00 25.webp 95522
+2022-09-14T23:00:00+00:00 26.webp 94896
+2022-09-15T00:00:00+00:00 27.webp 90206
+2022-09-15T01:00:00+00:00 28.webp 85072
+2022-09-15T02:00:00+00:00 29.webp 80342
+2022-09-15T03:00:00+00:00 30.webp 74092
+2022-09-15T04:00:00+00:00 31.webp 65956
+2022-09-15T05:00:00+00:00 32.webp 61890
+2022-09-15T06:00:00+00:00 33.webp 58456
+2022-09-15T07:00:00+00:00 34.webp 59362
+2022-09-15T08:00:00+00:00 35.webp 59652
+2022-09-15T09:00:00+00:00 36.webp 58198
+2022-09-15T10:00:00+00:00 37.webp 55762
+2022-09-15T11:00:00+00:00 38.webp 55332
+2022-09-15T12:00:00+00:00 39.webp 54656
+2022-09-15T13:00:00+00:00 40.webp 56352
+2022-09-15T14:00:00+00:00 41.webp 57660
+2022-09-15T15:00:00+00:00 42.webp 62232
+2022-09-15T16:00:00+00:00 43.webp 65984
+2022-09-15T17:00:00+00:00 44.webp 69662
+2022-09-15T18:00:00+00:00 45.webp 73976
+2022-09-15T19:00:00+00:00 46.webp 77196
+2022-09-15T20:00:00+00:00 47.webp 78818
+2022-09-15T21:00:00+00:00 48.webp 79962
+world.json 197 113297
+dem tiles 72 750303
+12M	/home/runner/work/landfall/landfall/public/data
+18M	/home/runner/work/landfall/landfall/public/tiles
+ok   TS watch for PR issued 15/2100 UTC (advisory 6)
+ok   TS warning for PR issued 16/1500 UTC (advisory 9)
+ok   Hurricane watch for PR issued 17/0900 UTC (advisory 12)
+ok   Hurricane warning for PR issued 17/1500 UTC (advisory 13)
+ok   landfall 18 Sep 1920 UTC, 18.0N 67.1W, 75 kt (got 18.0 -67.1 75)
+ok   adv 6 rain for PR: 4-6 in, isolated 10
+ok   adv 13 rain for PR: 12-16 in, local 20
+ok   adv 16 rain for PR: local maximum 25 in
+ok   adv 9 maximum 12 in; adv 12 local 16 in; adv 4 none stated
+ok   wind speed probability contours within 10 km agree with NHC's station table to 10 points (60 station-advisories, worst off by 7 points)
+ok   78 municipios
+ok   located 2026 shelters (>= 330 of 343)
+ok   wind arrays aligned with advisories
+ok   FEMA DR-4671 housing assistance for every municipio
+ok   chance of 39+ >= 58+ >= 74+ mph everywhere
+ok   NWS San Juan flash flood warnings in the IEM archive (26; the TCR counts about 50 issued 18-20 Sep, so the app calls its counts a floor)
+ok   heaviest storm total is the TCR's 32.40 in at Rio Cerrillos near Ponce (32.4 in at Rio Cerrillos near Ponce)
+ok   rain stations read from TCR Table 3 (66)
+ok   over a dozen gauges above major flood stage (TCR)
+ok   GOES-16 loop: 49 hourly frames on disk
+ok   the loop ends at advisory 6 (15 Sep 21Z), the first round
+ok   no gaps over an hour in the loop
+ok   world land for the globe (197 polygons)
+ok   terrain tiles for Puerto Rico, z5-10
+
+all checks passed
+e66745e data: rebuild from sources 2026-10-14T01:34:36Z
