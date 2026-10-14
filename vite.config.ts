@@ -27,6 +27,6 @@ export default defineConfig({
   ],
   // which build is running, shown on the setup page (so a cached older version is easy to spot)
   define: { __BUILD__: JSON.stringify({ time: new Date().toISOString(), sha: (process.env.GITHUB_SHA ?? '').slice(0, 7) }) },
-  build: { target: 'es2022', chunkSizeWarningLimit: 1500, assetsInlineLimit: 0 },
+  build: { target: 'es2022', chunkSizeWarningLimit: 1500, assetsInlineLimit: 0, sourcemap: !!process.env.SOURCEMAP },
   server: { host: '127.0.0.1', port: 5290 },
 })
