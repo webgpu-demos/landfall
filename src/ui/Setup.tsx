@@ -42,7 +42,7 @@ export function Setup() {
           </div>
           <h1>{t('appTitle')}</h1>
           <p class="lede">{t('appSub')}</p>
-          <button class="link play-opening" onClick={() => (introOn.value = true)}>▶ {t('introPlayOpening')}</button>
+          <button class="play-opening" onClick={() => (introOn.value = true)}><svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path d="M2 1l9 5-9 5z" fill="currentColor" /></svg>{t('introPlayOpening')}</button>
           <p>{t('setupIntro')}</p>
         </header>
 

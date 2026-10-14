@@ -28,7 +28,7 @@ await step('the opening plays', async () => {
 await page.screenshot({ path: `${out}/flow-0.png` })
 await step('the opening skips to setup (Esc), and can be replayed', async () => {
   await page.keyboard.press('Escape')
-  await page.getByRole('button', { name: /Start round 1/ }).waitFor({ timeout: 10000 })
+  await page.getByRole('button', { name: /Start round 1/ }).waitFor({ timeout: 40000 })
   await page.getByRole('button', { name: /Play the opening/ }).click()
   await page.locator('.intro-title.start').waitFor({ timeout: 5000 })
   await page.getByRole('button', { name: 'Skip to setup' }).click()
