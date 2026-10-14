@@ -1,0 +1,9 @@
+0 s {"c":false}
+SW started https://webgpu-demos.github.io/landfall/sw.js
+15 s {"i":"installing","c":false}
+30 s {"i":"installing","c":false}
+45 s {"i":"installing","c":false}
+60 s {"i":"installing","c":false}
+75 s {"i":"installing","c":false}
+90 s {"a":"activated","c":false}
+105 s {"a":"activated","c":false}
