@@ -31,8 +31,9 @@ export function Intro() {
   const barEl = useRef<HTMLDivElement>(null)
   const dir = useRef<Director | null>(null)
   const amb = useRef(new Ambience())
-  const T = useRef({ t: 0, playing: false, last: 0, beat: -1, resolved: false, swell: 0 })
+  const T = useRef({ t: 0, playing: false, last: 0, beat: -1, resolved: false, swell: 0, late: false, clockMin: -1 })
   const idle = useRef(-43)
+  const warming = useRef(true)
   const [phase, setPhase] = useState<'title' | 'play'>('title')
   const [ready, setReady] = useState(false)
   const [beat, setBeat] = useState(-1)
@@ -67,6 +68,8 @@ export function Intro() {
       container: box.current!,
       style: { version: 8, projection: { type: ['interpolate', ['linear'], ['zoom'], 6, 'vertical-perspective', 7.5, 'mercator'] }, glyphs: BASE + 'glyphs/{fontstack}/{range}.pbf', sources: {}, layers: [{ id: 'bg', type: 'background', paint: { 'background-color': '#0A1422' } }] } as any,
       center: [-43, 13], zoom: 2, interactive: false, attributionControl: false, maxPitch: 70, fadeDuration: 0,
+      // keep the warmed-up tiles for the descent while the globe shots play
+      maxTileCacheSize: 600,
     })
     ;(window as any).__introMap = map
     const ro = new ResizeObserver(() => { map.resize(); dir.current?.resize() })
@@ -88,9 +91,16 @@ export function Intro() {
       })
       d.build()
       dir.current = d
-      await sat.ready
+      await Promise.all([sat.ready, d.d.roads])
       if (!alive) return
-      render(0)
+      // Warm-up, out of sight: visit the descent and the shots over Puerto Rico once so their elevation, relief and
+      // map tiles are loaded and cached before the opening plays (otherwise they load mid-flight and the dive stutters).
+      // At most ~8 s in all; on a slow machine whatever is left loads during the opening, as before.
+      const budget = performance.now() + 8000
+      const settle = () => new Promise<void>(r => { const t0 = performance.now(); const check = () => !alive || performance.now() - t0 > 1500 || performance.now() > budget || (map.areTilesLoaded() && map.loaded()) ? r() : setTimeout(check, 100); setTimeout(check, 150) })
+      for (const x of [36.5, 38.5, 40, 41.5, 43, 45, 52, 58]) { if (performance.now() > budget) break; render(x); await settle(); if (!alive) return }
+      warming.current = false
+      render(2.8, idle.current)
       setReady(true)
     }).catch(e => { console.error('intro', e); if (alive) finish() })
     return () => { alive = false; ro.disconnect(); amb.current.stop(0.4); map.remove(); dir.current = null }
@@ -103,7 +113,8 @@ export function Intro() {
     if (!d) return
     labels.td = t('introTD'); labels.ts = t('introTS')
     const f = d.apply(x, labels, still, idleLon != null ? { center: [idleLon, 12], zoom: d.camera(0).zoom, pitch: 0, bearing: 0 } : undefined)
-    if (clockEl.current) clockEl.current.textContent = ast(f.clock)
+    const minute = Math.floor(f.clock / 60000)
+    if (clockEl.current && minute !== T.current.clockMin) { T.current.clockMin = minute; clockEl.current.textContent = ast(f.clock) }
     if (barEl.current) barEl.current.style.transform = `scaleX(${Math.min(1, x / TITLE_AT)})`
   }
 
@@ -113,13 +124,15 @@ export function Intro() {
     const tick = (now: number) => {
       raf = requestAnimationFrame(tick)
       const s = T.current
+      if (warming.current) return
       if (phase === 'title') { if (dir.current && !still) { idle.current = -43 + 8 * Math.sin((now - t0) / 14000); render(2.8, idle.current) } return }
       const dt = Math.min(0.1, (now - (s.last || now)) / 1000); s.last = now
       if (s.playing) s.t = Math.min(END, s.t + dt)
       render(s.t)
       const b = beatAt(s.t)
       if (b !== s.beat) { s.beat = b; setBeat(b); if (b >= 0 && s.playing) amb.current.accent(b >= 5) }
-      setLate(s.t >= TERRAIN_AT + 2)
+      const late = s.t >= TERRAIN_AT + 2
+      if (late !== s.late) { s.late = late; setLate(late) }
       if (s.t >= 31 && s.swell < 1) { s.swell = 1; amb.current.swell(0.45) }
       if (s.t >= 38 && s.swell < 2) { s.swell = 2; amb.current.swell(1, 2.5) }
       if (s.t >= 44 && s.swell < 3) { s.swell = 3; amb.current.swell(0.3, 4) }
@@ -131,7 +144,7 @@ export function Intro() {
 
   const begin = () => {
     if (!ready) return
-    T.current = { t: 0, playing: true, last: 0, beat: -1, resolved: false, swell: 0 }
+    T.current = { t: 0, playing: true, last: 0, beat: -1, resolved: false, swell: 0, late: false, clockMin: -1 }
     setEnding(false); setPaused(false); setBeat(-1)
     amb.current.stop(0.2); amb.current = new Ambience(); amb.current.start()
     if (dir.current) dir.current.lonOffset = phase === 'title' ? idle.current + 43 : 0
@@ -171,7 +184,8 @@ export function Intro() {
   const b = beat >= 0 ? beats[beat] : null
   return (
     <div class={'opening' + (leaving ? ' leaving' : '') + (phase === 'title' ? ' at-title' : '')}>
-      <div ref={box} class="intro-map" aria-hidden="true" />
+      <div ref={box} class={'intro-map' + (ready ? ' shown' : '')} aria-hidden="true" />
+      <div class="intro-vignette" />
       <div class="intro-scrim" />
 
       {phase === 'title' && (

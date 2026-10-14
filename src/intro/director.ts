@@ -11,6 +11,8 @@ import type { AdvGeo, BestTrack, Places } from '../types'
 const BASE = location.href.replace(/[?#].*$/, '').replace(/[^/]*$/, '')
 
 export const LOOP0 = 3, LOOP1 = 31, TERRAIN_AT = 40.5, TITLE_AT = 60.5, END = 63
+/** Peak terrain exaggeration, reached as the camera settles over Puerto Rico. */
+const RELIEF = 2.1
 export const PR_BBOX: [number, number, number, number] = [-67.6, 17.6, -65.0, 18.75]
 
 // Camera keyframes. Zoom is given as the share of the screen height the globe fills (fit) or as the degrees of
@@ -24,8 +26,8 @@ const KEYS: Key[] = [
   { t: 30, lon: -56.4, lat: 16.2, span: 23, pitch: 40, bearing: -10 },
   { t: 36.5, lon: -60.9, lat: 16.9, span: 21, pitch: 20, bearing: 0 },
   { t: 40.5, lon: -65.7, lat: 17.55, span: 6.5, pitch: 45, bearing: -10 },
-  { t: 44, lon: -66.45, lat: 18.02, span: 2.35, pitch: 62, bearing: -16 },
-  { t: 57.5, lon: -66.4, lat: 18.06, span: 2.15, pitch: 64, bearing: 14 },
+  { t: 44, lon: -66.45, lat: 18.0, span: 2.35, pitch: 63, bearing: -16 },
+  { t: 57.5, lon: -66.4, lat: 18.03, span: 2.15, pitch: 66, bearing: 14 },
   { t: END, lon: -66.45, lat: 18.2, span: 3.2, pitch: 0, bearing: 0 },
 ]
 
@@ -69,7 +71,8 @@ const TRAIL_START = 0 // index into best track: the depression forms at the firs
 
 export class Director {
   private last: Record<string, number> = {}
-  private terrain = false
+  private relief = -1
+  private satLive = true
   private width = 1
   private height = 1
   private zooms: number[] = []
@@ -120,22 +123,26 @@ export class Director {
 
   build() {
     const { map, d } = this
-    map.addSource('grat', { type: 'geojson', data: graticule() })
-    map.addSource('world', { type: 'geojson', data: d.world })
-    map.addSource('land', { type: 'geojson', data: d.land })
+    // Each source's maxzoom caps how many zoom levels get their own tiles; past it, the last level is scaled up. Few
+    // levels means little tiling work while the camera dives from zoom 6 to 9.
+    const gj = (data: any, maxzoom: number) => ({ type: 'geojson' as const, data, maxzoom, buffer: 64 })
+    map.addSource('grat', gj(graticule(), 4))
+    map.addSource('world', gj(d.world, 5))
+    map.addSource('land', gj(d.land, 9))
     map.addSource('sat', { type: 'canvas', canvas: d.sat.canvas, coordinates: d.sat.corners(), animate: true } as any)
     const dem = { type: 'raster-dem', tiles: [BASE + 'tiles/dem/{z}/{x}/{y}.png'], tileSize: 256, minzoom: 5, maxzoom: 10, encoding: 'terrarium', bounds: PR_BBOX } as const
     map.addSource('dem', dem as any)
-    map.addSource('dem-shade', dem as any)
+    map.addSource('dem-shade', { ...dem, maxzoom: 9 } as any)
     const empty: GeoJSON.FeatureCollection = { type: 'FeatureCollection', features: [] }
-    for (const k of ['trail', 'storm', 'ftrack', 'fpts', 'roads']) map.addSource(k, { type: 'geojson', data: empty })
-    map.addSource('cone', { type: 'geojson', data: { type: 'FeatureCollection', features: d.adv.cone } })
-    map.addSource('watch', { type: 'geojson', data: d.adv.warnings })
-    map.addSource('munis', { type: 'geojson', data: d.municipios })
+    for (const k of ['trail', 'storm', 'ftrack', 'fpts']) map.addSource(k, gj(empty, 6))
+    map.addSource('roads', gj(empty, 9))
+    map.addSource('cone', gj({ type: 'FeatureCollection', features: d.adv.cone }, 6))
+    map.addSource('watch', gj(d.adv.warnings, 7))
+    map.addSource('munis', gj(d.municipios, 9))
     const P = d.places
-    map.addSource('dme', { type: 'geojson', data: fc(P.municipios.filter(m => m.empower).map(m => pt(m.lon, m.lat, { n: m.empower!.dme }))) })
-    map.addSource('pts', { type: 'geojson', data: fc(P.points.filter(p => p.kind === 'shelter' || p.kind === 'hospital').map(p => pt(p.lon, p.lat, { k: p.kind }))) })
-    map.addSource('cities', { type: 'geojson', data: fc(CITIES.map(([name, lon, lat]) => pt(lon, lat, { name }))) })
+    map.addSource('dme', gj(fc(P.municipios.filter(m => m.empower).map(m => pt(m.lon, m.lat, { n: m.empower!.dme }))), 7))
+    map.addSource('pts', gj(fc(P.points.filter(p => p.kind === 'shelter' || p.kind === 'hospital').map(p => pt(p.lon, p.lat, { k: p.kind }))), 7))
+    map.addSource('cities', gj(fc(CITIES.map(([name, lon, lat]) => pt(lon, lat, { name }))), 6))
     d.roads.then(r => { if (r) (map.getSource('roads') as maplibregl.GeoJSONSource)?.setData(r) })
 
     const add = (l: any) => map.addLayer(l)
@@ -143,7 +150,7 @@ export class Director {
     add({ id: 'world', type: 'fill', source: 'world', paint: { 'fill-color': '#1A2940' } })
     add({ id: 'land', type: 'fill', source: 'land', filter: ['!=', ['get', 'pr'], 2], paint: { 'fill-color': ['case', ['==', ['get', 'pr'], 1], '#1F3250', '#1A2940'] } })
     add({ id: 'shade', type: 'hillshade', source: 'dem-shade', paint: { 'hillshade-shadow-color': '#04080F', 'hillshade-highlight-color': '#8FA6C2', 'hillshade-accent-color': '#2A3E5C',
-      'hillshade-exaggeration': 0.6, 'hillshade-illumination-direction': 320, 'hillshade-illumination-anchor': 'map' }, layout: { visibility: 'none' } })
+      'hillshade-exaggeration': 0, 'hillshade-illumination-direction': 320, 'hillshade-illumination-anchor': 'map' } })
     add({ id: 'coast', type: 'line', source: 'world', paint: { 'line-color': '#34507A', 'line-width': 0.8, 'line-opacity': ['interpolate', ['linear'], ['zoom'], 2, 0.6, 5, 0] } })
     add({ id: 'coast-detail', type: 'line', source: 'land', filter: ['!=', ['get', 'pr'], 2], paint: { 'line-color': '#3D5B86', 'line-width': ['interpolate', ['linear'], ['zoom'], 4, 0.5, 8, 1.1], 'line-opacity': ['interpolate', ['linear'], ['zoom'], 3.5, 0, 5, 0.9] } })
     add({ id: 'roads-all', type: 'line', source: 'roads', paint: { 'line-color': '#6E86A8', 'line-width': 0.7, 'line-opacity': 0 } })
@@ -170,8 +177,13 @@ export class Director {
     add({ id: 'hospitals', type: 'circle', source: 'pts', filter: ['==', ['get', 'k'], 'hospital'], paint: { 'circle-radius': 4, 'circle-color': '#FF6B81', 'circle-opacity': 0, 'circle-stroke-color': '#FFFFFF', 'circle-stroke-width': 1.2, 'circle-stroke-opacity': 0 } })
     add({ id: 'cities', type: 'symbol', source: 'cities', layout: { 'text-field': ['get', 'name'], 'text-font': ['Open Sans Semibold'], 'text-size': 13, 'text-letter-spacing': 0.04 },
       paint: { 'text-color': '#DCE6F3', 'text-halo-color': 'rgba(8,14,26,0.9)', 'text-halo-width': 1.4, 'text-opacity': 0 } })
-    map.setSky({ 'sky-color': '#0B1A31', 'horizon-color': '#1D3658', 'fog-color': '#0A1422', 'sky-horizon-blend': 0.7, 'horizon-fog-blend': 0.5, 'fog-ground-blend': 0.6,
+    // atmosphere: a glow around the globe from space; over Puerto Rico, the far land and sea fade into a cool haze
+    // and a lighter band sits on the horizon. None of it touches the data's colours up close.
+    map.setSky({ 'sky-color': '#081528', 'horizon-color': '#2B4C76', 'fog-color': '#132A47', 'sky-horizon-blend': 0.55, 'horizon-fog-blend': 0.8, 'fog-ground-blend': 0.25,
       'atmosphere-blend': ['interpolate', ['linear'], ['zoom'], 0, 1, 4, 0.9, 7, 0] } as any)
+    // Terrain is on from the start, flat (exaggeration 0) until the descent, then the mountains rise. Switching terrain
+    // on mid-flight rebuilds the renderer's draping and reloads the elevation tiles: a visible stutter.
+    map.setTerrain({ source: 'dem', exaggeration: 0 })
   }
 
   // ------------------------------------------------------------------------------------------- frame
@@ -199,9 +211,10 @@ export class Director {
     const { map, d } = this
     map.jumpTo(camera ?? this.camera(still ? stillTime(t) : t))
 
-    // terrain only once the camera is down over Puerto Rico
-    const wantTerrain = t >= TERRAIN_AT
-    if (wantTerrain !== this.terrain) { this.terrain = wantTerrain; map.setTerrain(wantTerrain ? { source: 'dem', exaggeration: 2.1 } : null) }
+    // relief rises as the camera comes down over the island
+    const relief = RELIEF * smooth(39.5, 47, t)
+    const terrain = (map as any).terrain as { exaggeration: number } | null
+    if (terrain && Math.abs(relief - this.relief) > 0.002) { terrain.exaggeration = relief; this.relief = relief; map.triggerRepaint() }
 
     // satellite loop
     const clock = this.clockAt(t)
@@ -209,7 +222,9 @@ export class Director {
     this.paint('sat', 'raster-opacity', satA)
     this.vis('sat', satA > 0.005)
     const src = map.getSource('sat') as CanvasSource | undefined
-    if (satA > 0.005) { d.sat.draw(d.sat.posAt(clock)); src?.play() } else src?.pause()
+    // upload the loop's canvas only when a new picture was drawn into it (after the first round it holds still)
+    const drawn = satA > 0.005 && d.sat.draw(d.sat.posAt(clock))
+    if (drawn !== this.satLive) { this.satLive = drawn; drawn ? src?.play() : src?.pause() }
     this.paint('grat', 'line-opacity', 0.55 * env(t, 0, 2, 34, 39))
 
     // the storm so far: best track to the clock
@@ -247,8 +262,7 @@ export class Director {
     this.paint('watch', 'line-opacity', env(t, 33, 34.5, 42, 45) * pulse)
 
     // Puerto Rico, today
-    this.vis('shade', t > 38)
-    this.paint('shade', 'hillshade-exaggeration', 0.7 * smooth(39, 44, t))
+    this.paint('shade', 'hillshade-exaggeration', 0.7 * smooth(38, 44, t))
     this.paint('munis', 'line-opacity', 0.6 * env(t, 43.2, 45, 47, 49) + 0.18 * smooth(47, 49, t) * (1 - smooth(TITLE_AT, TITLE_AT + 1.5, t)))
     this.paint('cities', 'text-opacity', 0.9 * env(t, 43.5, 45, TITLE_AT - 0.5, TITLE_AT + 1))
     this.paint('shelters', 'circle-opacity', 0.95 * env(t, 47, 48.5, 51.3, 52.5) + 0.25 * smooth(51.3, 52.5, t) * (1 - smooth(TITLE_AT, TITLE_AT + 1.5, t)))

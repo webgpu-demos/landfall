@@ -866,3 +866,7 @@ svg.lifelines { width: 100%; height: auto; display: block; font-family: inherit;
 .debrief .db-score .scoreboard { margin-top: 0; }
 .db-score .scoreboard > h3, .db-score .sb-head h3 { font-size: var(--fs-4); margin-bottom: 12px; }
 .db-map-print { display: none; }
+/* the opening: the map fades in once warmed up; a soft vignette frames every shot */
+.opening .intro-map { opacity: 0; transition: opacity 1.2s ease; }
+.opening .intro-map.shown { opacity: 1; }
+.intro-vignette { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 78% 72% at 50% 46%, rgba(2,5,10,0) 58%, rgba(2,5,10,0.38) 84%, rgba(2,5,10,0.62) 100%); }
