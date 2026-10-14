@@ -1,0 +1,6 @@
++ npm i --no-save --silent playwright@1.56.0
++ npx playwright install --with-deps chromium
++ cat
++ node tools/shot.mjs https://webgpu-demos.github.io/landfall/ plan.json /home/runner/work/landfall/landfall/out/shots
++ node tools/flow.mjs https://webgpu-demos.github.io/landfall/ /home/runner/work/landfall/landfall/out/flow
++ true

@@ -1,0 +1,9 @@
+[
+ {
+  "id": "setup-live",
+  "ms": 3309,
+  "logs": [
+   "[warning] Service Worker registration blocked by Playwright"
+  ]
+ }
+]
