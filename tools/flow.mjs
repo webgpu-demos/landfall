@@ -1,5 +1,5 @@
 // End-to-end walk through the facilitator flow with real clicks: start, pick a municipio on the map, add outreach with
-// a reason, drop a pin for staging, advance, review, reveal and its points, debrief. Fails on any missing step.
+// a reason, drop a pin for staging, advance, review, reveal and its points, debrief. Starts with the opening. Fails on any missing step.
 //   node tools/flow.mjs <base-url> <out-dir>
 import fs from 'node:fs'
 const pw = await import(process.env.PW_CORE || '/opt/npm-tools/node_modules/playwright-core/index.mjs').catch(() => import('playwright'))
@@ -20,6 +20,19 @@ const at = (lon, lat) => page.evaluate(([lon, lat]) => { const p = window.__map.
 await page.goto(base, { waitUntil: 'domcontentloaded' })
 await page.evaluate(() => localStorage.clear())
 await page.reload({ waitUntil: 'domcontentloaded' })
+await step('the opening plays', async () => {
+  await page.locator('.intro-go:not([disabled])').click({ timeout: 90000 })
+  await page.locator('.intro-cap h2', { hasText: 'tropical wave' }).waitFor({ timeout: 60000 })
+  await page.waitForFunction(() => globalThis.__intro?.t > 1, null, { timeout: 60000 })
+})
+await page.screenshot({ path: `${out}/flow-0.png` })
+await step('the opening skips to setup (Esc), and can be replayed', async () => {
+  await page.keyboard.press('Escape')
+  await page.getByRole('button', { name: /Start round 1/ }).waitFor({ timeout: 10000 })
+  await page.getByRole('button', { name: /Play the opening/ }).click()
+  await page.locator('.intro-title.start').waitFor({ timeout: 5000 })
+  await page.getByRole('button', { name: 'Skip to setup' }).click()
+})
 await step('setup shows', () => page.getByRole('button', { name: /Start round 1/ }).waitFor({ timeout: 30000 }))
 const dismiss = async () => { await page.locator('.roundcard .rc-go').click(); await page.locator('.roundcard').waitFor({ state: 'detached', timeout: 3000 }) }
 const release = async () => { await page.locator('.top .next').click(); await page.locator('.top .next.armed').waitFor({ timeout: 2000 }); await page.locator('.top .next').click(); await page.locator('.roundcard').waitFor({ timeout: 3000 }); await dismiss() }

@@ -22,7 +22,9 @@ for (const s of plan) {
   page.on('requestfailed', r => logs.push(`[requestfailed] ${r.url().slice(0, 160)}`))
   if (s.before) await page.addInitScript(s.before)
   const t0 = Date.now()
-  await page.goto(base + (s.query ?? ''), { waitUntil: 'domcontentloaded', timeout: 120000 })
+  // the opening is skipped unless a plan asks for it (query: '?intro')
+  const q = s.query ?? ''
+  await page.goto(base + (q.includes('intro') ? q.replace('?intro', '') : q + (q.includes('?') ? '&' : '?') + 'nointro'), { waitUntil: 'domcontentloaded', timeout: 120000 })
   await page.waitForFunction(() => globalThis.__landfall?.ready, null, { timeout: 120000 }).catch(() => logs.push('[shot] ready never set'))
   if (s.eval) await page.evaluate(s.eval).catch(e => logs.push('[eval] ' + e))
   await page.waitForFunction(() => !document.querySelector('.map') || globalThis.__landfall?.mapIdle, null, { timeout: 120000 }).catch(() => logs.push('[shot] map never idle'))

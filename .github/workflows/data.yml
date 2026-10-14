@@ -17,7 +17,7 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: '3.12' }
       - name: Python packages
-        run: pip install pyshp shapely numpy pillow
+        run: pip install pyshp shapely numpy pillow netCDF4
       - name: Fetch sources
         run: bash pipeline/fetch.sh raw 2>&1 | tee -a build-log.txt
       - name: Garita's baked data (shelters, facilities, SVI, exposure, hazard tiles)
@@ -30,6 +30,7 @@ jobs:
           set -o pipefail
           { python pipeline/build_scenario.py raw out && python pipeline/build_places.py garita raw out \
             && python pipeline/build_observed.py garita raw out && python pipeline/build_basemap.py garita out \
+            && python pipeline/build_intro.py raw out \
             && bash pipeline/stage.sh out garita; } 2>&1 | grep -v 'Possible issue' | tee -a build-log.txt
           cp raw/nhc/hurdat/version.txt public/data/hurdat-version.txt || true
           cp raw/osm/timestamp.txt public/data/osm-timestamp.txt || true

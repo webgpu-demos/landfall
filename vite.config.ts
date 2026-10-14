@@ -13,7 +13,7 @@ export default defineConfig({
       injectRegister: false,
       manifest: false,
       workbox: {
-        globPatterns: ['**/*.{js,css,html,woff2,json,png,pbf,svg}'],
+        globPatterns: ['**/*.{js,css,html,woff2,json,png,pbf,svg,webp}'],
         maximumFileSizeToCacheInBytes: 8 * 1024 * 1024,
         navigateFallback: null,
       },

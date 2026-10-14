@@ -69,6 +69,8 @@ export function update(fn: (s: Session) => void) {
 
 export type View = 'setup' | 'exercise' | 'reveal' | 'debrief'
 export const view = signal<View>(session.value.started ? (session.value.round >= session.value.rounds.length ? 'reveal' : 'exercise') : 'setup')
+/** The opening plays when the app opens on setup (not mid-session); ?nointro skips it. */
+export const introOn = signal<boolean>(view.value === 'setup' && !/[?&]nointro\b/.test(location.search))
 export const activeTable = signal<string>(session.value.tables[0]?.id ?? 't1')
 export const selected = signal<Target | null>(null)
 export const lens = signal<string | null>(null)

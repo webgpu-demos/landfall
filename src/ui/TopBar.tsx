@@ -6,7 +6,7 @@ import { data } from '../data'
 import { t } from '../i18n'
 import { when } from '../lib/format'
 import { prStatus } from '../lib/conditions'
-import { StatusChip, download } from './common'
+import { StatusChip, download, Speaker } from './common'
 
 const now = signal(Date.now())
 setInterval(() => (now.value = Date.now()), 250)
@@ -93,8 +93,7 @@ export function TopBar() {
         )}
         {reveal && <button class="primary" onClick={() => (view.value = 'debrief')}>{t('toDebrief')}</button>}
         <button class="ghost sound" aria-pressed={!muted.value} title={muted.value ? t('soundOff') : t('soundOn')} aria-label={muted.value ? t('soundOff') : t('soundOn')} onClick={() => { muted.value = !muted.value; if (!muted.value) play('coin') }}>
-          <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M3 7.5h3.2L10.5 4v12L6.2 12.5H3z" fill="currentColor" />
-            {muted.value ? <path d="M13 7.5l5 5M18 7.5l-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /> : <><path d="M13 7a4 4 0 0 1 0 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /><path d="M15.5 4.8a7 7 0 0 1 0 10.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></>}</svg>
+          <Speaker off={muted.value} />
         </button>
         <div class="menu">
           <button class="ghost menu-btn" aria-expanded={menu} onClick={(e) => { e.stopPropagation(); setMenu(!menu) }}>{t('menu')}</button>

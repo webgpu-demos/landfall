@@ -69,5 +69,16 @@ check(top['in'] == 32.4 and 'Cerrillos' in top['name'], f"heaviest storm total i
 check(len(O['rain']['gauges']) >= 50, f"rain stations read from TCR Table 3 ({len(O['rain']['gauges'])})")
 check(sum(1 for g in O['rivers']['gauges'] if g['level'] == 'major') >= 12, 'over a dozen gauges above major flood stage (TCR)')
 
+# 7. The opening: the satellite loop ends at the first round and never shows anything after it
+I = json.load(open(os.path.join(OUT, 'intro', 'intro.json')))
+fr = I['frames']
+check(len(fr) >= 45 and all(os.path.exists(os.path.join(OUT, 'intro', 'sat', f['f'])) for f in fr), f"GOES-16 loop: {len(fr)} hourly frames on disk")
+check(fr[-1]['t'] == A[6]['issued'], 'the loop ends at advisory 6 (15 Sep 21Z), the first round')
+check(all(b['t'] - a['t'] <= 3600_000 for a, b in zip(fr, fr[1:])), 'no gaps over an hour in the loop')
+W = json.load(open(os.path.join(OUT, 'intro', 'world.json')))
+check(len(W['features']) > 50, f"world land for the globe ({len(W['features'])} polygons)")
+dem = os.path.join(os.path.dirname(os.path.abspath(OUT)), 'tiles', 'dem')
+check(os.path.isdir(os.path.join(dem, '10')) and sum(len(f) for _, _, f in os.walk(dem)) >= 60, 'terrain tiles for Puerto Rico, z5-10')
+
 print(f"\n{len(bad)} failed" if bad else '\nall checks passed')
 sys.exit(1 if bad else 0)

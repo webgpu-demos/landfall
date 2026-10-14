@@ -61,5 +61,33 @@ fi
 # --- Natural Earth 10 m land (public domain), from the project's GitHub mirror -------------------------------------
 get https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_land.geojson ne/ne_10m_land.geojson
 
+# --- the opening ------------------------------------------------------------------------------------------------
+# GOES-16 ABI full-disk band 13 (clean infrared), hourly, 13 Sep 21Z (the first hour after a GOES-16 outage,
+# 13 Sep 11-21Z) to 15 Sep 21Z (advisory 6, the first round). NOAA Open Data Dissemination, public S3 bucket.
+mkdir -p goes dem
+t=$(date -u -d '2022-09-13 21:00' +%s); end=$(date -u -d '2022-09-15 21:00' +%s)
+while [ "$t" -le "$end" ]; do
+  p="ABI-L2-CMIPF/2022/$(date -u -d @$t +%j)/$(date -u -d @$t +%H)/OR_ABI-L2-CMIPF-M6C13_G16"
+  k=$(curl -sSf "https://noaa-goes16.s3.amazonaws.com/?list-type=2&prefix=$p" | grep -o '<Key>[^<]*</Key>' | head -1 | sed 's/<[^>]*>//g')
+  if [ -n "$k" ]; then get "https://noaa-goes16.s3.amazonaws.com/$k" "goes/$(basename "$k")" & else echo "no GOES-16 frame for $p" >&2; fi
+  t=$((t + 3600))
+done; wait
+echo "GOES-16 frames: $(ls goes | wc -l)"
+get https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_50m_land.geojson ne/ne_50m_land.geojson
+# AWS Terrain Tiles (Terrarium) for Puerto Rico, z5-10: the opening's 3D view
+python3 - <<'PY'
+import math, os, urllib.request
+def tile(lon, lat, z):
+    n = 2 ** z
+    return int((lon + 180) / 360 * n), int((1 - math.log(math.tan(math.radians(lat)) + 1 / math.cos(math.radians(lat))) / math.pi) / 2 * n)
+for z in range(5, 11):
+    x0, y0 = tile(-67.6, 18.75, z); x1, y1 = tile(-65.0, 17.6, z)
+    for x in range(x0, x1 + 1):
+        for y in range(y0, y1 + 1):
+            os.makedirs(f'dem/{z}/{x}', exist_ok=True)
+            urllib.request.urlretrieve(f'https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png', f'dem/{z}/{x}/{y}.png')
+print('terrain tiles', sum(len(f) for _, _, f in os.walk('dem')))
+PY
+
 echo "fetch finished with $FAILS failures"; ls -la nhc/gis | wc -l; ls nhc/text | wc -l; ls nhc/wsp | wc -l
 exit 0

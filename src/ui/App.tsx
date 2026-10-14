@@ -1,6 +1,6 @@
 import { useEffect } from 'preact/hooks'
 import { data } from '../data'
-import { view, session, activeTable, selected, lens, pinMode, focusMap, bigText, textDrawer, startTimer, pauseTimer, leftTab, isReveal, flash } from '../state'
+import { introOn, view, session, activeTable, selected, lens, pinMode, focusMap, bigText, textDrawer, startTimer, pauseTimer, leftTab, isReveal, flash } from '../state'
 import { t } from '../i18n'
 import { TopBar } from './TopBar'
 import { MapView } from '../map/MapView'
@@ -19,6 +19,7 @@ import { About } from './About'
 import { requestAdvance } from './TopBar'
 import { RoundCard } from './Game'
 import { FxLayer } from '../fx/fx'
+import { Intro } from '../intro/Intro'
 
 export function App() {
   useEffect(() => {
@@ -46,6 +47,7 @@ export function App() {
   ;(globalThis as any).__landfall.ready = true
 
   const v = view.value
+  if (introOn.value) return <Intro />
   if (v === 'setup') return <><Setup /><About /><FxLayer /></>
   if (v === 'debrief') return <><Debrief /><About /><FxLayer /></>
   const reveal = isReveal.value

@@ -1,4 +1,4 @@
-import { session, update, view, lang, TABLE_COLORS, DEFAULT_ROUNDS, DEFAULT_BUDGET, resetSession, importSession, activeTable, offline, about, flash } from '../state'
+import { session, update, view, lang, TABLE_COLORS, DEFAULT_ROUNDS, DEFAULT_BUDGET, resetSession, importSession, activeTable, offline, about, flash, introOn } from '../state'
 import { data } from '../data'
 import { t } from '../i18n'
 import { when } from '../lib/format'
@@ -42,6 +42,7 @@ export function Setup() {
           </div>
           <h1>{t('appTitle')}</h1>
           <p class="lede">{t('appSub')}</p>
+          <button class="link play-opening" onClick={() => (introOn.value = true)}>▶ {t('introPlayOpening')}</button>
           <p>{t('setupIntro')}</p>
         </header>
 

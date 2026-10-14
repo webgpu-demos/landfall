@@ -24,6 +24,12 @@ function ac(): AudioContext | null {
 }
 addEventListener('pointerdown', () => { if (!muted.value) ac() }, { once: true, capture: true })
 
+/** The shared audio context and master gain, for longer pieces (the opening's ambience); null when muted. */
+export function audioOut(): { ctx: AudioContext; out: GainNode } | null {
+  const c = ac()
+  return c && master ? { ctx: c, out: master } : null
+}
+
 function tone(f: number, t0: number, dur: number, type: OscillatorType = 'triangle', vol = 0.5, f2?: number) {
   const c = ctx!, o = c.createOscillator(), g = c.createGain()
   o.type = type; o.frequency.setValueAtTime(f, t0)
