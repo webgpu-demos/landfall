@@ -1,0 +1,16 @@
+[
+ {
+  "id": "setup",
+  "ms": 2539,
+  "logs": [
+   "[warning] Service Worker registration blocked by Playwright"
+  ]
+ },
+ {
+  "id": "opening-title",
+  "ms": 27025,
+  "logs": [
+   "[warning] Service Worker registration blocked by Playwright"
+  ]
+ }
+]

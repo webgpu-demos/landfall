@@ -1,0 +1,30 @@
+ok   the opening plays
+FAIL the opening skips to setup (Esc), and can be replayed TimeoutError: locator.waitFor: Timeout 10000ms exceeded.
+Call log:
+  - waiting for getByRole('button', { name: /Start round 1/ }) to be visible
+
+ok   setup shows
+ok   start
+ok   advisory card shows and dismisses
+ok   threat call
+ok   zoom to Puerto Rico
+ok   click Utuado on the map
+ok   add outreach for table 1
+ok   live points on the table chip
+ok   a team is spent
+ok   give a reason in the inspector
+ok   switch to table 4 with the key
+ok   drop a pin for staging
+ok   release the next advisory (two taps)
+ok   decisions ask for review
+ok   keep Utuado, drop the pin
+ok   peek at round 1 from the timeline
+ok   ask the data: shelters
+ok   add closer look from the list
+ok   write a public message
+ok   advance to the reveal
+ok   points reveal runs, can be skipped, marks the leader
+ok   debrief lists the standing decisions
+ok   state survives a reload
+
+1 problems: ["the opening skips to setup (Esc), and can be replayed"]
